@@ -1,0 +1,27 @@
+# Shadows src/main/resources/application.yml in tests, so it has to be complete.
+# The datasource comes from the Testcontainers PostgreSQL in AbstractIntegrationTest.
+spring:
+  jackson:
+    mapper:
+      accept-case-insensitive-enums: true
+  jpa:
+    open-in-view: false
+    hibernate:
+      ddl-auto: validate
+  session:
+    redis:
+      # Used only by the test that runs against a real Redis; the others keep sessions in memory.
+      repository-type: indexed
+  flyway:
+    # The first admin of V7 (Q28). Test password: adminpass1.
+    placeholders:
+      admin_username: admin
+      admin_email: admin@example.com
+      admin_password_hash: $2a$10$S7k2s02hq5qQmPQBICs5Z.1JKtdnpJqrBB16AnEN/Pc79S8LtXvhq
+volunnear:
+  time-zone: Europe/Prague
+  scoring:
+    alpha: 0.4
+    beta: 0.4
+    gamma: 0.2
+    half-distance-km: 10

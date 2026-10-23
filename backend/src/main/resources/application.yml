@@ -1,0 +1,52 @@
+spring:
+  jackson:
+    mapper:
+      accept-case-insensitive-enums: true
+  datasource:
+    url: ${DB_URL}
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
+  jpa:
+    open-in-view: false
+    hibernate:
+      ddl-auto: validate
+  data:
+    redis:
+      port: 6380
+      password: ${REDIS_PASSWORD}
+      username: default
+  session:
+    redis:
+      # Q23: indexed by user, so every session of a banned user can be found and deleted.
+      repository-type: indexed
+  flyway:
+    # Q28: the first admin, inserted by migration V7. A missing variable stops the start.
+    placeholders:
+      admin_username: ${ADMIN_USERNAME}
+      admin_email: ${ADMIN_EMAIL}
+      admin_password_hash: ${ADMIN_PASSWORD_HASH}
+volunnear:
+  # Activity times and availability slots are local times in this zone (Q13, Q4a).
+  time-zone: Europe/Prague
+  # Global weights of the scoring function, on the simplex (Q12), and the distance at which u_geo = 0.5 (Q4).
+  scoring:
+    alpha: 0.4
+    beta: 0.4
+    gamma: 0.2
+    half-distance-km: 10
+  # Seed data, loaded only with the Spring profile "seed" (Q33, Q37). Same seed, same data.
+  seed:
+    organizations: 3
+    volunteers: 30
+    activities: 10
+    random-seed: 42
+server:
+  forward-headers-strategy: framework
+  error:
+    include-exception: true
+    include-message: always
+    include-binding-errors: always
+management:
+  metrics:
+    enable:
+      processor: false
