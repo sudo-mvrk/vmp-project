@@ -11,15 +11,21 @@ State at the end of 2026-10-23. Rewrite this section at the end of every session
 
 Read first: `CLAUDE.md` (loaded automatically), this file, then for the slice at hand its entry in `docs/PLAN.md` and the decisions in `docs/ANALYSIS.md` section 6. `docs/FUNCTION.md` only when touching scoring.
 
-**Repository move (Q40) done on 2026-10-23.** The project lives in the monorepo `vmp-project` (`git@github.com:sudo-mvrk/vmp-project.git`, branch `main`), copied from `VolunNearApp` without history. Code is in `backend/`: paths in older texts of `docs/` (`src/main/...`) mean `backend/src/main/...`. Maven runs in `backend/` (`cd backend && ./mvnw clean verify`, 333 tests green after the move); `docker compose`, `.env` and `docs/` are at the root. `CLAUDE.md` is split into the root file and `backend/CLAUDE.md`. Open: start `docker compose up -d postgres redis` from the root once the old `volunnearapp` compose containers are stopped (they hold port 6380); the new compose project starts with an empty dev database.
+**Repository move (Q40) done and pushed on 2026-10-23** (`b994e67`, `main` of `git@github.com:sudo-mvrk/vmp-project.git`). The project was copied from `VolunNearApp` without history. Code is in `backend/`: paths in older texts of `docs/` (`src/main/...`) mean `backend/src/main/...`. Maven runs in `backend/` (`cd backend && ./mvnw clean verify`, 333 tests green after the move); `docker compose`, `.env` and `docs/` are at the root. `CLAUDE.md` is split into the root file and `backend/CLAUDE.md`.
+
+Before the evaluation, local setup left from the move (the developer's machine, not code):
+1. Stop the old compose project: `docker compose -p volunnearapp stop` (its Redis holds port 6380). Its containers keep the old dev data; nothing needs to move from there.
+2. From the root: `docker compose up -d postgres redis`. The new compose project `vmp-project` starts with an empty dev database; Flyway applies V1 … V7 on the first app start.
+3. Add `ADMIN_USERNAME`, `ADMIN_EMAIL`, `ADMIN_PASSWORD_HASH` to `.env` (see below; the hash command is in `docs/LOCAL_NOTES.md`).
+4. IntelliJ run configuration: working directory `backend/`, environment from the root `.env`.
 
 Where things stand:
-- Done: Slice 0 (baseline), 6a (pure scoring), 6b (feasibility and ranking), 1 (auth hardening), 2 (organizations), 3 (volunteer profile), 4 (activities), 5 (applications), 6c (recommendations), 5b (invitations), 7 (notifications), 8 (completion and history), 8b (administration), 9 (seed data and demo). `./mvnw clean verify` is green with 333 tests.
+- Done: Slice 0 (baseline), 6a (pure scoring), 6b (feasibility and ranking), 1 (auth hardening), 2 (organizations), 3 (volunteer profile), 4 (activities), 5 (applications), 6c (recommendations), 5b (invitations), 7 (notifications), 8 (completion and history), 8b (administration), 9 (seed data and demo). `cd backend && ./mvnw clean verify` is green with 333 tests.
 - Next: **Evaluation** (Q20: function vs nearest-distance and random over the same feasible set, on the seed data). PLAN says the metric definitions go into the thesis notes before anything runs: propose them first and ask. 6d stays skipped (Q18).
 - **The app needs `ADMIN_USERNAME`, `ADMIN_EMAIL`, `ADMIN_PASSWORD_HASH` since Slice 8b** (Q28); without them it does not start. Add them to `.env` and to the IntelliJ run configuration. V7 inserts the admin once; it fails if that username or email already exists in the database.
-- Git: branch `main` of `vmp-project`. Push only when the developer says so.
+- Git: branch `main` of `vmp-project`, everything pushed up to `b994e67` plus the docs commit of the same session (check with `git status -sb`). Push only when the developer says so.
 - `docs/` is tracked and pushed on purpose (decided 2026-10-08).
-- Local services: `docker compose up -d postgres redis`. The dev database is at V1; Flyway applies V2 … V7 on the next app start. Redis requires `REDIS_PASSWORD`.
+- Local services: `docker compose up -d postgres redis` from the root. The dev database of the new compose project is empty (see the setup steps above). Redis requires `REDIS_PASSWORD`.
 
 How the developer works:
 - Says "lets move to slice X" to start a slice; the plan is approved, so no new plan is needed for a slice that follows `docs/PLAN.md`.
