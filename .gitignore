@@ -39,3 +39,6 @@ redisdata/
 .claude/
 ### Local session notes for Claude Code (not published) ###
 docs/LOCAL_NOTES.md
+
+# Evaluation output and method notes stay local for now (2026-10-25)
+docs/evaluation/

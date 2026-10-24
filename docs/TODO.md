@@ -7,7 +7,7 @@ Slice order is the one in `docs/PLAN.md`, approved on 2026-10-08: `0 → 6a → 
 Rules are in `CLAUDE.md` (repo root), decisions in `docs/ANALYSIS.md` section 6, the scoring spec in `docs/FUNCTION.md`.
 
 ## Next session: start here
-State at the end of 2026-10-23. Rewrite this section at the end of every session.
+State at the end of 2026-10-25. Rewrite this section at the end of every session.
 
 Read first: `CLAUDE.md` (loaded automatically), this file, then for the slice at hand its entry in `docs/PLAN.md` and the decisions in `docs/ANALYSIS.md` section 6. `docs/FUNCTION.md` only when touching scoring.
 
@@ -20,8 +20,10 @@ Before the evaluation, local setup left from the move (the developer's machine, 
 4. IntelliJ run configuration: working directory `backend/`, environment from the root `.env`.
 
 Where things stand:
-- Done: Slice 0 (baseline), 6a (pure scoring), 6b (feasibility and ranking), 1 (auth hardening), 2 (organizations), 3 (volunteer profile), 4 (activities), 5 (applications), 6c (recommendations), 5b (invitations), 7 (notifications), 8 (completion and history), 8b (administration), 9 (seed data and demo). `cd backend && ./mvnw clean verify` is green with 333 tests.
-- Next: **Evaluation** (Q20: function vs nearest-distance and random over the same feasible set, on the seed data). PLAN says the metric definitions go into the thesis notes before anything runs: propose them first and ask. 6d stays skipped (Q18).
+- Done: Slice 0 (baseline), 6a (pure scoring), 6b (feasibility and ranking), 1 (auth hardening), 2 (organizations), 3 (volunteer profile), 4 (activities), 5 (applications), 6c (recommendations), 5b (invitations), 7 (notifications), 8 (completion and history), 8b (administration), 9 (seed data and demo), evaluation (first run). `cd backend && ./mvnw clean verify` is green with 351 tests (the evaluation runner is excluded from it).
+- **Evaluation built and run** (2026-10-24 … 25, Q41 … Q52): `docs/evaluation/METHOD.md` (method and metric definitions, written before the first run), `RESULTS.md` and `runs.csv` (generated from the code of `0163368`; `docs/evaluation/` is local only, in `.gitignore` since 2026-10-25). Re-run with `cd backend && ./mvnw test -Pevaluation` (about 1 minute); it overwrites both files and gives the same numbers on any day (the data is generated as of the fixed time 2026-11-02 08:00).
+- Next: the developer reads `RESULTS.md` (possibly drafts the thesis chapter from it with Claude). Open, not asked yet: the weight sensitivity table runs at M, where every method fills everything; M-scarce would show more. Then the frontend planning (Q40 follow-ups). 6d stays skipped (Q18).
+- What the results show (scales S, M-scarce, M, L; 100 paired runs): smart wins on skill coverage in every run of every scale (L: 0.36 smart-A, 0.51 smart-B vs 0.17 random) and on distance against random; smart-A is farther than nearest. Under scarcity (S, M-scarce) smart also fills better where it matters: M-scarce priority-weighted fill 0.93 vs 0.91 / 0.90 and HIGH + URGENT fill 0.97 (smart-A) and 1.00 (smart-B) vs 0.95 / 0.93; smart-A has the best fill rate (0.91 vs 0.90). smart-B has lower participation and slightly lower fill at M-scarce (it serves urgent activities first and gives the best volunteers several activities). At M and L every method fills almost everything. Seed skills are random (Q52), so absolute skill coverage is low.
 - **The app needs `ADMIN_USERNAME`, `ADMIN_EMAIL`, `ADMIN_PASSWORD_HASH` since Slice 8b** (Q28); without them it does not start. Add them to `.env` and to the IntelliJ run configuration. V7 inserts the admin once; it fails if that username or email already exists in the database.
 - Git: branch `main` of `vmp-project`, everything pushed up to `b994e67` plus the docs commit of the same session (check with `git status -sb`). Push only when the developer says so.
 - `docs/` is tracked and pushed on purpose (decided 2026-10-08).
@@ -74,7 +76,7 @@ What exists in code, so it is not rebuilt:
 - `SeedDataIntegrationTest` runs with the `seed` profile in its own context, so the loader commits into the shared test database; it deletes the seed data in `@AfterAll`.
 
 Hints for the next step:
-- Evaluation: the scoring and ranking code is pure (`distribution`), so the comparison can run as a test-scoped or separate runner over `ProfileLoader` output without HTTP. Use `volunnear.seed.volunteers` to scale the data. Decide with the developer: metrics (e.g. mean skill coverage, mean distance, priority-weighted fill, share of top-k that is feasible), k, number of random runs, and where results are written.
+- Evaluation (package `com.volunnear.evaluation` in the test sources): `Simulation` (volunteer-driven rounds for random, nearest, smart-A; activity-driven for smart-B), `Metrics` (M1 … M10), `ListQuality` (k = 5, 10), `Summary`, `Evaluation` (100 paired runs), `ReportWriter` (Markdown and CSV), and `EvaluationRunnerTest` (`@Tag("evaluation")`, seeds each scale by building `SeedDataLoader` by hand inside a `TransactionTemplate`, loads with `ProfileLoader`, asserts the database holds only the seed data). Scales and weight sets are constants in the runner. The surefire `excludedGroups` comes from the property `evaluation.excludedGroups`; the Maven profile `evaluation` switches it.
 
 ## Phase A: Analysis and plan (no feature code yet)
 - [x] Read `docs/FUNCTION.md` and any existing code or docs in the repo
@@ -105,7 +107,7 @@ Hints for the next step:
 - [x] Slice 8: Completion and volunteer history (Q8a … Q8h)
 - [x] Slice 8b: Platform administration (separate `ROLE_ADMIN` accounts, first admin from a Flyway migration with env credentials, ban deletes Redis sessions, no audit log; Q21 … Q32)
 - [x] Slice 9: Seed data and five-minute demo script (Q33 … Q39, `docs/DEMO.md`)
-- [ ] Evaluation: compare recommendations against a simple baseline on seed data (for the thesis)
+- [x] Evaluation: compare recommendations against a simple baseline on seed data (for the thesis); run on 2026-10-25 with M-scarce (Q51)
 
 ## Discovered work
 - [x] Fix `lat == 0` treated as "no location" and lost location on partial update in both mappers (organization Slice 2, volunteer Slice 3)
