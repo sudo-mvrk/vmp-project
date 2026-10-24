@@ -440,3 +440,4 @@ Answered on 2026-10-25, after the first run:
 
 - **Q51. A fourth scale M-scarce** (5 / 120 / 60): at M and L every method fills almost every spot, so the fill-type metrics could differ only on the small S. M-scarce tests them at a useful size.
 - **Q52. The seed keeps random skills**, independent of the activities. Making the data fit the method would weaken the result; the low absolute skill coverage is stated in `METHOD.md` section 8.
+- **Q53. The weight sensitivity table (Q48) runs at M-scarce, not M** (decided 2026-10-25): at M every method fills everything, so only skill coverage and distance could move; under scarcity the effect of the weights on fill and priority fill is visible too.

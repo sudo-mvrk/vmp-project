@@ -67,7 +67,8 @@ class EvaluationRunnerTest extends AbstractIntegrationTest {
             new ScaleConfig("M-scarce", 5, 120, 60),
             new ScaleConfig("M", 5, 200, 40),
             new ScaleConfig("L", 10, 1000, 150));
-    private static final String SENSITIVITY_SCALE = "M";
+    // Q53: under scarcity the weights can also change the fill metrics
+    private static final String SENSITIVITY_SCALE = "M-scarce";
 
     @Autowired
     private AppUserRepository appUserRepository;
