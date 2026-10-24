@@ -17,6 +17,7 @@ Maven runs in `backend/`; `docker compose` and `.env` are at the repo root.
 - Run app: `cd backend && set -a; . ../.env; set +a; ./mvnw spring-boot:run` (`.env` is ignored by git; `.env.example` lists the variables)
 - Run everything in containers: `(cd backend && ./mvnw package -DskipTests) && docker compose up -d --build`
 - Run with demo data: `SPRING_PROFILES_ACTIVE=seed` in the environment (see `docs/DEMO.md`)
+- Run the evaluation (Q49): `cd backend && ./mvnw test -Pevaluation` (writes `docs/evaluation/RESULTS.md` and `runs.csv`; not part of `clean verify`)
 
 (Update this section if the commands change.)
 

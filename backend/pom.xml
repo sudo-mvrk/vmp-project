@@ -21,6 +21,8 @@
         <lombok-mapstruct-binding.version>0.2.0</lombok-mapstruct-binding.version>
         <!-- Boot 3.3 manages 1.19.x, whose Docker client speaks an API version that Docker 29+ rejects -->
         <testcontainers.version>1.21.4</testcontainers.version>
+        <!-- The evaluation (Q49) is tagged and runs only with -Pevaluation, never in clean verify -->
+        <evaluation.excludedGroups>evaluation</evaluation.excludedGroups>
     </properties>
 
     <dependencies>
@@ -156,6 +158,14 @@
             </plugin>
 
             <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <configuration>
+                    <excludedGroups>${evaluation.excludedGroups}</excludedGroups>
+                </configuration>
+            </plugin>
+
+            <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <configuration>
@@ -169,4 +179,15 @@
             </plugin>
         </plugins>
     </build>
+
+    <profiles>
+        <!-- cd backend && ./mvnw test -Pevaluation : writes docs/evaluation/RESULTS.md and runs.csv -->
+        <profile>
+            <id>evaluation</id>
+            <properties>
+                <groups>evaluation</groups>
+                <evaluation.excludedGroups>none</evaluation.excludedGroups>
+            </properties>
+        </profile>
+    </profiles>
 </project>
