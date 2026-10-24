@@ -11,23 +11,22 @@ State at the end of 2026-10-25. Rewrite this section at the end of every session
 
 Read first: `CLAUDE.md` (loaded automatically), this file, then for the slice at hand its entry in `docs/PLAN.md` and the decisions in `docs/ANALYSIS.md` section 6. `docs/FUNCTION.md` only when touching scoring.
 
-**Repository move (Q40) done and pushed on 2026-10-23** (`b994e67`, `main` of `git@github.com:sudo-mvrk/vmp-project.git`). The project was copied from `VolunNearApp` without history. Code is in `backend/`: paths in older texts of `docs/` (`src/main/...`) mean `backend/src/main/...`. Maven runs in `backend/` (`cd backend && ./mvnw clean verify`, 333 tests green after the move); `docker compose`, `.env` and `docs/` are at the root. `CLAUDE.md` is split into the root file and `backend/CLAUDE.md`.
-
-Before the evaluation, local setup left from the move (the developer's machine, not code):
-1. Stop the old compose project: `docker compose -p volunnearapp stop` (its Redis holds port 6380). Its containers keep the old dev data; nothing needs to move from there.
-2. From the root: `docker compose up -d postgres redis`. The new compose project `vmp-project` starts with an empty dev database; Flyway applies V1 … V7 on the first app start.
-3. Add `ADMIN_USERNAME`, `ADMIN_EMAIL`, `ADMIN_PASSWORD_HASH` to `.env` (see below; the hash command is in `docs/LOCAL_NOTES.md`).
-4. IntelliJ run configuration: working directory `backend/`, environment from the root `.env`.
-
 Where things stand:
-- Done: Slice 0 (baseline), 6a (pure scoring), 6b (feasibility and ranking), 1 (auth hardening), 2 (organizations), 3 (volunteer profile), 4 (activities), 5 (applications), 6c (recommendations), 5b (invitations), 7 (notifications), 8 (completion and history), 8b (administration), 9 (seed data and demo), evaluation (first run). `cd backend && ./mvnw clean verify` is green with 351 tests (the evaluation runner is excluded from it).
-- **Evaluation built and run** (2026-10-24 … 25, Q41 … Q52): `docs/evaluation/METHOD.md` (method and metric definitions, written before the first run), `RESULTS.md` and `runs.csv` (generated from the code of `ec229d2`; `docs/evaluation/` is local only, in `.gitignore` since 2026-10-25). Re-run with `cd backend && ./mvnw test -Pevaluation` (about 1 minute); it overwrites both files and gives the same numbers on any day (the data is generated as of the fixed time 2026-11-02 08:00).
-- Next: the developer reads `RESULTS.md` (possibly drafts the thesis chapter from it with Claude). Then the frontend planning (Q40 follow-ups). 6d stays skipped (Q18).
-- What the results show (scales S, M-scarce, M, L; 100 paired runs): smart wins on skill coverage in every run of every scale (L: 0.36 smart-A, 0.51 smart-B vs 0.17 random) and on distance against random; smart-A is farther than nearest. Under scarcity (S, M-scarce) smart also fills better where it matters: M-scarce priority-weighted fill 0.93 vs 0.91 / 0.90 and HIGH + URGENT fill 0.97 (smart-A) and 1.00 (smart-B) vs 0.95 / 0.93; smart-A has the best fill rate (0.91 vs 0.90). smart-B has lower participation and slightly lower fill at M-scarce (it serves urgent activities first and gives the best volunteers several activities). At M and L every method fills almost everything. Seed skills are random (Q52), so absolute skill coverage is low.
-- **The app needs `ADMIN_USERNAME`, `ADMIN_EMAIL`, `ADMIN_PASSWORD_HASH` since Slice 8b** (Q28); without them it does not start. Add them to `.env` and to the IntelliJ run configuration. V7 inserts the admin once; it fails if that username or email already exists in the database.
-- Git: branch `main` of `vmp-project`, everything pushed up to `b994e67` plus the docs commit of the same session (check with `git status -sb`). Push only when the developer says so.
-- `docs/` is tracked and pushed on purpose (decided 2026-10-08).
-- Local services: `docker compose up -d postgres redis` from the root. The dev database of the new compose project is empty (see the setup steps above). Redis requires `REDIS_PASSWORD`.
+- Done: all MVP slices (0, 6a, 6b, 1, 2, 3, 4, 5, 6c, 5b, 7, 8, 8b, 9) and the **evaluation** (Q41 … Q53). 6d stays skipped (Q18). `cd backend && ./mvnw clean verify` is green with 351 tests (the evaluation runner is excluded from it).
+- Monorepo since Q40: code in `backend/` (paths `src/main/...` in older `docs/` texts mean `backend/src/main/...`), Maven runs there; `docker compose`, `.env` and `docs/` are at the root. `CLAUDE.md` = root file + `backend/CLAUDE.md`.
+- Git: `main` of `git@github.com:sudo-mvrk/vmp-project.git`, pushed up to `0f057c6`; the later commits of 2026-10-25 (Q53 and docs) are local until the developer says "push it" (check with `git status -sb`).
+
+Evaluation (finished 2026-10-25):
+- Files in `docs/evaluation/` (**local only**, in `.gitignore` at the developer's request; never commit them): `METHOD.md` (aim, methods, metric formulas M1 … M10, parameters, threats to validity), `RESULTS.md` (generated tables and facts, plain Markdown for pandoc or for Claude to draft the thesis chapter), `runs.csv` (raw numbers per run).
+- Re-run: `cd backend && ./mvnw test -Pevaluation` (about 1 minute, Docker needed). Same numbers on any day: the data is generated as of the fixed time 2026-11-02 08:00. Changing scales, runs or weight sets = constants in `EvaluationRunnerTest`.
+- Scales S 30/10, M-scarce 120/60, M 200/40, L 1000/150 (volunteers/activities); weight sensitivity at M-scarce (Q53).
+- Results: smart beats random and nearest on skill coverage in every run of every scale (L: 0.36 smart-A, 0.51 smart-B vs 0.17) and random on distance; smart-A is farther than nearest. Under scarcity smart fills better where it matters (M-scarce: priority-weighted fill 0.93 vs 0.91 / 0.90; HIGH + URGENT 0.97 smart-A, 1.00 smart-B vs 0.95 / 0.93; fill rate 0.91 smart-A vs 0.90). Skill-heavy weights give smart-A the best fill (0.92) and priority fill (0.95). Weak points to state honestly: smart-B lower participation (0.80 vs 0.91) and slightly lower fill at M-scarce; at M and L every method fills everything; seed skills are random (Q52), so absolute skill coverage is low.
+
+Next session, in this order:
+1. If the developer wants: draft the thesis chapter from `docs/evaluation/METHOD.md` + `RESULTS.md` (text only; the files stay local).
+2. **Frontend planning** (Q40 follow-ups, under "Open questions"): ask in one batch with recommendations before any code: stack (suggested React + Vite + TypeScript), scope of the first version (suggested: login, volunteer profile and recommended activities with the score breakdown, organization activities with recommended volunteers and invitations, applications), Vite proxy `/api` to the backend (one origin for the session and `XSRF-TOKEN` cookies), TypeScript types from the springdoc OpenAPI document, `frontend/CLAUDE.md`, and changing the root `CLAUDE.md` rule that lists the frontend as out of scope. Then write the frontend slices into `docs/PLAN.md` and wait for approval.
+
+Local machine (not code), still open as of 2026-10-24: the old compose project `volunnearapp` was still running (Redis on 6380): `docker compose -p volunnearapp stop`, then `docker compose up -d postgres redis` from the root (new dev database starts empty; Flyway applies V1 … V7). `ADMIN_*` variables are in `.env`; the IntelliJ run configuration needs working directory `backend/` (not checked). The app does not start without `ADMIN_USERNAME`, `ADMIN_EMAIL`, `ADMIN_PASSWORD_HASH` (Q28).
 
 How the developer works:
 - Says "lets move to slice X" to start a slice; the plan is approved, so no new plan is needed for a slice that follows `docs/PLAN.md`.
