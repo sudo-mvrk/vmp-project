@@ -459,3 +459,16 @@ Answered on 2026-10-25, before planning the frontend slices (follow-ups of Q40):
 - **Q64. Tests and definition of done:** Vitest + React Testing Library for logic (the API wrapper with CSRF, the breakdown component, key forms); no end-to-end tests. A frontend slice is done when `npm run lint && npm run build && npm test` pass in `frontend/`, plus `./mvnw clean verify` when the backend changed.
 - **Q65. Frontend slices:** one slice = API calls + page(s) + tests, in the order F0 … F5 of `docs/PLAN.md`. After F2 the volunteer side can be shown.
 - **Q66. `CLAUDE.md`:** the root file drops the frontend from "out of scope" and describes `frontend/` in the layout; `frontend/CLAUDE.md` holds the stack, commands and conventions (like `backend/CLAUDE.md`). Done in F0.
+
+Answered on 2026-10-25, before Slice F1:
+
+- **Q67. Response fields are required in the OpenAPI document.** A backend `OpenApiCustomizer` marks every property of the `*ResponseDto` schemas as required (a record always serialises every component); a field that can really be `null` carries `@Schema(nullable = true)` and becomes `T | null` in TypeScript. All response DTOs are annotated at once; a backend test checks the document.
+- **Q68. Map:** Leaflet with OpenStreetMap tiles and the "© OpenStreetMap contributors" attribution. Without a stored point the map centres on the seed area (Prague, 50.08 / 14.42, zoom 11).
+- **Q69. The volunteer's radius is drawn as a circle** around their point, to show the prefilter of the recommendations.
+- **Q70. Address fields** (`locationName`, `city`, `region`, `countryCode`) are optional text inputs; `countryCode` is upper-cased and checked for two letters like the backend. No geocoding.
+- **Q71. No "remove location" in the UI:** the partial update reads `null` as "keep" (Q2b), so the point can be moved but not cleared. The backend is not changed.
+- **Q72. The profile page has four sections**, each with its own Save and its own `PUT`: basic fields, skills, certifications, availability.
+- **Q73. Skills** in a `MultiSelect` grouped by category; **certifications** as rows of certification + optional `validUntil` (no past dates), each certification at most once. Skills have no levels (binary vectors, Q7).
+- **Q74. Availability editor:** rows of day + start + end, add and remove, sorted by day and time. The client checks only `end > start` and the latest end 23:59; overlaps are left to the backend (`AvailabilityRules`), its 400 is shown above the list.
+- **Q75. Capacity and radius** as number inputs with the backend limits (0 … 10, 1 … 500 km) and a one-line hint of what each one does.
+

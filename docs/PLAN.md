@@ -176,7 +176,7 @@ Acceptance: with the backend running, `npm run dev` opens the app; a new volunte
 Tests: wrapper unit tests (token header on POST/PUT, token fetched when the cookie is missing, none on GET, 401 → login redirect, error body → message); route guard test.
 
 #### Slice F1: Volunteer profile
-Work: profile page from `GET/PUT /volunteers/me` (basic fields, capacity 0 … 10, radius 1 … 500 km); location with the Leaflet map picker (Q60); skills with levels and certifications from the dictionaries (`/skills`, `/certifications`) saved with `PUT /volunteers/me/skills` and `/certifications`; weekly availability editor saved with `PUT /volunteers/me/availability`.
+Decisions Q67 … Q75. Work: required response fields in the OpenAPI document (Q67, backend); profile page from `GET/PUT /volunteers/me` (basic fields, capacity 0 … 10, radius 1 … 500 km); location with the Leaflet map picker (Q60); skills (no levels: binary vectors, Q7) and certifications from the dictionaries (`/skills`, `/certifications`) saved with `PUT /volunteers/me/skills` and `/certifications`; weekly availability editor saved with `PUT /volunteers/me/availability`.
 
 Acceptance: every field saves and survives a reload; the backend's 400 messages (overlapping slots, bad radius) appear next to the form.
 

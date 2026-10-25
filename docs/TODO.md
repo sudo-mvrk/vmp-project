@@ -14,7 +14,7 @@ Read first: `CLAUDE.md` (loaded automatically), this file, then for the slice at
 Where things stand:
 - Done: all MVP backend slices (0, 6a, 6b, 1, 2, 3, 4, 5, 6c, 5b, 7, 8, 8b, 9), the **evaluation** (Q41 … Q53) and frontend Slice **F0**. 6d stays skipped (Q18). `cd backend && ./mvnw clean verify` is green with 351 tests (the evaluation runner is excluded from it).
 - Monorepo since Q40: code in `backend/` (paths `src/main/...` in older `docs/` texts mean `backend/src/main/...`), Maven runs there; `docker compose`, `.env` and `docs/` are at the root. `CLAUDE.md` = root file + `backend/CLAUDE.md`.
-- Git: `main` of `git@github.com:sudo-mvrk/vmp-project.git`, pushed up to `a52bf83` (frontend plan); the F0 commits are local until the developer says "push it" (check with `git status -sb`).
+- Git: `main` of `git@github.com:sudo-mvrk/vmp-project.git`, pushed up to `a52bf83` (frontend plan); the F0 and F1 commits are local until the developer says "push it" (check with `git status -sb`).
 
 Evaluation (finished 2026-10-25):
 - Files in `docs/evaluation/` (**local only**, in `.gitignore` at the developer's request; never commit them): `METHOD.md` (aim, methods, metric formulas M1 … M10, parameters, threats to validity), `RESULTS.md` (generated tables and facts, plain Markdown for pandoc or for Claude to draft the thesis chapter), `runs.csv` (raw numbers per run).
@@ -22,16 +22,17 @@ Evaluation (finished 2026-10-25):
 - Scales S 30/10, M-scarce 120/60, M 200/40, L 1000/150 (volunteers/activities); weight sensitivity at M-scarce (Q53).
 - Results: smart beats random and nearest on skill coverage in every run of every scale (L: 0.36 smart-A, 0.51 smart-B vs 0.17) and random on distance; smart-A is farther than nearest. Under scarcity smart fills better where it matters (M-scarce: priority-weighted fill 0.93 vs 0.91 / 0.90; HIGH + URGENT 0.97 smart-A, 1.00 smart-B vs 0.95 / 0.93; fill rate 0.91 smart-A vs 0.90). Skill-heavy weights give smart-A the best fill (0.92) and priority fill (0.95). Weak points to state honestly: smart-B lower participation (0.80 vs 0.91) and slightly lower fill at M-scarce; at M and L every method fills everything; seed skills are random (Q52), so absolute skill coverage is low.
 
-Frontend (started 2026-10-25, decisions Q54 … Q66, slices F0 … F5 in `docs/PLAN.md`, approved 2026-10-25):
-- **F0 done**: `frontend/` with React + Vite + TypeScript 5.9, Mantine, React Router, TanStack Query; Vite proxy; `npm run gen:api`; `api()` wrapper with CSRF; register, login, logout, role guards, menu per role, placeholder pages for F1 … F5. Rules and commands in `frontend/CLAUDE.md`. Done check: `cd frontend && npm run lint && npm run build && npm test` (16 tests).
-- Checked against a throwaway backend (port 18080) through the Vite proxy with curl: register, login, `/auth/me`, logout (clears `XSRF-TOKEN`, the wrapper fetches a new one), Swagger. **Not checked in a browser** (Claude in Chrome was not available): the developer should click through register, login, reload, logout once with `npm run dev`.
+Frontend (started 2026-10-25, decisions Q54 … Q75, slices F0 … F5 in `docs/PLAN.md`, approved 2026-10-25):
+- **F0 done**: `frontend/` with React + Vite + TypeScript 5.9, Mantine, React Router, TanStack Query; Vite proxy; `npm run gen:api`; `api()` wrapper with CSRF; register, login, logout, role guards, menu per role, placeholder pages for F2 … F5. Rules and commands in `frontend/CLAUDE.md`. The developer ran it from IntelliJ + `npm run dev` on 2026-10-25 ("все работает").
+- **F1 done** (Q67 … Q75): backend `common.config.OpenApiConfig` (response fields required, `@Schema(nullable = true)` on fields that can be null, nullable `$ref` wrapped in `allOf`, `LocalTime` as a string) with `OpenApiDocumentIntegrationTest`; volunteer profile page `/volunteer/profile` with four tabs (basic + Leaflet map picker with radius circle, skills, certifications, availability), each with its own PUT. Checked through the Vite proxy against the dev backend with curl (all four PUTs, overlap 400, lat without lon 400, radius 600 400; account `f1vol` / `pass1` was left in the dev database). Not clicked through in a browser by Claude.
+- Done checks: `cd frontend && npm run lint && npm run build && npm test` (34 tests); `cd backend && ./mvnw clean verify` (353 tests).
 
 Next session, in this order:
-1. **Ask before F1** (from F0): springdoc marks every response field optional (`id?`, `roles?`), because records carry no `required`. Options: (a) keep it and handle `undefined` in the UI; (b) a small backend `OpenApiCustomizer` that marks every property of response DTOs as required (nullable ones like `latitude` stay `T | null` only if annotated); (c) `@Schema(requiredMode = REQUIRED)` on the fields a page needs. Recommendation to give: (b) for the response records, since a record always serialises every component.
-2. Slice F1 (volunteer profile) per `docs/PLAN.md`; Leaflet (`react-leaflet`) is added there.
+1. The developer's uncommitted rename (`VolunNearApplication` → `VmpProject`, artifact `vmp-project` in `pom.xml`) is still in the working tree, not committed by Claude. `backend/Dockerfile` still copies `target/VolunNearApp-0.0.1-SNAPSHOT.jar`, so the container build breaks with the new artifact id; `VolunNearApplicationTests` and the `pkill` pattern in `docs/LOCAL_NOTES.md` still use the old name. Ask whether to finish the rename in one `ref/` commit.
+2. Slice F2 (public activities, recommendations with the score breakdown, apply) per `docs/PLAN.md`; ask its edge cases first.
 3. If the developer wants: draft the thesis chapter from `docs/evaluation/METHOD.md` + `RESULTS.md` (text only; the files stay local).
 
-Local machine (not code), still open as of 2026-10-24: the old compose project `volunnearapp` was still running (Redis on 6380): `docker compose -p volunnearapp stop`, then `docker compose up -d postgres redis` from the root (new dev database starts empty; Flyway applies V1 … V7). `ADMIN_*` variables are in `.env`; the IntelliJ run configuration needs working directory `backend/` (not checked). The app does not start without `ADMIN_USERNAME`, `ADMIN_EMAIL`, `ADMIN_PASSWORD_HASH` (Q28).
+Local machine (not code), 2026-10-25: the old compose project `volunnearapp` is stopped, `vmp-project` postgres and redis run, the new dev database is migrated and seeded. IntelliJ: `backend/pom.xml` must be added as a Maven project and a run configuration created (steps in `docs/LOCAL_NOTES.md`); not confirmed yet. The app does not start without `ADMIN_USERNAME`, `ADMIN_EMAIL`, `ADMIN_PASSWORD_HASH` (Q28).
 
 How the developer works:
 - Says "lets move to slice X" to start a slice; the plan is approved, so no new plan is needed for a slice that follows `docs/PLAN.md`.
@@ -115,7 +116,7 @@ Hints for the next step:
 
 ## Phase F: Frontend (Q54 … Q66, `docs/PLAN.md` section 2 "Frontend")
 - [x] Slice F0: Scaffold, API client with CSRF, auth (register, login, logout), role guards, `frontend/CLAUDE.md` (2026-10-25)
-- [ ] Slice F1: Volunteer profile (map picker, skills, certifications, availability)
+- [x] Slice F1: Volunteer profile (map picker, skills, certifications, availability), required response fields in the OpenAPI document (Q67 … Q75, 2026-10-25)
 - [ ] Slice F2: Activities and recommendations for volunteers (score breakdown, apply)
 - [ ] Slice F3: Organization profile and activities
 - [ ] Slice F4: Applications, recommended volunteers and invitations for organizations
@@ -148,7 +149,8 @@ Hints for the next step:
 - [ ] Recommendation candidates are passed to `IN (...)` queries; PostgreSQL allows at most 32767 bind parameters, so above ~30k volunteers the activity → volunteers query must be chunked or turned into a join (after the evaluation, if ever)
 - [ ] Login of a banned user answers "Account is banned" even with a wrong password (Spring checks the lock before the password), so it reveals that the account exists and is banned. Accepted for the MVP
 
-- [ ] Generated API types: every response field is optional (springdoc); decide before F1 (see "Next session")
+- [x] Generated API types: every response field was optional (springdoc); fixed by Q67 in F1
+- [ ] A new nullable component of a response record needs `@Schema(nullable = true)` by hand, or the generated type claims it is never null (Q67); the OpenAPI test checks only a few fields
 - [ ] The production bundle is one chunk of ~640 kB (195 kB gzip; Vite warns above 500 kB). Fine for the MVP; split by route with `lazy` if it matters
 - [ ] `frontend/public/favicon.svg` is still the Vite logo
 
@@ -156,4 +158,4 @@ Hints for the next step:
 - [x] `cancel` did not lock the activity row; with `complete` added it could lose an update. Both now take the lock (Slice 8)
 
 ## Open questions
-- Before F1: required response fields in the generated types (see "Next session").
+- None open. F2 edge cases are asked at its start.
