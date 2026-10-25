@@ -12,9 +12,9 @@ State at the end of 2026-10-25. Rewrite this section at the end of every session
 Read first: `CLAUDE.md` (loaded automatically), this file, then for the slice at hand its entry in `docs/PLAN.md` and the decisions in `docs/ANALYSIS.md` section 6. `docs/FUNCTION.md` only when touching scoring.
 
 Where things stand:
-- Done: all MVP slices (0, 6a, 6b, 1, 2, 3, 4, 5, 6c, 5b, 7, 8, 8b, 9) and the **evaluation** (Q41 … Q53). 6d stays skipped (Q18). `cd backend && ./mvnw clean verify` is green with 351 tests (the evaluation runner is excluded from it).
+- Done: all MVP backend slices (0, 6a, 6b, 1, 2, 3, 4, 5, 6c, 5b, 7, 8, 8b, 9), the **evaluation** (Q41 … Q53) and frontend Slice **F0**. 6d stays skipped (Q18). `cd backend && ./mvnw clean verify` is green with 351 tests (the evaluation runner is excluded from it).
 - Monorepo since Q40: code in `backend/` (paths `src/main/...` in older `docs/` texts mean `backend/src/main/...`), Maven runs there; `docker compose`, `.env` and `docs/` are at the root. `CLAUDE.md` = root file + `backend/CLAUDE.md`.
-- Git: `main` of `git@github.com:sudo-mvrk/vmp-project.git`, pushed up to `0f057c6`; the later commits of 2026-10-25 (Q53 and docs) are local until the developer says "push it" (check with `git status -sb`).
+- Git: `main` of `git@github.com:sudo-mvrk/vmp-project.git`, pushed up to `a52bf83` (frontend plan); the F0 commits are local until the developer says "push it" (check with `git status -sb`).
 
 Evaluation (finished 2026-10-25):
 - Files in `docs/evaluation/` (**local only**, in `.gitignore` at the developer's request; never commit them): `METHOD.md` (aim, methods, metric formulas M1 … M10, parameters, threats to validity), `RESULTS.md` (generated tables and facts, plain Markdown for pandoc or for Claude to draft the thesis chapter), `runs.csv` (raw numbers per run).
@@ -22,9 +22,14 @@ Evaluation (finished 2026-10-25):
 - Scales S 30/10, M-scarce 120/60, M 200/40, L 1000/150 (volunteers/activities); weight sensitivity at M-scarce (Q53).
 - Results: smart beats random and nearest on skill coverage in every run of every scale (L: 0.36 smart-A, 0.51 smart-B vs 0.17) and random on distance; smart-A is farther than nearest. Under scarcity smart fills better where it matters (M-scarce: priority-weighted fill 0.93 vs 0.91 / 0.90; HIGH + URGENT 0.97 smart-A, 1.00 smart-B vs 0.95 / 0.93; fill rate 0.91 smart-A vs 0.90). Skill-heavy weights give smart-A the best fill (0.92) and priority fill (0.95). Weak points to state honestly: smart-B lower participation (0.80 vs 0.91) and slightly lower fill at M-scarce; at M and L every method fills everything; seed skills are random (Q52), so absolute skill coverage is low.
 
+Frontend (started 2026-10-25, decisions Q54 … Q66, slices F0 … F5 in `docs/PLAN.md`, approved 2026-10-25):
+- **F0 done**: `frontend/` with React + Vite + TypeScript 5.9, Mantine, React Router, TanStack Query; Vite proxy; `npm run gen:api`; `api()` wrapper with CSRF; register, login, logout, role guards, menu per role, placeholder pages for F1 … F5. Rules and commands in `frontend/CLAUDE.md`. Done check: `cd frontend && npm run lint && npm run build && npm test` (16 tests).
+- Checked against a throwaway backend (port 18080) through the Vite proxy with curl: register, login, `/auth/me`, logout (clears `XSRF-TOKEN`, the wrapper fetches a new one), Swagger. **Not checked in a browser** (Claude in Chrome was not available): the developer should click through register, login, reload, logout once with `npm run dev`.
+
 Next session, in this order:
-1. If the developer wants: draft the thesis chapter from `docs/evaluation/METHOD.md` + `RESULTS.md` (text only; the files stay local).
-2. **Frontend planning** (Q40 follow-ups, under "Open questions"): ask in one batch with recommendations before any code: stack (suggested React + Vite + TypeScript), scope of the first version (suggested: login, volunteer profile and recommended activities with the score breakdown, organization activities with recommended volunteers and invitations, applications), Vite proxy `/api` to the backend (one origin for the session and `XSRF-TOKEN` cookies), TypeScript types from the springdoc OpenAPI document, `frontend/CLAUDE.md`, and changing the root `CLAUDE.md` rule that lists the frontend as out of scope. Then write the frontend slices into `docs/PLAN.md` and wait for approval.
+1. **Ask before F1** (from F0): springdoc marks every response field optional (`id?`, `roles?`), because records carry no `required`. Options: (a) keep it and handle `undefined` in the UI; (b) a small backend `OpenApiCustomizer` that marks every property of response DTOs as required (nullable ones like `latitude` stay `T | null` only if annotated); (c) `@Schema(requiredMode = REQUIRED)` on the fields a page needs. Recommendation to give: (b) for the response records, since a record always serialises every component.
+2. Slice F1 (volunteer profile) per `docs/PLAN.md`; Leaflet (`react-leaflet`) is added there.
+3. If the developer wants: draft the thesis chapter from `docs/evaluation/METHOD.md` + `RESULTS.md` (text only; the files stay local).
 
 Local machine (not code), still open as of 2026-10-24: the old compose project `volunnearapp` was still running (Redis on 6380): `docker compose -p volunnearapp stop`, then `docker compose up -d postgres redis` from the root (new dev database starts empty; Flyway applies V1 … V7). `ADMIN_*` variables are in `.env`; the IntelliJ run configuration needs working directory `backend/` (not checked). The app does not start without `ADMIN_USERNAME`, `ADMIN_EMAIL`, `ADMIN_PASSWORD_HASH` (Q28).
 
@@ -108,6 +113,14 @@ Hints for the next step:
 - [x] Slice 9: Seed data and five-minute demo script (Q33 … Q39, `docs/DEMO.md`)
 - [x] Evaluation: compare recommendations against a simple baseline on seed data (for the thesis); run on 2026-10-25 with M-scarce (Q51)
 
+## Phase F: Frontend (Q54 … Q66, `docs/PLAN.md` section 2 "Frontend")
+- [x] Slice F0: Scaffold, API client with CSRF, auth (register, login, logout), role guards, `frontend/CLAUDE.md` (2026-10-25)
+- [ ] Slice F1: Volunteer profile (map picker, skills, certifications, availability)
+- [ ] Slice F2: Activities and recommendations for volunteers (score breakdown, apply)
+- [ ] Slice F3: Organization profile and activities
+- [ ] Slice F4: Applications, recommended volunteers and invitations for organizations
+- [ ] Slice F5: Volunteer applications, invitations and history
+
 ## Discovered work
 - [x] Fix `lat == 0` treated as "no location" and lost location on partial update in both mappers (organization Slice 2, volunteer Slice 3)
 - [x] `.gitignore`: `docs/` line is gone; `redisdata/` added (Slice 0)
@@ -135,8 +148,12 @@ Hints for the next step:
 - [ ] Recommendation candidates are passed to `IN (...)` queries; PostgreSQL allows at most 32767 bind parameters, so above ~30k volunteers the activity → volunteers query must be chunked or turned into a join (after the evaluation, if ever)
 - [ ] Login of a banned user answers "Account is banned" even with a wrong password (Spring checks the lock before the password), so it reveals that the account exists and is banned. Accepted for the MVP
 
+- [ ] Generated API types: every response field is optional (springdoc); decide before F1 (see "Next session")
+- [ ] The production bundle is one chunk of ~640 kB (195 kB gzip; Vite warns above 500 kB). Fine for the MVP; split by route with `lazy` if it matters
+- [ ] `frontend/public/favicon.svg` is still the Vite logo
+
 - [ ] Completion is manual only (Q8g): an activity the organization never completes keeps its accepted volunteers' capacity used. Possible later fix: a scheduled job or an "ended" filter in the capacity query (would change Q16)
 - [x] `cancel` did not lock the activity row; with `complete` added it could lose an update. Both now take the lock (Slice 8)
 
 ## Open questions
-- Frontend slices F0 … F5 in `docs/PLAN.md` (after Q54 … Q66, 2026-10-25): waiting for the developer's approval.
+- Before F1: required response fields in the generated types (see "Next session").

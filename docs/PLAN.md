@@ -22,7 +22,7 @@ Slice 8b (platform administration) was added on 2026-10-17 at the developer's re
 
 Slice ids are kept so existing references stay valid.
 
-Frontend slices F0 … F5 (section 2, "Frontend") were proposed on 2026-10-25 after Q54 … Q66, **waiting for approval**. They follow the evaluation: `F0 → F1 → F2 → F3 → F4 → F5`.
+Frontend slices F0 … F5 (section 2, "Frontend") were proposed on 2026-10-25 after Q54 … Q66 and approved the same day. They follow the evaluation: `F0 → F1 → F2 → F3 → F4 → F5`.
 
 ## 2. Slices
 
@@ -166,7 +166,7 @@ Tests: one IT that the seed loads and a recommendation call returns a non-empty 
 Compare the function against two baselines over the same feasible set, nearest-distance and random (Q20), on the seed data, and record the metric definitions in the thesis notes before running anything.
 
 ### Frontend (F0 … F5)
-Proposed 2026-10-25, decisions Q54 … Q66. Code in `frontend/` (React + Vite + TypeScript, Mantine, React Router, TanStack Query). A frontend slice = API calls + page(s) + tests and ends with `npm run lint && npm run build && npm test` green in `frontend/` (plus `./mvnw clean verify` if the backend changed) and a commit. Pages use only existing endpoints; a backend change, if one turns out to be needed, is named in the slice report and asked first.
+Approved 2026-10-25, decisions Q54 … Q66. Code in `frontend/` (React + Vite + TypeScript, Mantine, React Router, TanStack Query). A frontend slice = API calls + page(s) + tests and ends with `npm run lint && npm run build && npm test` green in `frontend/` (plus `./mvnw clean verify` if the backend changed) and a commit. Pages use only existing endpoints; a backend change, if one turns out to be needed, is named in the slice report and asked first.
 
 #### Slice F0: Scaffold, API client, auth
 Work: Vite project with ESLint, Vitest, Mantine, React Router, TanStack Query; Vite proxy `/api` → `localhost:8080` (Q58); `npm run gen:api` with `openapi-typescript` and the committed generated types (Q57); the `fetch` wrapper with CSRF and 401 handling (Q59); register (volunteer or organization), login, logout; the current user from `GET /auth/me` decides the role and the menu; route guards per role; layout with a role menu and empty pages for the later slices. Docs: `frontend/CLAUDE.md`, root `CLAUDE.md` layout and scope (Q66), `docs/LOCAL_NOTES.md` (Node and npm versions, how to run both sides).
