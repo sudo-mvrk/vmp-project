@@ -139,4 +139,4 @@ Hints for the next step:
 - [x] `cancel` did not lock the activity row; with `complete` added it could lose an update. Both now take the lock (Slice 8)
 
 ## Open questions
-- Q40 follow-ups: frontend stack, first frontend scope, and the `CLAUDE.md` rule that the frontend is out of scope.
+- Frontend slices F0 … F5 in `docs/PLAN.md` (after Q54 … Q66, 2026-10-25): waiting for the developer's approval.

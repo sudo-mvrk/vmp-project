@@ -22,6 +22,8 @@ Slice 8b (platform administration) was added on 2026-10-17 at the developer's re
 
 Slice ids are kept so existing references stay valid.
 
+Frontend slices F0 … F5 (section 2, "Frontend") were proposed on 2026-10-25 after Q54 … Q66, **waiting for approval**. They follow the evaluation: `F0 → F1 → F2 → F3 → F4 → F5`.
+
 ## 2. Slices
 
 Every slice ends with `./mvnw clean verify` green and a commit. "IT" means an integration test against PostgreSQL in Testcontainers.
@@ -163,6 +165,51 @@ Tests: one IT that the seed loads and a recommendation call returns a non-empty 
 ### Evaluation
 Compare the function against two baselines over the same feasible set, nearest-distance and random (Q20), on the seed data, and record the metric definitions in the thesis notes before running anything.
 
+### Frontend (F0 … F5)
+Proposed 2026-10-25, decisions Q54 … Q66. Code in `frontend/` (React + Vite + TypeScript, Mantine, React Router, TanStack Query). A frontend slice = API calls + page(s) + tests and ends with `npm run lint && npm run build && npm test` green in `frontend/` (plus `./mvnw clean verify` if the backend changed) and a commit. Pages use only existing endpoints; a backend change, if one turns out to be needed, is named in the slice report and asked first.
+
+#### Slice F0: Scaffold, API client, auth
+Work: Vite project with ESLint, Vitest, Mantine, React Router, TanStack Query; Vite proxy `/api` → `localhost:8080` (Q58); `npm run gen:api` with `openapi-typescript` and the committed generated types (Q57); the `fetch` wrapper with CSRF and 401 handling (Q59); register (volunteer or organization), login, logout; the current user from `GET /auth/me` decides the role and the menu; route guards per role; layout with a role menu and empty pages for the later slices. Docs: `frontend/CLAUDE.md`, root `CLAUDE.md` layout and scope (Q66), `docs/LOCAL_NOTES.md` (Node and npm versions, how to run both sides).
+
+Acceptance: with the backend running, `npm run dev` opens the app; a new volunteer and a new organization can register, log in, see their own menu, reload the page without losing the session and log out; a page of the other role sends to a "no access" page; a backend error message is shown to the user.
+
+Tests: wrapper unit tests (token header on POST/PUT, token fetched when the cookie is missing, none on GET, 401 → login redirect, error body → message); route guard test.
+
+#### Slice F1: Volunteer profile
+Work: profile page from `GET/PUT /volunteers/me` (basic fields, capacity 0 … 10, radius 1 … 500 km); location with the Leaflet map picker (Q60); skills with levels and certifications from the dictionaries (`/skills`, `/certifications`) saved with `PUT /volunteers/me/skills` and `/certifications`; weekly availability editor saved with `PUT /volunteers/me/availability`.
+
+Acceptance: every field saves and survives a reload; the backend's 400 messages (overlapping slots, bad radius) appear next to the form.
+
+Tests: map picker (click sets lat/lon, fields edit the point); availability editor (add and remove slots, payload shape); profile form validation.
+
+#### Slice F2: Activities and recommendations for volunteers
+Work: public activity list (`GET /activities`, paged) and activity page (`GET /activities/{id}`, map of the place); recommended activities (`GET /volunteers/me/recommended-activities`) with the score breakdown component (Q62); apply (`POST /activities/{id}/applications`).
+
+Acceptance: an anonymous user sees the list and the page; a volunteer sees recommendations in score order with geo, skill, priority bars, weights and total, and can apply once (409 shown as a message); with the seed data (`seed_vol08`) the demo activity "Sort food donations" appears.
+
+Tests: breakdown component (bars in [0,1], weights and total shown as given by the backend, never recomputed); recommendation list renders the order of the response; apply button states.
+
+#### Slice F3: Organization profile and activities
+Work: profile page from `GET/PUT /organizations/me` with the map picker; own activities (`GET /organizations/me/activities`); create and edit form (`POST`, `PUT /activities/{id}`: time window, place, required skills and certifications, priority, spots needed, optional weight override α, β, γ); publish, cancel and complete buttons by status.
+
+Acceptance: an organization creates a draft, edits it, publishes it, and cancels or completes it; the buttons follow the status; the backend's 400 and 409 messages are shown (start in the past, weights not on the simplex, spots below the accepted count).
+
+Tests: activity form (payload shape, weight override on or off, window validation messages); status → available actions.
+
+#### Slice F4: Applications, recommended volunteers and invitations for organizations
+Work: on the organization's activity page: applications (`GET /activities/{id}/applications`) with accept and reject (`POST /applications/{id}/accept|reject`), the volunteer email only for accepted rows (Q7d); recommended volunteers (`GET /activities/{id}/recommended-volunteers`) with the same breakdown component and an invite button (`POST /activities/{id}/invitations`).
+
+Acceptance: the organization accepts and rejects applications, sees the free spots change, sees recommended volunteers with their breakdown and invites one; named 409s (no spot, capacity, overlap) are shown as messages.
+
+Tests: applications table actions by status; invite moves the row to "invited".
+
+#### Slice F5: Volunteer applications, invitations and history
+Work: own applications (`GET /volunteers/me/applications`) split into applications and invitations by origin, withdraw (`POST /applications/{id}/withdraw`), accept and decline invitations (`POST /invitations/{id}/accept|decline`); history (`GET /volunteers/me/history`).
+
+Acceptance: a volunteer withdraws an application, accepts or declines an invitation, and sees completed activities in the history; the five-minute demo of `docs/DEMO.md` can be shown through the UI.
+
+Tests: actions by status and origin; history list.
+
 ## 3. Risks
 
 | Risk | Effect | Mitigation |
@@ -181,8 +228,11 @@ Compare the function against two baselines over the same feasible set, nearest-d
 | Sessions + CSRF for an API-first MVP (Q-C) | Friction in the demo script and tests | Test helper and demo script that log in and carry the session cookie and CSRF token |
 | Time zones in availability | Wrong feasibility at day boundaries | One configured zone for the MVP (Q13) |
 | Scoring all volunteers in memory (activity → volunteers) | Slow with large data | Acceptable for the MVP; only the volunteer → activities direction has a PostGIS prefilter |
+| Frontend and backend types drift apart | Runtime errors in the UI | Generated types from springdoc (Q57); a changed DTO breaks `npm run build` |
+| springdoc document is incomplete (missing `required`, generic responses) | Generated types are too loose | Check the generated file in F0; fix with annotations in the backend only where a page needs it, asked first |
+| Session and CSRF cookies in the browser | Login or POST fail in the UI | One origin through the Vite proxy (Q58); wrapper unit tests (Q59) |
 | Scope creep (geocoding, chat, websocket) | Slices do not finish | Remove unused dependencies in Slice 0; out-of-scope list in `CLAUDE.md` |
 
 ## 4. Decisions
 
-All of Q-A … Q-H and Q1 … Q20 are answered; see `docs/ANALYSIS.md` section 6. No slice is blocked by a question.
+All of Q-A … Q-H and Q1 … Q20 are answered, and Q54 … Q66 for the frontend; see `docs/ANALYSIS.md` section 6. No slice is blocked by a question.

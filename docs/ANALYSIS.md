@@ -399,7 +399,7 @@ Answered on 2026-10-23, before building Slice 9:
 Decided on 2026-10-23, after Slice 9:
 
 - **Q40. Backend and frontend live in one new repository** (monorepo), so both sides change in one commit and one Claude Code session sees both. The developer creates the new repository, copies the backend into it and archives the old repositories; the git history of `VolunNearApp` stays in the old repository and is not carried over. Layout: `backend/` (everything that was at the root: `src/`, `pom.xml`, `mvnw`, `.mvn/`, `Dockerfile`, `.dockerignore`), `frontend/`, and shared at the root: `docs/`, `docker-compose.yml`, `.env.example`, `.gitignore`, `CLAUDE.md` (shared rules) with `backend/CLAUDE.md` and `frontend/CLAUDE.md` for the stack rules of each side.
-- **Still open:** the frontend stack (the CORS setting already allows a Vite dev server on `localhost:5173`; React + Vite + TypeScript was suggested, not confirmed), and what the first frontend version covers. `CLAUDE.md` still lists the frontend as out of scope; change that rule when the frontend starts. Suggested, not decided: the Vite dev server proxies `/api` to the backend (one origin, so the session and `XSRF-TOKEN` cookies work without CORS), and TypeScript types are generated from the springdoc OpenAPI document.
+- The follow-ups (frontend stack, first frontend scope, the `CLAUDE.md` rule) were answered on 2026-10-25: Q54 … Q66, section "Frontend" below.
 
 ### Platform administration (Slice 8b)
 
@@ -441,3 +441,21 @@ Answered on 2026-10-25, after the first run:
 - **Q51. A fourth scale M-scarce** (5 / 120 / 60): at M and L every method fills almost every spot, so the fill-type metrics could differ only on the small S. M-scarce tests them at a useful size.
 - **Q52. The seed keeps random skills**, independent of the activities. Making the data fit the method would weaken the result; the low absolute skill coverage is stated in `METHOD.md` section 8.
 - **Q53. The weight sensitivity table (Q48) runs at M-scarce, not M** (decided 2026-10-25): at M every method fills everything, so only skill coverage and distance could move; under scarcity the effect of the weights on fill and priority fill is visible too.
+
+### Frontend
+
+Answered on 2026-10-25, before planning the frontend slices (follow-ups of Q40):
+
+- **Q54. Stack:** React + Vite + TypeScript in `frontend/`, package manager npm (Node 26 and npm 12 on the development machine).
+- **Q55. UI library: Mantine** (forms, tables, date and time pickers, notifications), so little UI code is written by hand. Look is secondary to function in the MVP.
+- **Q56. Routing and data:** React Router for pages, TanStack Query for server state (cache, loading and error states). No global store such as Redux.
+- **Q57. API types are generated** from the springdoc document `/v3/api-docs` with `openapi-typescript` (`npm run gen:api`, needs the backend running); the generated file is committed, so a changed backend DTO breaks the frontend build instead of failing at runtime.
+- **Q58. Development setup:** the Vite dev server proxies `/api` to `http://localhost:8080`, so the browser sees one origin and the `SESSION` and `XSRF-TOKEN` cookies work without CORS. The existing CORS setting stays. Deploying the frontend (Docker, nginx, serving from Spring) is not part of the first version.
+- **Q59. One `fetch` wrapper** for every call: before a modifying request it reads the `XSRF-TOKEN` cookie (calling `GET /api/v1/auth/csrf` if the cookie is missing) and sends it as `X-XSRF-TOKEN`; a 401 sends the user to the login page; error bodies of the backend are shown as messages.
+- **Q60. Coordinates are picked on a Leaflet map** (`react-leaflet`, OpenStreetMap tiles): a click sets the point, two number fields show and edit it. No geocoding (address search). Used for the volunteer profile, the organization profile and activities.
+- **Q61. First version covers:** register (volunteer or organization), login, logout; volunteer: profile with skills, certifications, availability and capacity, recommended activities with the score breakdown, apply, own applications with withdraw, invitations with accept and decline, history; organization: profile, activities (create, edit, publish, cancel, complete), applications with accept and reject, recommended volunteers with the score breakdown and invite; public: activity list and activity page. No admin screens: the admin uses Swagger or the API.
+- **Q62. Score breakdown display:** three bars in [0,1] for geo, skill and priority, the weights α, β, γ used, and the total. It is the main visual argument for Smart Distribution in the defence.
+- **Q63. UI language: English**, no i18n. Seed data and backend messages are in English.
+- **Q64. Tests and definition of done:** Vitest + React Testing Library for logic (the API wrapper with CSRF, the breakdown component, key forms); no end-to-end tests. A frontend slice is done when `npm run lint && npm run build && npm test` pass in `frontend/`, plus `./mvnw clean verify` when the backend changed.
+- **Q65. Frontend slices:** one slice = API calls + page(s) + tests, in the order F0 … F5 of `docs/PLAN.md`. After F2 the volunteer side can be shown.
+- **Q66. `CLAUDE.md`:** the root file drops the frontend from "out of scope" and describes `frontend/` in the layout; `frontend/CLAUDE.md` holds the stack, commands and conventions (like `backend/CLAUDE.md`). Done in F0.
