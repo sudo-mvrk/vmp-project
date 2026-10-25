@@ -575,81 +575,79 @@ export interface components {
         AvailabilitySlotDto: {
             /** @enum {string} */
             dayOfWeek: "MONDAY" | "TUESDAY" | "WEDNESDAY" | "THURSDAY" | "FRIDAY" | "SATURDAY" | "SUNDAY";
-            start: components["schemas"]["LocalTime"];
-            end: components["schemas"]["LocalTime"];
+            /**
+             * Format: time
+             * @example 08:00:00
+             */
+            start: string;
+            /**
+             * Format: time
+             * @example 08:00:00
+             */
+            end: string;
         };
         HeldCertificationResponseDto: {
             /** Format: int64 */
-            certificationId?: number;
-            name?: string;
+            certificationId: number;
+            name: string;
             /** Format: date */
-            validUntil?: string;
-        };
-        LocalTime: {
-            /** Format: int32 */
-            hour?: number;
-            /** Format: int32 */
-            minute?: number;
-            /** Format: int32 */
-            second?: number;
-            /** Format: int32 */
-            nano?: number;
+            validUntil: string | null;
         };
         OwnVolunteerProfileResponseDto: {
-            username?: string;
+            username: string;
             /** Format: int64 */
-            id?: number;
-            firstName?: string;
-            lastName?: string;
+            id: number;
+            firstName: string;
+            lastName: string;
             /** Format: date */
-            dateOfBirth?: string;
-            bio?: string;
+            dateOfBirth: string;
+            bio: string | null;
             /** Format: double */
-            lat?: number;
+            lat: number | null;
             /** Format: double */
-            lon?: number;
-            locationName?: string;
-            countryCode?: string;
-            city?: string;
-            region?: string;
+            lon: number | null;
+            locationName: string | null;
+            countryCode: string | null;
+            city: string | null;
+            region: string | null;
             /** Format: int32 */
-            radius?: number;
+            radius: number | null;
             /** Format: int32 */
-            maxActiveAssignments?: number;
-            skills?: components["schemas"]["SkillResponseDto"][];
-            certifications?: components["schemas"]["HeldCertificationResponseDto"][];
-            availability?: components["schemas"]["AvailabilitySlotDto"][];
+            maxActiveAssignments: number;
+            skills: components["schemas"]["SkillResponseDto"][];
+            certifications: components["schemas"]["HeldCertificationResponseDto"][];
+            availability: components["schemas"]["AvailabilitySlotDto"][];
         };
         SkillResponseDto: {
             /** Format: int64 */
-            id?: number;
-            skillName?: string;
+            id: number;
+            skillName: string;
             /** @enum {string} */
-            category?: "SOCIAL" | "IT" | "LOGISTICS" | "MEDICINE";
+            category: "SOCIAL" | "IT" | "LOGISTICS" | "MEDICINE";
         };
         VolunteerProfileResponseDto: {
             /** Format: int64 */
-            id?: number;
-            firstName?: string;
-            lastName?: string;
+            id: number;
+            firstName: string;
+            lastName: string;
             /** Format: date */
-            dateOfBirth?: string;
-            bio?: string;
+            dateOfBirth: string;
+            bio: string | null;
             /** Format: double */
-            lat?: number;
+            lat: number | null;
             /** Format: double */
-            lon?: number;
-            locationName?: string;
-            countryCode?: string;
-            city?: string;
-            region?: string;
+            lon: number | null;
+            locationName: string | null;
+            countryCode: string | null;
+            city: string | null;
+            region: string | null;
             /** Format: int32 */
-            radius?: number;
+            radius: number | null;
             /** Format: int32 */
-            maxActiveAssignments?: number;
-            skills?: components["schemas"]["SkillResponseDto"][];
-            certifications?: components["schemas"]["HeldCertificationResponseDto"][];
-            availability?: components["schemas"]["AvailabilitySlotDto"][];
+            maxActiveAssignments: number;
+            skills: components["schemas"]["SkillResponseDto"][];
+            certifications: components["schemas"]["HeldCertificationResponseDto"][];
+            availability: components["schemas"]["AvailabilitySlotDto"][];
         };
         VolunteerSkillsRequestDto: {
             skillIds: number[];
@@ -681,32 +679,32 @@ export interface components {
         };
         OrganizationProfileResponseDto: {
             /** Format: int64 */
-            id?: number;
-            organizationName?: string;
-            description?: string;
-            websiteUrl?: string;
+            id: number;
+            organizationName: string;
+            description: string | null;
+            websiteUrl: string | null;
             /** Format: double */
-            lat?: number;
+            lat: number | null;
             /** Format: double */
-            lon?: number;
-            city?: string;
-            fullAddress?: string;
-            countryCode?: string;
+            lon: number | null;
+            city: string | null;
+            fullAddress: string | null;
+            countryCode: string | null;
         };
         OwnOrganizationProfileResponseDto: {
-            username?: string;
+            username: string;
             /** Format: int64 */
-            id?: number;
-            organizationName?: string;
-            description?: string;
-            websiteUrl?: string;
+            id: number;
+            organizationName: string;
+            description: string | null;
+            websiteUrl: string | null;
             /** Format: double */
-            lat?: number;
+            lat: number | null;
             /** Format: double */
-            lon?: number;
-            city?: string;
-            fullAddress?: string;
-            countryCode?: string;
+            lon: number | null;
+            city: string | null;
+            fullAddress: string | null;
+            countryCode: string | null;
         };
         ActivityRequestDto: {
             title: string;
@@ -740,57 +738,57 @@ export interface components {
         };
         ActivityResponseDto: {
             /** Format: int64 */
-            id?: number;
+            id: number;
             /** Format: int64 */
-            organizationId?: number;
-            title?: string;
-            shortDescription?: string;
-            fullDescription?: string;
+            organizationId: number;
+            title: string;
+            shortDescription: string | null;
+            fullDescription: string | null;
             /** @enum {string} */
-            priority?: "LOW" | "MEDIUM" | "HIGH" | "URGENT";
+            priority: "LOW" | "MEDIUM" | "HIGH" | "URGENT";
             /** @enum {string} */
-            status?: "DRAFT" | "OPEN" | "IN_PROGRESS" | "COMPLETED" | "CANCELLED";
+            status: "DRAFT" | "OPEN" | "IN_PROGRESS" | "COMPLETED" | "CANCELLED";
             /** Format: double */
-            lat?: number;
+            lat: number;
             /** Format: double */
-            lon?: number;
-            city?: string;
-            fullAddress?: string;
+            lon: number;
+            city: string | null;
+            fullAddress: string | null;
             /** Format: date-time */
-            startsAt?: string;
+            startsAt: string;
             /** Format: date-time */
-            endsAt?: string;
+            endsAt: string;
             /** Format: int32 */
-            spotsNeeded?: number;
-            requiredSkills?: components["schemas"]["SkillResponseDto"][];
-            requiredCertifications?: components["schemas"]["CertificationResponseDto"][];
-            weights?: components["schemas"]["ActivityWeightsDto"];
+            spotsNeeded: number;
+            requiredSkills: components["schemas"]["SkillResponseDto"][];
+            requiredCertifications: components["schemas"]["CertificationResponseDto"][];
+            weights: components["schemas"]["ActivityWeightsDto"] | null;
         };
         CertificationResponseDto: {
             /** Format: int64 */
-            id?: number;
-            name?: string;
+            id: number;
+            name: string;
         };
         MyApplicationResponseDto: {
             /** Format: int64 */
-            id?: number;
+            id: number;
             /** @enum {string} */
-            status?: "PENDING" | "ACCEPTED" | "REJECTED" | "WITHDRAWN" | "DECLINED";
+            status: "PENDING" | "ACCEPTED" | "REJECTED" | "WITHDRAWN" | "DECLINED";
             /** @enum {string} */
-            origin?: "APPLICATION" | "INVITATION";
+            origin: "APPLICATION" | "INVITATION";
             /** Format: date-time */
-            appliedAt?: string;
+            appliedAt: string;
             /** Format: date-time */
-            decidedAt?: string;
+            decidedAt: string | null;
             /** Format: int64 */
-            activityId?: number;
-            activityTitle?: string;
+            activityId: number;
+            activityTitle: string;
             /** @enum {string} */
-            activityStatus?: "DRAFT" | "OPEN" | "IN_PROGRESS" | "COMPLETED" | "CANCELLED";
+            activityStatus: "DRAFT" | "OPEN" | "IN_PROGRESS" | "COMPLETED" | "CANCELLED";
             /** Format: date-time */
-            activityStartsAt?: string;
+            activityStartsAt: string;
             /** Format: date-time */
-            activityEndsAt?: string;
+            activityEndsAt: string;
         };
         VolunteerRegistrationRequestDto: {
             username: string;
@@ -803,10 +801,10 @@ export interface components {
         };
         AppUserResponseDto: {
             /** Format: int64 */
-            id?: number;
-            email?: string;
-            username?: string;
-            roles?: string[];
+            id: number;
+            email: string;
+            username: string;
+            roles: string[];
         };
         OrganizationRegistrationRequestDto: {
             username: string;
@@ -820,73 +818,73 @@ export interface components {
         };
         ActivityApplicationResponseDto: {
             /** Format: int64 */
-            id?: number;
+            id: number;
             /** @enum {string} */
-            status?: "PENDING" | "ACCEPTED" | "REJECTED" | "WITHDRAWN" | "DECLINED";
+            status: "PENDING" | "ACCEPTED" | "REJECTED" | "WITHDRAWN" | "DECLINED";
             /** @enum {string} */
-            origin?: "APPLICATION" | "INVITATION";
+            origin: "APPLICATION" | "INVITATION";
             /** Format: date-time */
-            appliedAt?: string;
+            appliedAt: string;
             /** Format: date-time */
-            decidedAt?: string;
+            decidedAt: string | null;
             /** Format: int64 */
-            activityId?: number;
-            volunteer?: components["schemas"]["VolunteerProfileResponseDto"];
-            volunteerEmail?: string;
+            activityId: number;
+            volunteer: components["schemas"]["VolunteerProfileResponseDto"];
+            volunteerEmail: string | null;
         };
         AdminUserResponseDto: {
             /** Format: int64 */
-            id?: number;
-            username?: string;
-            email?: string;
-            roles?: ("ROLE_VOLUNTEER" | "ROLE_ORGANIZATION" | "ROLE_ADMIN")[];
-            banned?: boolean;
+            id: number;
+            username: string;
+            email: string;
+            roles: ("ROLE_VOLUNTEER" | "ROLE_ORGANIZATION" | "ROLE_ADMIN")[];
+            banned: boolean;
             /** Format: date-time */
-            createdAt?: string;
+            createdAt: string;
         };
         InvitationRequestDto: {
             /** Format: int64 */
             volunteerId: number;
         };
         RecommendedActivityDto: {
-            activity?: components["schemas"]["ActivityResponseDto"];
-            score?: components["schemas"]["ScoreDto"];
+            activity: components["schemas"]["ActivityResponseDto"];
+            score: components["schemas"]["ScoreDto"];
         };
         ScoreDto: {
             /** Format: double */
-            geo?: number;
+            geo: number;
             /** Format: double */
-            skill?: number;
+            skill: number;
             /** Format: double */
-            priority?: number;
+            priority: number;
             /** Format: double */
-            total?: number;
-            weights?: components["schemas"]["ScoringWeightsDto"];
+            total: number;
+            weights: components["schemas"]["ScoringWeightsDto"];
         };
         ScoringWeightsDto: {
             /** Format: double */
-            alpha?: number;
+            alpha: number;
             /** Format: double */
-            beta?: number;
+            beta: number;
             /** Format: double */
-            gamma?: number;
+            gamma: number;
             /** Format: double */
-            halfDistanceKm?: number;
+            halfDistanceKm: number;
         };
         HistoryItemResponseDto: {
             /** Format: int64 */
-            applicationId?: number;
+            applicationId: number;
             /** Format: int64 */
-            activityId?: number;
-            title?: string;
-            city?: string;
+            activityId: number;
+            title: string;
+            city: string | null;
             /** Format: date-time */
-            startsAt?: string;
+            startsAt: string;
             /** Format: date-time */
-            endsAt?: string;
+            endsAt: string;
             /** Format: int64 */
-            organizationId?: number;
-            organizationName?: string;
+            organizationId: number;
+            organizationName: string;
         };
         CsrfToken: {
             parameterName?: string;
@@ -894,35 +892,35 @@ export interface components {
             headerName?: string;
         };
         CsrfTokenResponseDto: {
-            headerName?: string;
-            parameterName?: string;
-            token?: string;
+            headerName: string;
+            parameterName: string;
+            token: string;
         };
         AdminUserPageResponseDto: {
-            content?: components["schemas"]["AdminUserResponseDto"][];
+            content: components["schemas"]["AdminUserResponseDto"][];
             /** Format: int32 */
-            page?: number;
+            page: number;
             /** Format: int32 */
-            size?: number;
+            size: number;
             /** Format: int64 */
-            totalElements?: number;
+            totalElements: number;
             /** Format: int32 */
-            totalPages?: number;
+            totalPages: number;
         };
         ActivityPageResponseDto: {
-            content?: components["schemas"]["ActivityResponseDto"][];
+            content: components["schemas"]["ActivityResponseDto"][];
             /** Format: int32 */
-            page?: number;
+            page: number;
             /** Format: int32 */
-            size?: number;
+            size: number;
             /** Format: int64 */
-            totalElements?: number;
+            totalElements: number;
             /** Format: int32 */
-            totalPages?: number;
+            totalPages: number;
         };
         RecommendedVolunteerDto: {
-            volunteer?: components["schemas"]["VolunteerProfileResponseDto"];
-            score?: components["schemas"]["ScoreDto"];
+            volunteer: components["schemas"]["VolunteerProfileResponseDto"];
+            score: components["schemas"]["ScoreDto"];
         };
     };
     responses: never;

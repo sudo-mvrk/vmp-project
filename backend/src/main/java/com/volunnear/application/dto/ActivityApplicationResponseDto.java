@@ -3,6 +3,7 @@ package com.volunnear.application.dto;
 import com.volunnear.application.ApplicationOrigin;
 import com.volunnear.application.ApplicationStatus;
 import com.volunnear.volunteer.dto.VolunteerProfileResponseDto;
+import io.swagger.v3.oas.annotations.media.Schema;
 
 import java.time.LocalDateTime;
 
@@ -15,9 +16,9 @@ public record ActivityApplicationResponseDto(
         ApplicationStatus status,
         ApplicationOrigin origin,
         LocalDateTime appliedAt,
-        LocalDateTime decidedAt,
+        @Schema(nullable = true) LocalDateTime decidedAt,
         Long activityId,
         VolunteerProfileResponseDto volunteer,
-        String volunteerEmail
+        @Schema(nullable = true) String volunteerEmail
 ) {
 }

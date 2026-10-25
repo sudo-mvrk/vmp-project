@@ -1,6 +1,7 @@
 package com.volunnear.volunteer.dto;
 
 import com.volunnear.dictionary.dto.SkillResponseDto;
+import io.swagger.v3.oas.annotations.media.Schema;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -11,14 +12,14 @@ public record VolunteerProfileResponseDto(
         String firstName,
         String lastName,
         LocalDate dateOfBirth,
-        String bio,
-        Double lat,
-        Double lon,
-        String locationName,
-        String countryCode,
-        String city,
-        String region,
-        Integer radius,
+        @Schema(nullable = true) String bio,
+        @Schema(nullable = true) Double lat,
+        @Schema(nullable = true) Double lon,
+        @Schema(nullable = true) String locationName,
+        @Schema(nullable = true) String countryCode,
+        @Schema(nullable = true) String city,
+        @Schema(nullable = true) String region,
+        @Schema(nullable = true) Integer radius,
         int maxActiveAssignments,
         List<SkillResponseDto> skills,
         List<HeldCertificationResponseDto> certifications,

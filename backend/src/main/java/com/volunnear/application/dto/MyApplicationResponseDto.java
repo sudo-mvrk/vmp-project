@@ -3,6 +3,7 @@ package com.volunnear.application.dto;
 import com.volunnear.activity.ActivityStatus;
 import com.volunnear.application.ApplicationOrigin;
 import com.volunnear.application.ApplicationStatus;
+import io.swagger.v3.oas.annotations.media.Schema;
 
 import java.time.LocalDateTime;
 
@@ -12,7 +13,7 @@ public record MyApplicationResponseDto(
         ApplicationStatus status,
         ApplicationOrigin origin,
         LocalDateTime appliedAt,
-        LocalDateTime decidedAt,
+        @Schema(nullable = true) LocalDateTime decidedAt,
         Long activityId,
         String activityTitle,
         ActivityStatus activityStatus,
