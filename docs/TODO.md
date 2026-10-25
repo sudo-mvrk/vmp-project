@@ -12,9 +12,9 @@ State at the end of 2026-10-25. Rewrite this section at the end of every session
 Read first: `CLAUDE.md` (loaded automatically), this file, then for the slice at hand its entry in `docs/PLAN.md` and the decisions in `docs/ANALYSIS.md` section 6. `docs/FUNCTION.md` only when touching scoring.
 
 Where things stand:
-- Done: all MVP backend slices (0, 6a, 6b, 1, 2, 3, 4, 5, 6c, 5b, 7, 8, 8b, 9), the **evaluation** (Q41 … Q53) and frontend Slice **F0**. 6d stays skipped (Q18). `cd backend && ./mvnw clean verify` is green with 351 tests (the evaluation runner is excluded from it).
+- Done: all MVP backend slices (0, 6a, 6b, 1, 2, 3, 4, 5, 6c, 5b, 7, 8, 8b, 9), the **evaluation** (Q41 … Q53) and frontend Slice **F0**. 6d stays skipped (Q18). `cd backend && ./mvnw clean verify` is green with 353 tests (the evaluation runner is excluded from it).
 - Monorepo since Q40: code in `backend/` (paths `src/main/...` in older `docs/` texts mean `backend/src/main/...`), Maven runs there; `docker compose`, `.env` and `docs/` are at the root. `CLAUDE.md` = root file + `backend/CLAUDE.md`.
-- Git: `main` of `git@github.com:sudo-mvrk/vmp-project.git`, pushed up to `a52bf83` (frontend plan); the F0 and F1 commits are local until the developer says "push it" (check with `git status -sb`).
+- Git: `main` of `git@github.com:sudo-mvrk/vmp-project.git`, pushed up to `0bf061c` (F1 done, pushed 2026-10-25); anything after that is local until the developer says "push it" (check with `git status -sb`).
 
 Evaluation (finished 2026-10-25):
 - Files in `docs/evaluation/` (**local only**, in `.gitignore` at the developer's request; never commit them): `METHOD.md` (aim, methods, metric formulas M1 … M10, parameters, threats to validity), `RESULTS.md` (generated tables and facts, plain Markdown for pandoc or for Claude to draft the thesis chapter), `runs.csv` (raw numbers per run).
@@ -32,7 +32,7 @@ Next session, in this order:
 2. Slice F2 (public activities, recommendations with the score breakdown, apply) per `docs/PLAN.md`; ask its edge cases first.
 3. If the developer wants: draft the thesis chapter from `docs/evaluation/METHOD.md` + `RESULTS.md` (text only; the files stay local).
 
-Local machine (not code), 2026-10-25: the old compose project `volunnearapp` is stopped, `vmp-project` postgres and redis run, the new dev database is migrated and seeded. IntelliJ: `backend/pom.xml` must be added as a Maven project and a run configuration created (steps in `docs/LOCAL_NOTES.md`); not confirmed yet. The app does not start without `ADMIN_USERNAME`, `ADMIN_EMAIL`, `ADMIN_PASSWORD_HASH` (Q28).
+Local machine (not code), 2026-10-25: the old compose project `volunnearapp` is stopped, `vmp-project` postgres and redis run, the new dev database is migrated and seeded. IntelliJ: `backend/pom.xml` was added as a Maven project with a Spring Boot run configuration (steps in `docs/LOCAL_NOTES.md`); the developer confirmed the app runs. The app does not start without `ADMIN_USERNAME`, `ADMIN_EMAIL`, `ADMIN_PASSWORD_HASH` (Q28).
 
 How the developer works:
 - Says "lets move to slice X" to start a slice; the plan is approved, so no new plan is needed for a slice that follows `docs/PLAN.md`.
