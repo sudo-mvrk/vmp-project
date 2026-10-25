@@ -21,3 +21,14 @@ export function renderRoutes(routes: RouteObject[], path: string, user: AppUser 
   )
   return { router, queryClient }
 }
+
+// Renders one component with Mantine and a fresh query client, without a router.
+export function renderWithProviders(ui: React.ReactElement) {
+  const queryClient = new QueryClient({ defaultOptions: { queries: { retry: false }, mutations: { retry: false } } })
+  render(
+    <MantineProvider theme={theme}>
+      <QueryClientProvider client={queryClient}>{ui}</QueryClientProvider>
+    </MantineProvider>,
+  )
+  return { queryClient }
+}

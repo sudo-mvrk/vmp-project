@@ -7,6 +7,7 @@ import { HomePage } from './pages/HomePage'
 import { NoAccessPage } from './pages/NoAccessPage'
 import { NotFoundPage } from './pages/NotFoundPage'
 import { PlaceholderPage } from './pages/PlaceholderPage'
+import { ProfilePage as VolunteerProfilePage } from './volunteer/ProfilePage'
 
 export const routes: RouteObject[] = [
   {
@@ -23,7 +24,7 @@ export const routes: RouteObject[] = [
           { path: '/volunteer/recommendations', element: <PlaceholderPage title="Recommended for me" slice="F2" /> },
           { path: '/volunteer/applications', element: <PlaceholderPage title="My applications" slice="F5" /> },
           { path: '/volunteer/history', element: <PlaceholderPage title="History" slice="F5" /> },
-          { path: '/volunteer/profile', element: <PlaceholderPage title="Profile" slice="F1" /> },
+          { path: '/volunteer/profile', element: <VolunteerProfilePage /> },
         ],
       },
       {

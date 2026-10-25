@@ -20,9 +20,11 @@ All in `frontend/`. The backend must run for `dev` and `gen:api`.
 ## Architecture and conventions
 - Folders by feature under `src/`: `api` (client and types), `auth`, `layout`, `pages`, later `volunteer`, `organization`, `activity`. Tests sit next to the code as `*.test.ts(x)`; shared test helpers are in `src/test`.
 - Every backend call goes through `api()` in `src/api/client.ts`: it adds the CSRF header, turns error bodies into `ApiError` (`message`, `fieldErrors`) and reports a 401. Never call `fetch` directly.
-- Types of requests and responses come from the generated `src/api/schema.d.ts` through short aliases in `src/api/types.ts`. Do not hand-write a type the OpenAPI document has. Response fields are optional in the generated types (springdoc does not mark them required); handle the missing case.
+- Types of requests and responses come from the generated `src/api/schema.d.ts` through short aliases in `src/api/types.ts`. Do not hand-write a type the OpenAPI document has. Response fields are required in the generated types (backend `OpenApiConfig`, Q67); a field that can be null is `T | null` only if its record component has `@Schema(nullable = true)`, so add that annotation to a new nullable response field.
 - Server data is read with `useQuery` and changed with `useMutation`; after a change invalidate the affected queries. The current user is the query `currentUserKey` (`src/auth/session.ts`).
 - Pages of one role sit under a `RequireRole` layout route. The backend checks every rule again; the frontend checks only for navigation.
 - Show backend messages as they come: field errors next to the field (`form.setErrors(error.fieldErrors)`), other errors in an `Alert` or a notification.
 - Scores are shown as the backend sends them (geo, skill, priority, total, weights); the frontend never computes or changes a score.
 - UI text is English (Q63).
+- Pure logic (request mapping, validation, option lists) lives in plain `.ts` modules next to the component (`volunteer/availability.ts`) and is unit-tested there; component files export only components.
+- Leaflet does not run in jsdom: tests replace it with `vi.mock('react-leaflet', () => import('../test/leafletMock'))`, and `clickMap(lat, lng)` simulates a click on the map.
