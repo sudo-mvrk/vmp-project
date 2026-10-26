@@ -1,4 +1,4 @@
-import type { Activity, AppUser, MyApplication, Score } from '../api/types'
+import type { Activity, ActivityApplication, AppUser, MyApplication, Score, VolunteerProfile } from '../api/types'
 
 export const volunteerUser: AppUser = { id: 1, username: 'vol', email: 'vol@example.org', roles: ['ROLE_VOLUNTEER'] }
 export const organizationUser: AppUser = { id: 2, username: 'org', email: 'org@example.org', roles: ['ROLE_ORGANIZATION'] }
@@ -50,6 +50,42 @@ export function myApplication(overrides: Partial<MyApplication> = {}): MyApplica
     activityStatus: 'OPEN',
     activityStartsAt: '2026-11-07T09:00:00',
     activityEndsAt: '2026-11-07T12:00:00',
+    ...overrides,
+  }
+}
+
+export function volunteerProfile(overrides: Partial<VolunteerProfile> = {}): VolunteerProfile {
+  return {
+    id: 21,
+    firstName: 'Lucie',
+    lastName: 'Svoboda',
+    dateOfBirth: '1988-11-13',
+    bio: null,
+    lat: 50.08,
+    lon: 14.42,
+    locationName: null,
+    countryCode: 'CZ',
+    city: 'Prague',
+    region: null,
+    radius: 20,
+    maxActiveAssignments: 1,
+    skills: [],
+    certifications: [],
+    availability: [],
+    ...overrides,
+  }
+}
+
+export function activityApplication(overrides: Partial<ActivityApplication> = {}): ActivityApplication {
+  return {
+    id: 31,
+    status: 'PENDING',
+    origin: 'APPLICATION',
+    appliedAt: '2026-10-26T10:00:00',
+    decidedAt: null,
+    activityId: 7,
+    volunteer: volunteerProfile(),
+    volunteerEmail: null,
     ...overrides,
   }
 }

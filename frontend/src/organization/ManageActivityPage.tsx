@@ -1,4 +1,4 @@
-import { Anchor, Badge, Button, Center, Group, Loader, Modal, Paper, Stack, Text, Title } from '@mantine/core'
+import { Anchor, Badge, Button, Center, Group, Loader, Modal, Paper, Stack, Tabs, Text, Title } from '@mantine/core'
 import { notifications } from '@mantine/notifications'
 import { useState } from 'react'
 import { Link, Navigate, useParams } from 'react-router'
@@ -10,7 +10,9 @@ import { useActivity } from '../activity/queries'
 import { ErrorAlert } from '../common/ErrorAlert'
 import { NotFoundPage } from '../pages/NotFoundPage'
 import { actionsOf, statusColor } from './activityStatus'
-import { useActivityAction, useOwnOrganization, type StatusAction } from './queries'
+import { ApplicationsTable } from './ApplicationsTable'
+import { useActivityAction, useActivityApplications, useOwnOrganization, type StatusAction } from './queries'
+import { RecommendedVolunteers } from './RecommendedVolunteers'
 
 // Q96: cancel and complete cannot be undone and email the volunteers, so they are confirmed first.
 const CONFIRM: Record<'cancel' | 'complete', { title: string; text: string; button: string; color: string }> = {
@@ -28,7 +30,7 @@ const CONFIRM: Record<'cancel' | 'complete', { title: string; text: string; butt
   },
 }
 
-// Q89: the owner's page of one activity; F4 adds its applications and recommended volunteers.
+// Q89, Q98: the owner's page of one activity, with its applications and recommended volunteers.
 export function ManageActivityPage() {
   const id = Number(useParams().id)
   const activity = useActivity(id)
@@ -56,6 +58,8 @@ export function ManageActivityPage() {
 
 function ManageActivity({ activity }: { activity: Activity }) {
   const action = useActivityAction(activity.id)
+  // The same query as the table's, so the count costs no extra request. A draft has no applications.
+  const applications = useActivityApplications(activity.id, activity.status !== 'DRAFT')
   const [confirming, setConfirming] = useState<'cancel' | 'complete' | null>(null)
   const [now] = useState(() => new Date())
   const actions = actionsOf(activity, now)
@@ -137,6 +141,23 @@ function ManageActivity({ activity }: { activity: Activity }) {
 
       {(activity.fullDescription || activity.shortDescription) && (
         <Text style={{ whiteSpace: 'pre-line' }}>{activity.fullDescription || activity.shortDescription}</Text>
+      )}
+
+      {activity.status !== 'DRAFT' && (
+        <Tabs defaultValue="applications" keepMounted={false}>
+          <Tabs.List>
+            <Tabs.Tab value="applications">
+              Applications{applications.data ? ` (${applications.data.length})` : ''}
+            </Tabs.Tab>
+            <Tabs.Tab value="recommended">Recommended volunteers</Tabs.Tab>
+          </Tabs.List>
+          <Tabs.Panel value="applications" pt="md">
+            <ApplicationsTable activity={activity} now={now} />
+          </Tabs.Panel>
+          <Tabs.Panel value="recommended" pt="md">
+            <RecommendedVolunteers activity={activity} now={now} />
+          </Tabs.Panel>
+        </Tabs>
       )}
 
       <Modal opened={confirming !== null} onClose={() => setConfirming(null)} title={confirming && CONFIRM[confirming].title}>

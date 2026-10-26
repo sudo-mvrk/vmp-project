@@ -32,3 +32,7 @@ export type ApplicationStatus = MyApplication['status']
 export type OwnOrganizationProfile = Schemas['OwnOrganizationProfileResponseDto']
 export type OrganizationProfileUpdate = Schemas['OrganizationUpdateProfileRequestDto']
 export type ActivityRequest = Schemas['ActivityRequestDto']
+
+export type VolunteerProfile = Schemas['VolunteerProfileResponseDto']
+export type ActivityApplication = Schemas['ActivityApplicationResponseDto']
+export type RecommendedVolunteer = Schemas['RecommendedVolunteerDto']
