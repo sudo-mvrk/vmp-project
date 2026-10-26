@@ -513,3 +513,15 @@ Answered on 2026-10-26, before Slice F4 (all as recommended):
 - **Q106. After accept, reject or invite** the activity, its applications, its recommendations and the own list are read again (all queries under `['activity', id]`), so free spots stay right.
 - **Q107. Availability in the profile modal** is a list per weekday ("Sat 08:00–14:00"); whether it covers the activity is not highlighted, the backend has already checked it for recommendations.
 
+Answered on 2026-10-26, before Slice F5 (all as recommended):
+
+- **Q108. `/volunteer/applications`** has two sections, Invitations first (they wait for the volunteer), then Applications. A row: activity title (link to `/activities/:id`), date and time, own status, the activity's status when it is not `OPEN`, actions.
+- **Q109. Filter Current / Past**, default Current: current = own status `PENDING` or `ACCEPTED` on an activity that is not `COMPLETED` or `CANCELLED`; past = the rest.
+- **Q110. Actions:** a pending application: Withdraw; an accepted one: Withdraw before the start, "Started: cannot withdraw" after; a pending invitation: Accept and Decline, Accept disabled with the reason when the activity is not open or has started. Free spots, capacity and overlaps are not in `MyApplicationResponseDto`; their 409 is shown as a message.
+- **Q111. Withdraw and decline ask for confirmation** (final by Q5b; withdrawing an accepted application says the spot is freed); accept does not.
+- **Q112. Rows of cancelled or completed activities have no actions**, only a badge of the activity's status (the backend would allow withdrawing an accepted application of a cancelled activity before its date; it serves no purpose).
+- **Q113. `/volunteer/history`:** the backend's order (newest first), each with title (link), date and time, organization and city; a count "N activities completed" (the list length, not a score); a hint when empty.
+- **Q114. The menu counts pending invitations** that can still be accepted next to "My applications", from the cached own-applications query, because email is only a stub.
+- **Q115. The activity page keeps only the status badge** with a link "Manage in My applications"; the actions live on one page.
+- **Q116. After withdraw, accept or decline** the own applications, the recommendations (free capacity changed) and the activity (accepted count) are read again.
+

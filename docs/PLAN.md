@@ -204,7 +204,7 @@ Acceptance: the organization accepts and rejects applications, sees the free spo
 Tests: applications table actions by status; invite moves the row to "invited".
 
 #### Slice F5: Volunteer applications, invitations and history
-Work: own applications (`GET /volunteers/me/applications`) split into applications and invitations by origin, withdraw (`POST /applications/{id}/withdraw`), accept and decline invitations (`POST /invitations/{id}/accept|decline`); history (`GET /volunteers/me/history`).
+Decisions Q108 … Q116 (frontend only). Work: own applications (`GET /volunteers/me/applications`) split into applications and invitations by origin, withdraw (`POST /applications/{id}/withdraw`), accept and decline invitations (`POST /invitations/{id}/accept|decline`); history (`GET /volunteers/me/history`).
 
 Acceptance: a volunteer withdraws an application, accepts or declines an invitation, and sees completed activities in the history; the five-minute demo of `docs/DEMO.md` can be shown through the UI.
 
