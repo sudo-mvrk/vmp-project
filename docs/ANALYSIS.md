@@ -472,3 +472,17 @@ Answered on 2026-10-25, before Slice F1:
 - **Q74. Availability editor:** rows of day + start + end, add and remove, sorted by day and time. The client checks only `end > start` and the latest end 23:59; overlaps are left to the backend (`AvailabilityRules`), its 400 is shown above the list.
 - **Q75. Capacity and radius** as number inputs with the backend limits (0 … 10, 1 … 500 km) and a one-line hint of what each one does.
 
+Answered on 2026-10-26, before Slice F2 (Q77 changed by the developer, the rest as recommended):
+
+- **Q76. Organization name:** `ActivityResponseDto` keeps only `organizationId`. The list shows no organization; the activity page loads the public `GET /organizations/{id}` for the name.
+- **Q77. `acceptedCount` in `ActivityResponseDto`** (backend change): the number of `ACCEPTED` applications, so the UI shows "N of M spots free" or "Full". Filled everywhere the DTO is built: one `countAccepted` for a single activity, one grouped query (`ActivityRepository.acceptedCounts`) for the public list, the organization's own list and the recommendations. A pending application does not count.
+- **Q78. "Already applied"** is read from `GET /volunteers/me/applications` on the activity page: any row for the activity (also withdrawn or rejected, Q5b) shows its status as a badge instead of the Apply button.
+- **Q79. Apply** sits on each recommendation and on the activity page; success shows a notification and refreshes the recommendations (the activity leaves them, Q15) and the own applications. A 409 of the backend is shown as its message.
+- **Q80. Other roles:** an anonymous user sees "Log in to apply" (back to the page after login); organizations and admins see no apply control.
+- **Q81. Empty recommendations:** a static list of the reasons (availability, certifications, capacity, radius, free spot, not applied yet) with links to the profile and the public list; no client-side diagnosis. A profile without a point gets a separate hint, because then `u_geo` = 0 for every activity.
+- **Q82. Recommendation count:** a select of 10 / 25 / 50, default 10 (Q6b); no paging.
+- **Q83. Score breakdown component** (`src/score/ScoreBreakdown.tsx`, reused in F4): three bars for distance (α), skills (β), priority (γ) with the weight of this score next to each, the values and the total rounded to two decimals for display only, and the half-distance in a tooltip on the distance bar. Correction to the proposal: no "activity-specific weights" marker, because volunteer → activities always uses the global weights (Q12, `RecommendationIntegrationTest`); the weights shown are those of `score.weights`.
+- **Q84. Public list:** no filters (the backend has none), 20 per page with paging; each entry shows title, priority, date and time, place, free spots, short description and required skills. No map in the list.
+- **Q85. Activity page `/activities/:id`:** read-only Leaflet map with the activity's point only, full description, address, required skills and certifications, free spots, apply. A 404 (also a draft of another organization, Q4e) shows the "not found" page.
+- **Q86. Times** are shown as the backend sends them (one configured zone, Q13), without conversion: "Sat 7 Nov 2026, 09:00–12:00".
+

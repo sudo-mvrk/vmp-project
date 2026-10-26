@@ -7,12 +7,12 @@ Slice order is the one in `docs/PLAN.md`, approved on 2026-10-08: `0 → 6a → 
 Rules are in `CLAUDE.md` (repo root), decisions in `docs/ANALYSIS.md` section 6, the scoring spec in `docs/FUNCTION.md`.
 
 ## Next session: start here
-State at the end of 2026-10-25. Rewrite this section at the end of every session.
+State at the end of 2026-10-26. Rewrite this section at the end of every session.
 
 Read first: `CLAUDE.md` (loaded automatically), this file, then for the slice at hand its entry in `docs/PLAN.md` and the decisions in `docs/ANALYSIS.md` section 6. `docs/FUNCTION.md` only when touching scoring.
 
 Where things stand:
-- Done: all MVP backend slices (0, 6a, 6b, 1, 2, 3, 4, 5, 6c, 5b, 7, 8, 8b, 9), the **evaluation** (Q41 … Q53) and frontend Slice **F0**. 6d stays skipped (Q18). `cd backend && ./mvnw clean verify` is green with 353 tests (the evaluation runner is excluded from it).
+- Done: all MVP backend slices (0, 6a, 6b, 1, 2, 3, 4, 5, 6c, 5b, 7, 8, 8b, 9), the **evaluation** (Q41 … Q53) and frontend Slice **F0**. 6d stays skipped (Q18). `cd backend && ./mvnw clean verify` is green with 355 tests (the evaluation runner is excluded from it).
 - Monorepo since Q40: code in `backend/` (paths `src/main/...` in older `docs/` texts mean `backend/src/main/...`), Maven runs there; `docker compose`, `.env` and `docs/` are at the root. `CLAUDE.md` = root file + `backend/CLAUDE.md`.
 - Git: `main` of `git@github.com:sudo-mvrk/vmp-project.git`, pushed up to `0bf061c` (F1 done, pushed 2026-10-25); anything after that is local until the developer says "push it" (check with `git status -sb`).
 
@@ -25,12 +25,12 @@ Evaluation (finished 2026-10-25):
 Frontend (started 2026-10-25, decisions Q54 … Q75, slices F0 … F5 in `docs/PLAN.md`, approved 2026-10-25):
 - **F0 done**: `frontend/` with React + Vite + TypeScript 5.9, Mantine, React Router, TanStack Query; Vite proxy; `npm run gen:api`; `api()` wrapper with CSRF; register, login, logout, role guards, menu per role, placeholder pages for F2 … F5. Rules and commands in `frontend/CLAUDE.md`. The developer ran it from IntelliJ + `npm run dev` on 2026-10-25 ("все работает").
 - **F1 done** (Q67 … Q75): backend `common.config.OpenApiConfig` (response fields required, `@Schema(nullable = true)` on fields that can be null, nullable `$ref` wrapped in `allOf`, `LocalTime` as a string) with `OpenApiDocumentIntegrationTest`; volunteer profile page `/volunteer/profile` with four tabs (basic + Leaflet map picker with radius circle, skills, certifications, availability), each with its own PUT. Checked through the Vite proxy against the dev backend with curl (all four PUTs, overlap 400, lat without lon 400, radius 600 400; account `f1vol` / `pass1` was left in the dev database). Not clicked through in a browser by Claude.
-- Done checks: `cd frontend && npm run lint && npm run build && npm test` (34 tests); `cd backend && ./mvnw clean verify` (353 tests).
+- **F2 done** (Q76 … Q86): backend `acceptedCount` in `ActivityResponseDto` (Q77; `ActivityRepository.acceptedCounts` for lists and recommendations). Frontend: public list `/activities` (paged), activity page `/activities/:id` (organization name, free spots, read-only map, apply), `/volunteer/recommendations` with `score/ScoreBreakdown` (reuse it in F4), apply with 409 as a notification. Checked through the Vite proxy against the dev backend with curl: `seed_vol08` gets "Sort food donations" among the recommendations; nothing was written to the dev database (apply was not called there). Not clicked through in a browser by Claude.
+- Done checks: `cd frontend && npm run lint && npm run build && npm test` (58 tests); `cd backend && ./mvnw clean verify` (355 tests).
 
 Next session, in this order:
-1. ~~Finish the rename~~ done 2026-10-26: main class `com.volunnear.VmpProject`, artifact and jar `vmp-project-0.0.1-SNAPSHOT.jar` (Dockerfile updated), test `VmpProjectTests`.
-2. Slice F2 (public activities, recommendations with the score breakdown, apply) per `docs/PLAN.md`; ask its edge cases first.
-3. If the developer wants: draft the thesis chapter from `docs/evaluation/METHOD.md` + `RESULTS.md` (text only; the files stay local).
+1. Slice F3 (organization profile and activities: create, edit, publish, cancel, complete) per `docs/PLAN.md`; ask its edge cases first (Q87 …).
+2. If the developer wants: draft the thesis chapter from `docs/evaluation/METHOD.md` + `RESULTS.md` (text only; the files stay local).
 
 Local machine (not code), 2026-10-25: the old compose project `volunnearapp` is stopped, `vmp-project` postgres and redis run, the new dev database is migrated and seeded. IntelliJ: `backend/pom.xml` was added as a Maven project with a Spring Boot run configuration (steps in `docs/LOCAL_NOTES.md`); the developer confirmed the app runs. The app does not start without `ADMIN_USERNAME`, `ADMIN_EMAIL`, `ADMIN_PASSWORD_HASH` (Q28).
 
@@ -117,7 +117,7 @@ Hints for the next step:
 ## Phase F: Frontend (Q54 … Q66, `docs/PLAN.md` section 2 "Frontend")
 - [x] Slice F0: Scaffold, API client with CSRF, auth (register, login, logout), role guards, `frontend/CLAUDE.md` (2026-10-25)
 - [x] Slice F1: Volunteer profile (map picker, skills, certifications, availability), required response fields in the OpenAPI document (Q67 … Q75, 2026-10-25)
-- [ ] Slice F2: Activities and recommendations for volunteers (score breakdown, apply)
+- [x] Slice F2: Activities and recommendations for volunteers (score breakdown, apply), `acceptedCount` in `ActivityResponseDto` (Q76 … Q86, 2026-10-26)
 - [ ] Slice F3: Organization profile and activities
 - [ ] Slice F4: Applications, recommended volunteers and invitations for organizations
 - [ ] Slice F5: Volunteer applications, invitations and history
@@ -158,4 +158,4 @@ Hints for the next step:
 - [x] `cancel` did not lock the activity row; with `complete` added it could lose an update. Both now take the lock (Slice 8)
 
 ## Open questions
-- None open. F2 edge cases are asked at its start.
+- None open. F3 edge cases are asked at its start.

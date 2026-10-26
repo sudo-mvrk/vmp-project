@@ -183,7 +183,7 @@ Acceptance: every field saves and survives a reload; the backend's 400 messages 
 Tests: map picker (click sets lat/lon, fields edit the point); availability editor (add and remove slots, payload shape); profile form validation.
 
 #### Slice F2: Activities and recommendations for volunteers
-Work: public activity list (`GET /activities`, paged) and activity page (`GET /activities/{id}`, map of the place); recommended activities (`GET /volunteers/me/recommended-activities`) with the score breakdown component (Q62); apply (`POST /activities/{id}/applications`).
+Decisions Q76 … Q86 (Q77 adds `acceptedCount` to `ActivityResponseDto`, backend). Work: public activity list (`GET /activities`, paged) and activity page (`GET /activities/{id}`, map of the place); recommended activities (`GET /volunteers/me/recommended-activities`) with the score breakdown component (Q62); apply (`POST /activities/{id}/applications`).
 
 Acceptance: an anonymous user sees the list and the page; a volunteer sees recommendations in score order with geo, skill, priority bars, weights and total, and can apply once (409 shown as a message); with the seed data (`seed_vol08`) the demo activity "Sort food donations" appears.
 
