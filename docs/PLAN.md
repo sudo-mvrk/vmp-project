@@ -217,6 +217,12 @@ Acceptance: an admin logs in, finds a user by part of the name or email, bans a 
 
 Tests: filters → request query; ban and unban buttons by role and status; confirmation text by role; admin cancel only for admins.
 
+### Design pass (D1 … D3, after F6)
+Decisions Q123 … Q130. No change of function; the tests stay green; each slice ends with screenshots (headless Firefox for public pages, the developer for the rest).
+- **D1. Foundation:** navy theme (palette, fonts, radii, component defaults), translucent top header with a phone drawer instead of the sidebar, logo, favicon and title, muted status colours.
+- **D2. Landing and sign-in:** `/` describes the platform (navy hero with a glass score card, how it works, Smart Distribution, for volunteers and organizations, call to action; also for a logged-in admin); login and registration with a navy panel beside the form.
+- **D3. Working pages:** activity and recommendation cards, a clearer score breakdown, tables, forms and profile pages, page widths; tables become cards on phones.
+
 ## 3. Risks
 
 | Risk | Effect | Mitigation |

@@ -128,7 +128,10 @@ Hints for the next step:
 
 ## Phase G: After the MVP steps (developer's plan of 2026-10-26, not planned yet)
 - [x] Admin panel in the frontend, Slice F6 (scope change Q117, decisions Q117 … Q122, 2026-10-26)
-- [ ] Design pass of the frontend (look and layout; `src/theme.ts`), over every page including the admin ones
+- [ ] Design pass of the frontend (Q123 … Q130, `docs/PLAN.md` "Design pass"):
+  - [x] D1 foundation: navy theme, fonts, top header with phone drawer, logo, muted colours (2026-10-26)
+  - [ ] D2 landing page, login and registration
+  - [ ] D3 working pages and phone layout of tables
 
 ## Discovered work
 - [x] Fix `lat == 0` treated as "no location" and lost location on partial update in both mappers (organization Slice 2, volunteer Slice 3)

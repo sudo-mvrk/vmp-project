@@ -534,3 +534,14 @@ Answered on 2026-10-26, before Slice F6 (admin panel, after the MVP slices; all 
 - **Q121. Ban asks for confirmation with the consequences of the role:** volunteer: sessions end, applications and invitations of activities that have not started are withdrawn or declined, organizations are emailed (Q23, Q25); organization: its activities that have not started are cancelled with emails (Q26). Unban does not ask; its notification says nothing is restored (Q27).
 - **Q122. "Cancel as admin" on the public activity page** for an `OPEN` activity (also one that has started; the backend allows it), after a confirmation that volunteers and the organization are emailed (Q31). Activities are found through the public list; there is no admin list of all activities (no such endpoint), and drafts stay invisible to admins (Q4e).
 
+Answered on 2026-10-26, before the design pass (D1 … D3; brief of the developer: a noble site in Navy Blue with translucent layers, strict and business-like but welcoming, a restrained refined readable font, nothing bright or flashy; references: "Discover", "Wealth", "Journal X"; all as recommended):
+
+- **Q123. Fonts:** Cormorant Garamond (600) only for page titles and hero headings (h1, h2), Manrope for everything else, both with Cyrillic.
+- **Q124. Fonts are self-hosted** through `@fontsource/cormorant-garamond` and `@fontsource/manrope`, so the defence works without internet.
+- **Q125. Icons: `@tabler/icons-react`** (thin line icons, Mantine's companion set).
+- **Q126. Dark and light parts:** the landing page, login and registration are deep navy with translucent glass elements; the working pages are light (cool off-white page, white cards with thin borders, navy text and accents); the header is translucent navy with blur everywhere.
+- **Q127. Hero without a photo:** a deep navy gradient with a faint dot grid and a glass card with a sample score breakdown.
+- **Q128. Top navigation instead of the sidebar:** logo left, the role's links in the middle, user and log out right; a burger and a drawer on phones.
+- **Q129. Logo:** the monogram VMP in a thin ring with "Volunteering Management Platform" in small spaced capitals (monogram only on small screens); browser title "VMP — Volunteering Management Platform".
+- **Q130. Muted colours** for priorities and statuses in one family (theme colours `navy`, `amber`, `wine`, `sage`, gray); skill tags as thin outlined pills.
+
