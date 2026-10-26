@@ -4,6 +4,7 @@ import { useForm } from '@mantine/form'
 import { useState } from 'react'
 import { Link, useNavigate } from 'react-router'
 import { ApiError } from '../api/client'
+import { AuthShell } from '../common/AuthShell'
 import { homePathOf, useRegister } from './session'
 
 type AccountType = 'VOLUNTEER' | 'ORGANIZATION'
@@ -61,47 +62,49 @@ export function RegisterPage() {
   })
 
   return (
-    <Paper maw={480} mx="auto" mt="xl" p="lg" withBorder>
-      <form onSubmit={submit}>
-        <Stack>
-          <Title order={2}>Create an account</Title>
-          <SegmentedControl
-            value={accountType}
-            onChange={(v) => setAccountType(v as AccountType)}
-            data={[
-              { value: 'VOLUNTEER', label: 'Volunteer' },
-              { value: 'ORGANIZATION', label: 'Organization' },
-            ]}
-          />
-          {register.error && <Alert color="wine">{register.error.message}</Alert>}
-          <TextInput label="Username" autoComplete="username" {...form.getInputProps('username')} />
-          <TextInput label="Email" type="email" autoComplete="email" {...form.getInputProps('email')} />
-          <PasswordInput label="Password" autoComplete="new-password" {...form.getInputProps('password')} />
-          {accountType === 'VOLUNTEER' ? (
-            <>
-              <TextInput label="First name" {...form.getInputProps('firstName')} />
-              <TextInput label="Last name" {...form.getInputProps('lastName')} />
-              <DateInput
-                label="Date of birth"
-                valueFormat="YYYY-MM-DD"
-                maxDate={today}
-                {...form.getInputProps('dateOfBirth')}
-              />
-            </>
-          ) : (
-            <TextInput label="Organization name" {...form.getInputProps('organizationName')} />
-          )}
-          <Button type="submit" loading={register.isPending}>
-            Register
-          </Button>
-          <Text size="sm">
-            Already registered?{' '}
-            <Anchor component={Link} to="/login">
-              Log in
-            </Anchor>
-          </Text>
-        </Stack>
-      </form>
-    </Paper>
+    <AuthShell title="Join the platform.">
+      <Paper maw={480} mx="auto" p="xl" radius="xl" shadow="lg">
+        <form onSubmit={submit}>
+          <Stack>
+            <Title order={2}>Create an account</Title>
+            <SegmentedControl
+              value={accountType}
+              onChange={(v) => setAccountType(v as AccountType)}
+              data={[
+                { value: 'VOLUNTEER', label: 'Volunteer' },
+                { value: 'ORGANIZATION', label: 'Organization' },
+              ]}
+            />
+            {register.error && <Alert color="wine">{register.error.message}</Alert>}
+            <TextInput label="Username" autoComplete="username" {...form.getInputProps('username')} />
+            <TextInput label="Email" type="email" autoComplete="email" {...form.getInputProps('email')} />
+            <PasswordInput label="Password" autoComplete="new-password" {...form.getInputProps('password')} />
+            {accountType === 'VOLUNTEER' ? (
+              <>
+                <TextInput label="First name" {...form.getInputProps('firstName')} />
+                <TextInput label="Last name" {...form.getInputProps('lastName')} />
+                <DateInput
+                  label="Date of birth"
+                  valueFormat="YYYY-MM-DD"
+                  maxDate={today}
+                  {...form.getInputProps('dateOfBirth')}
+                />
+              </>
+            ) : (
+              <TextInput label="Organization name" {...form.getInputProps('organizationName')} />
+            )}
+            <Button type="submit" loading={register.isPending}>
+              Register
+            </Button>
+            <Text size="sm">
+              Already registered?{' '}
+              <Anchor component={Link} to="/login">
+                Log in
+              </Anchor>
+            </Text>
+          </Stack>
+        </form>
+      </Paper>
+    </AuthShell>
   )
 }

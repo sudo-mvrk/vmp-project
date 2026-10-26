@@ -1,0 +1,81 @@
+.hero {
+  padding-top: 88px;
+  padding-bottom: 96px;
+}
+
+.title {
+  font-size: clamp(2.6rem, 5vw, 4.2rem);
+  line-height: 1.05;
+  color: #fff;
+}
+
+.lead {
+  font-size: 1.1rem;
+  line-height: 1.7;
+  max-width: 560px;
+}
+
+.arrow {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 26px;
+  height: 26px;
+  margin-right: -6px;
+  border-radius: 50%;
+  background: var(--mantine-color-navy-9);
+  color: #fff;
+}
+
+.scoreCard {
+  padding: 28px;
+  width: 100%;
+  max-width: 420px;
+  margin: 0 auto;
+}
+
+.bar {
+  height: 6px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.12);
+  overflow: hidden;
+}
+
+.barFill {
+  height: 100%;
+  border-radius: 999px;
+  background: linear-gradient(90deg, var(--mantine-color-navy-3), #fff);
+}
+
+.section {
+  padding-top: 72px;
+  padding-bottom: 72px;
+}
+
+.sectionTitle {
+  font-size: clamp(2rem, 3.5vw, 2.8rem);
+  color: #fff;
+}
+
+.card {
+  padding: 28px;
+  height: 100%;
+}
+
+.formula {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-size: clamp(1.4rem, 2.4vw, 1.9rem);
+  color: #fff;
+  letter-spacing: 0.02em;
+  text-align: center;
+}
+
+/* Breaks only between the terms, never inside one. */
+.term {
+  white-space: nowrap;
+}
+
+.footer {
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  padding: 28px 0;
+}

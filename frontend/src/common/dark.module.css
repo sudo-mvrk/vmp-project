@@ -1,0 +1,48 @@
+/* Q126, Q127: the deep navy pages (landing, login, registration) with a faint dot grid and glass layers. */
+.page {
+  position: relative;
+  min-height: calc(100vh - 68px);
+  color: #fff;
+  background:
+    radial-gradient(circle at 1px 1px, rgba(255, 255, 255, 0.07) 1px, transparent 0) 0 0 / 24px 24px,
+    radial-gradient(1200px 600px at 85% -10%, rgba(85, 115, 171, 0.35), transparent 60%),
+    radial-gradient(900px 500px at -10% 30%, rgba(61, 90, 143, 0.25), transparent 60%),
+    linear-gradient(180deg, #0c1830 0%, #111f3d 55%, #0c1830 100%);
+}
+
+.glass {
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 24px;
+  backdrop-filter: blur(16px) saturate(130%);
+  -webkit-backdrop-filter: blur(16px) saturate(130%);
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.25);
+}
+
+.eyebrow {
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--mantine-color-navy-2);
+}
+
+.muted {
+  color: rgba(255, 255, 255, 0.72);
+}
+
+.ring {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  color: var(--mantine-color-navy-1);
+}
+
+/* A light card on a dark page (the login and registration forms) keeps the normal dark text. */
+.lightCard {
+  color: var(--mantine-color-black);
+}

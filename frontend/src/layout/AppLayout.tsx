@@ -2,7 +2,7 @@ import { AppShell, Badge, Burger, Button, Container, Drawer, Group, Stack, Text 
 import { useDisclosure } from '@mantine/hooks'
 import { notifications } from '@mantine/notifications'
 import { useState } from 'react'
-import { Link, NavLink, Outlet, useNavigate } from 'react-router'
+import { Link, NavLink, Outlet, useMatches, useNavigate } from 'react-router'
 import { useMyApplications } from '../activity/queries'
 import { roleOf, useCurrentUser, useLogout, type Role } from '../auth/session'
 import { PAGE_BACKGROUND } from '../theme'
@@ -43,6 +43,7 @@ export function AppLayout() {
   const navigate = useNavigate()
   const role = user ? (roleOf(user) ?? 'ANONYMOUS') : 'ANONYMOUS'
   const items = menus[role]
+  const fullBleed = useMatches().some((match) => (match.handle as { fullBleed?: boolean } | undefined)?.fullBleed)
   // Q114: email is only a stub, so pending invitations are counted in the menu.
   const [now] = useState(() => new Date())
   const invitations = pendingInvitationCount(useMyApplications(role === 'VOLUNTEER').data, now)
@@ -126,9 +127,13 @@ export function AppLayout() {
       </Drawer>
 
       <AppShell.Main>
-        <Container size="xl" py="xl" px={{ base: 'md', sm: 'xl' }}>
+        {fullBleed ? (
           <Outlet />
-        </Container>
+        ) : (
+          <Container size="xl" py="xl" px={{ base: 'md', sm: 'xl' }}>
+            <Outlet />
+          </Container>
+        )}
       </AppShell.Main>
     </AppShell>
   )

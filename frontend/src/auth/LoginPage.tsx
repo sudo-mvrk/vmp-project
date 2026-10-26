@@ -1,6 +1,7 @@
 import { Alert, Anchor, Button, Paper, PasswordInput, Stack, Text, TextInput, Title } from '@mantine/core'
 import { useForm } from '@mantine/form'
 import { Link, Navigate, useSearchParams } from 'react-router'
+import { AuthShell } from '../common/AuthShell'
 import { homePathOf, roleOf, useCurrentUser, useLogin } from './session'
 
 // Only paths inside the app are followed after login, never a full URL from the query string.
@@ -30,24 +31,26 @@ export function LoginPage() {
   const submit = form.onSubmit((values) => login.mutate(values))
 
   return (
-    <Paper maw={420} mx="auto" mt="xl" p="lg" withBorder>
-      <form onSubmit={submit}>
-        <Stack>
-          <Title order={2}>Log in</Title>
-          {login.error && <Alert color="wine">{login.error.message}</Alert>}
-          <TextInput label="Username or email" autoComplete="username" {...form.getInputProps('username')} />
-          <PasswordInput label="Password" autoComplete="current-password" {...form.getInputProps('password')} />
-          <Button type="submit" loading={login.isPending}>
-            Log in
-          </Button>
-          <Text size="sm">
-            No account yet?{' '}
-            <Anchor component={Link} to="/register">
-              Register
-            </Anchor>
-          </Text>
-        </Stack>
-      </form>
-    </Paper>
+    <AuthShell title="Welcome back.">
+      <Paper maw={420} mx="auto" p="xl" radius="xl" shadow="lg">
+        <form onSubmit={submit}>
+          <Stack>
+            <Title order={2}>Log in</Title>
+            {login.error && <Alert color="wine">{login.error.message}</Alert>}
+            <TextInput label="Username or email" autoComplete="username" {...form.getInputProps('username')} />
+            <PasswordInput label="Password" autoComplete="current-password" {...form.getInputProps('password')} />
+            <Button type="submit" loading={login.isPending}>
+              Log in
+            </Button>
+            <Text size="sm">
+              No account yet?{' '}
+              <Anchor component={Link} to="/register">
+                Register
+              </Anchor>
+            </Text>
+          </Stack>
+        </form>
+      </Paper>
+    </AuthShell>
   )
 }

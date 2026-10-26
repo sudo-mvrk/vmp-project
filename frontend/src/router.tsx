@@ -23,9 +23,10 @@ export const routes: RouteObject[] = [
   {
     element: <AppLayout />,
     children: [
-      { path: '/', element: <HomePage /> },
-      { path: '/login', element: <LoginPage /> },
-      { path: '/register', element: <RegisterPage /> },
+      // The deep navy pages run edge to edge, without the light page container (Q126).
+      { path: '/', element: <HomePage />, handle: { fullBleed: true } },
+      { path: '/login', element: <LoginPage />, handle: { fullBleed: true } },
+      { path: '/register', element: <RegisterPage />, handle: { fullBleed: true } },
       { path: '/no-access', element: <NoAccessPage /> },
       { path: '/activities', element: <ActivityListPage /> },
       { path: '/activities/:id', element: <ActivityPage /> },
