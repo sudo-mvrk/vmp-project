@@ -13,11 +13,14 @@
     "gen:api": "openapi-typescript ${API_DOCS_URL:-http://localhost:8080/v3/api-docs} -o src/api/schema.d.ts"
   },
   "dependencies": {
+    "@fontsource/cormorant-garamond": "^5.3.0",
+    "@fontsource/manrope": "^5.3.0",
     "@mantine/core": "^9.7.3",
     "@mantine/dates": "^9.7.3",
     "@mantine/form": "^9.7.3",
     "@mantine/hooks": "^9.7.3",
     "@mantine/notifications": "^9.7.3",
+    "@tabler/icons-react": "^3.49.0",
     "@tanstack/react-query": "^5.104.5",
     "dayjs": "^1.11.23",
     "leaflet": "^1.9.4",

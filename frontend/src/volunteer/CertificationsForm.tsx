@@ -23,7 +23,7 @@ export function CertificationsForm({ profile }: { profile: OwnVolunteerProfile }
   const save = () =>
     replace.mutate(
       { certifications: toCertificationsRequest(rows) },
-      { onSuccess: () => notifications.show({ color: 'teal', message: 'Certifications saved' }) },
+      { onSuccess: () => notifications.show({ color: 'sage', message: 'Certifications saved' }) },
     )
 
   return (
@@ -53,7 +53,7 @@ export function CertificationsForm({ profile }: { profile: OwnVolunteerProfile }
           />
           <ActionIcon
             variant="subtle"
-            color="red"
+            color="wine"
             size="lg"
             aria-label="Remove certification"
             onClick={() => setRows((current) => current.filter((r) => r.key !== row.key))}

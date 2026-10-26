@@ -31,7 +31,7 @@ export function BasicProfileForm({ profile }: { profile: OwnVolunteerProfile }) 
       onSuccess: (saved) => {
         form.setValues(initialValues(saved))
         form.resetDirty(initialValues(saved))
-        notifications.show({ color: 'teal', message: 'Profile saved' })
+        notifications.show({ color: 'sage', message: 'Profile saved' })
       },
       onError: (e) => e instanceof ApiError && form.setErrors(e.fieldErrors),
     }),

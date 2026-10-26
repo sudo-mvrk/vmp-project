@@ -1,0 +1,50 @@
+/* Q126, Q128: a translucent navy header with blur over every page. */
+.header {
+  background: linear-gradient(100deg, rgba(9, 19, 40, 0.95) 0%, rgba(17, 31, 61, 0.93) 55%, rgba(29, 49, 89, 0.92) 100%);
+  backdrop-filter: blur(14px) saturate(140%);
+  -webkit-backdrop-filter: blur(14px) saturate(140%);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 14px;
+  border-radius: 999px;
+  color: rgba(255, 255, 255, 0.78);
+  font-size: 14px;
+  font-weight: 500;
+  text-decoration: none;
+  transition: background-color 150ms ease, color 150ms ease;
+}
+
+.link:hover {
+  color: #fff;
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.link[data-active='true'],
+.link.active {
+  color: #fff;
+  background: rgba(255, 255, 255, 0.14);
+}
+
+.user {
+  color: rgba(255, 255, 255, 0.75);
+}
+
+.drawerLink {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 14px;
+  border-radius: 12px;
+  color: var(--mantine-color-navy-9);
+  font-weight: 500;
+  text-decoration: none;
+}
+
+.drawerLink.active {
+  background: var(--mantine-color-navy-0);
+}

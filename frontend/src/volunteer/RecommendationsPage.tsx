@@ -26,7 +26,7 @@ export function RecommendationsPage() {
       </Group>
       {noLocation && (
         // Q81: without a point every activity gets distance score 0.
-        <Alert color="yellow">
+        <Alert color="amber">
           Your profile has no location, so distance does not count.{' '}
           <Anchor component={Link} to="/volunteer/profile">
             Set your location

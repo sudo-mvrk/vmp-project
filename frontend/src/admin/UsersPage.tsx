@@ -39,7 +39,7 @@ export function UsersPage() {
         onSuccess: () => {
           setBanning(null)
           notifications.show({
-            color: 'teal',
+            color: 'sage',
             message:
               action === 'ban'
                 ? `${user.username} is banned`
@@ -48,7 +48,7 @@ export function UsersPage() {
         },
         onError: (e) => {
           setBanning(null)
-          notifications.show({ color: 'red', title: 'Not done', message: e.message })
+          notifications.show({ color: 'wine', title: 'Not done', message: e.message })
         },
       },
     )
@@ -118,13 +118,13 @@ export function UsersPage() {
                       <Table.Td>{role ? roleLabel[role] : '?'}</Table.Td>
                       <Table.Td>{dayjs(user.createdAt).format('D MMM YYYY')}</Table.Td>
                       <Table.Td>
-                        <Badge color={user.banned ? 'red' : 'green'} variant="light">
+                        <Badge color={user.banned ? 'wine' : 'sage'} variant="light">
                           {user.banned ? 'Banned' : 'Active'}
                         </Badge>
                       </Table.Td>
                       <Table.Td>
                         {action === 'ban' && (
-                          <Button size="xs" color="red" variant="light" onClick={() => setBanning(user)}>
+                          <Button size="xs" color="wine" variant="light" onClick={() => setBanning(user)}>
                             Ban
                           </Button>
                         )}
@@ -163,7 +163,7 @@ export function UsersPage() {
               <Button variant="default" onClick={() => setBanning(null)}>
                 Back
               </Button>
-              <Button color="red" loading={banAction.isPending} onClick={() => run(banning, 'ban')}>
+              <Button color="wine" loading={banAction.isPending} onClick={() => run(banning, 'ban')}>
                 Ban
               </Button>
             </Group>

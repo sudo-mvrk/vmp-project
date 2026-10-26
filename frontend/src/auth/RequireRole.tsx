@@ -17,7 +17,7 @@ export function RequireRole({ role }: { role: Role }) {
   }
   if (isError) {
     return (
-      <Alert color="red" title="The server cannot be reached">
+      <Alert color="wine" title="The server cannot be reached">
         {error.message}
       </Alert>
     )

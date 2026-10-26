@@ -56,7 +56,7 @@ describe('ApplicationsPage', () => {
 
     await waitFor(() =>
       expect(notifications.show).toHaveBeenCalledWith(
-        expect.objectContaining({ color: 'red', message: 'Activity 7 has no free spots' }),
+        expect.objectContaining({ color: 'wine', message: 'Activity 7 has no free spots' }),
       ),
     )
     expect(fetchMock.mock.calls.some(([url, init]) => String(url) === '/api/v1/invitations/1/accept' && init?.method === 'POST')).toBe(true)

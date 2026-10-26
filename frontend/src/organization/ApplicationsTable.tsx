@@ -23,13 +23,13 @@ export function ApplicationsTable({ activity, now }: { activity: Activity; now: 
         onSuccess: () => {
           setRejecting(null)
           notifications.show({
-            color: 'teal',
+            color: 'sage',
             message: `${fullName(application.volunteer)}: ${decision === 'accept' ? 'accepted' : 'rejected'}`,
           })
         },
         onError: (e) => {
           setRejecting(null)
-          notifications.show({ color: 'red', title: 'Could not decide', message: e.message })
+          notifications.show({ color: 'wine', title: 'Could not decide', message: e.message })
         },
       },
     )
@@ -108,7 +108,7 @@ export function ApplicationsTable({ activity, now }: { activity: Activity; now: 
                           </Button>
                         </span>
                       </Tooltip>
-                      <Button size="xs" color="red" variant="light" onClick={() => setRejecting(application)}>
+                      <Button size="xs" color="wine" variant="light" onClick={() => setRejecting(application)}>
                         Reject
                       </Button>
                     </Group>
@@ -133,7 +133,7 @@ export function ApplicationsTable({ activity, now }: { activity: Activity; now: 
               <Button variant="default" onClick={() => setRejecting(null)}>
                 Back
               </Button>
-              <Button color="red" loading={decide.isPending} onClick={() => run(rejecting, 'reject')}>
+              <Button color="wine" loading={decide.isPending} onClick={() => run(rejecting, 'reject')}>
                 Reject
               </Button>
             </Group>

@@ -20,13 +20,13 @@ const CONFIRM: Record<'cancel' | 'complete', { title: string; text: string; butt
     title: 'Cancel this activity?',
     text: 'It cannot be reopened. Volunteers who applied or were accepted get an email.',
     button: 'Cancel activity',
-    color: 'red',
+    color: 'wine',
   },
   complete: {
     title: 'Mark this activity as completed?',
     text: 'It moves to the history of the accepted volunteers, and they get a thank-you email.',
     button: 'Complete',
-    color: 'teal',
+    color: 'sage',
   },
 }
 
@@ -69,7 +69,7 @@ function ManageActivity({ activity }: { activity: Activity }) {
     action.mutate(statusAction, {
       onSuccess: (saved) => {
         setConfirming(null)
-        notifications.show({ color: 'teal', message: `Activity is now ${saved.status.toLowerCase()}` })
+        notifications.show({ color: 'sage', message: `Activity is now ${saved.status.toLowerCase()}` })
       },
       onError: () => setConfirming(null),
     })
@@ -103,12 +103,12 @@ function ManageActivity({ activity }: { activity: Activity }) {
             </Button>
           )}
           {actions.includes('complete') && (
-            <Button color="teal" onClick={() => setConfirming('complete')}>
+            <Button color="sage" onClick={() => setConfirming('complete')}>
               Complete
             </Button>
           )}
           {actions.includes('cancel') && (
-            <Button color="red" variant="light" onClick={() => setConfirming('cancel')}>
+            <Button color="wine" variant="light" onClick={() => setConfirming('cancel')}>
               Cancel
             </Button>
           )}

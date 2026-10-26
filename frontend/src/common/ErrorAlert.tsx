@@ -10,7 +10,7 @@ export function ErrorAlert({ error, shownFields = [] }: { error: Error | null; s
   const otherFieldErrors =
     error instanceof ApiError ? Object.entries(error.fieldErrors).filter(([field]) => !shownFields.includes(field)) : []
   return (
-    <Alert color="red" title={error.message}>
+    <Alert color="wine" title={error.message}>
       {otherFieldErrors.length > 0 && (
         <List size="sm">
           {otherFieldErrors.map(([field, message]) => (

@@ -104,7 +104,7 @@ export function ActivityPage() {
           ) : (
             <Group gap={4}>
               {data.requiredCertifications.map((certification) => (
-                <Badge key={certification.id} variant="outline" color="grape">
+                <Badge key={certification.id} variant="outline" color="navy">
                   {certification.name}
                 </Badge>
               ))}

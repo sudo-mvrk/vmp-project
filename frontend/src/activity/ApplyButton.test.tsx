@@ -31,7 +31,7 @@ describe('ApplyButton', () => {
 
     await userEvent.click(screen.getByRole('button', { name: 'Apply' }))
 
-    await waitFor(() => expect(notifications.show).toHaveBeenCalledWith(expect.objectContaining({ color: 'green' })))
+    await waitFor(() => expect(notifications.show).toHaveBeenCalledWith(expect.objectContaining({ color: 'sage' })))
     expect(fetchMock).toHaveBeenCalledTimes(1)
     expect(fetchMock.mock.calls[0][1]?.headers).toMatchObject({ 'X-XSRF-TOKEN': 't' })
     expect(invalidate).toHaveBeenCalledWith({ queryKey: ['volunteer', 'recommended-activities'] })
@@ -48,7 +48,7 @@ describe('ApplyButton', () => {
 
     await waitFor(() =>
       expect(notifications.show).toHaveBeenCalledWith(
-        expect.objectContaining({ color: 'red', message: 'You already applied to activity 7' }),
+        expect.objectContaining({ color: 'wine', message: 'You already applied to activity 7' }),
       ),
     )
   })

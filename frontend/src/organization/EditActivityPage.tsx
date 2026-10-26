@@ -41,7 +41,7 @@ export function EditActivityPage() {
             onSubmit={(request, { onError }) =>
               update.mutate(request, {
                 onSuccess: () => {
-                  notifications.show({ color: 'teal', message: 'Activity saved' })
+                  notifications.show({ color: 'sage', message: 'Activity saved' })
                   navigate(`/organization/activities/${id}`)
                 },
                 onError,

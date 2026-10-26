@@ -28,7 +28,7 @@ export function AvailabilityForm({ profile }: { profile: OwnVolunteerProfile }) 
       {
         onSuccess: (saved) => {
           setRows(toRows(saved.availability))
-          notifications.show({ color: 'teal', message: 'Availability saved' })
+          notifications.show({ color: 'sage', message: 'Availability saved' })
         },
       },
     )
@@ -69,7 +69,7 @@ export function AvailabilityForm({ profile }: { profile: OwnVolunteerProfile }) 
               />
               <ActionIcon
                 variant="subtle"
-                color="red"
+                color="wine"
                 size="lg"
                 aria-label="Remove time"
                 onClick={() => setRows((current) => current.filter((r) => r.key !== row.key))}
@@ -78,7 +78,7 @@ export function AvailabilityForm({ profile }: { profile: OwnVolunteerProfile }) 
               </ActionIcon>
             </Group>
             {error && (
-              <Text size="sm" c="red">
+              <Text size="sm" c="wine">
                 {error}
               </Text>
             )}

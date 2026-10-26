@@ -101,7 +101,7 @@ describe('UsersPage', () => {
 
     await waitFor(() =>
       expect(notifications.show).toHaveBeenCalledWith(
-        expect.objectContaining({ color: 'red', message: 'Admins cannot be unbanned' }),
+        expect.objectContaining({ color: 'wine', message: 'Admins cannot be unbanned' }),
       ),
     )
   })

@@ -45,11 +45,11 @@ export function ApplicationsPage() {
       {
         onSuccess: (saved) => {
           setConfirming(null)
-          notifications.show({ color: 'teal', message: `${application.activityTitle}: ${saved.status.toLowerCase()}` })
+          notifications.show({ color: 'sage', message: `${application.activityTitle}: ${saved.status.toLowerCase()}` })
         },
         onError: (e) => {
           setConfirming(null)
-          notifications.show({ color: 'red', title: 'Not done', message: e.message })
+          notifications.show({ color: 'wine', title: 'Not done', message: e.message })
         },
       },
     )
@@ -119,7 +119,7 @@ export function ApplicationsPage() {
               <Button variant="default" onClick={() => setConfirming(null)}>
                 Back
               </Button>
-              <Button color="red" loading={act.isPending} onClick={() => run(confirming.application, confirming.action)}>
+              <Button color="wine" loading={act.isPending} onClick={() => run(confirming.application, confirming.action)}>
                 {confirmText(confirming).button}
               </Button>
             </Group>
@@ -174,13 +174,13 @@ function Row({ application, now, pending, onAccept, onConfirm }: RowProps) {
                   </Button>
                 </span>
               </Tooltip>
-              <Button size="xs" color="red" variant="light" onClick={() => onConfirm('decline')}>
+              <Button size="xs" color="wine" variant="light" onClick={() => onConfirm('decline')}>
                 Decline
               </Button>
             </>
           )}
           {actions.kind === 'withdraw' && (
-            <Button size="xs" color="red" variant="light" onClick={() => onConfirm('withdraw')}>
+            <Button size="xs" color="wine" variant="light" onClick={() => onConfirm('withdraw')}>
               Withdraw
             </Button>
           )}

@@ -15,7 +15,7 @@ export function SkillsForm({ profile }: { profile: OwnVolunteerProfile }) {
   const save = () =>
     replace.mutate(
       { skillIds: selected.map(Number) },
-      { onSuccess: () => notifications.show({ color: 'teal', message: 'Skills saved' }) },
+      { onSuccess: () => notifications.show({ color: 'sage', message: 'Skills saved' }) },
     )
 
   return (

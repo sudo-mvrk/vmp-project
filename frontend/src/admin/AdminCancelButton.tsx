@@ -12,17 +12,17 @@ export function AdminCancelButton({ activityId }: { activityId: number }) {
     cancel.mutate(undefined, {
       onSuccess: () => {
         setConfirming(false)
-        notifications.show({ color: 'teal', message: 'Activity cancelled' })
+        notifications.show({ color: 'sage', message: 'Activity cancelled' })
       },
       onError: (e) => {
         setConfirming(false)
-        notifications.show({ color: 'red', title: 'Not cancelled', message: e.message })
+        notifications.show({ color: 'wine', title: 'Not cancelled', message: e.message })
       },
     })
 
   return (
     <>
-      <Button size="xs" color="red" variant="light" onClick={() => setConfirming(true)}>
+      <Button size="xs" color="wine" variant="light" onClick={() => setConfirming(true)}>
         Cancel as admin
       </Button>
       <Modal opened={confirming} onClose={() => setConfirming(false)} title="Cancel this activity as admin?">
@@ -34,7 +34,7 @@ export function AdminCancelButton({ activityId }: { activityId: number }) {
             <Button variant="default" onClick={() => setConfirming(false)}>
               Back
             </Button>
-            <Button color="red" loading={cancel.isPending} onClick={run}>
+            <Button color="wine" loading={cancel.isPending} onClick={run}>
               Cancel activity
             </Button>
           </Group>

@@ -25,8 +25,8 @@ export function RecommendedVolunteers({ activity, now }: { activity: Activity; n
 
   const onInvite = (volunteer: VolunteerProfile) =>
     invite.mutate(volunteer.id, {
-      onSuccess: () => notifications.show({ color: 'teal', message: `${fullName(volunteer)} is invited` }),
-      onError: (e) => notifications.show({ color: 'red', title: 'Could not invite', message: e.message }),
+      onSuccess: () => notifications.show({ color: 'sage', message: `${fullName(volunteer)} is invited` }),
+      onError: (e) => notifications.show({ color: 'wine', title: 'Could not invite', message: e.message }),
     })
 
   return (

@@ -50,8 +50,8 @@ export function ApplyButton({ activityId, state }: { activityId: number; state: 
           loading={apply.isPending}
           onClick={() =>
             apply.mutate(activityId, {
-              onSuccess: () => notifications.show({ color: 'green', message: 'Applied. The organization will decide.' }),
-              onError: (e) => notifications.show({ color: 'red', title: 'Could not apply', message: e.message }),
+              onSuccess: () => notifications.show({ color: 'sage', message: 'Applied. The organization will decide.' }),
+              onError: (e) => notifications.show({ color: 'wine', title: 'Could not apply', message: e.message }),
             })
           }
         >

@@ -32,8 +32,8 @@ export function matchesFilter(activity: Pick<Activity, 'status'>, filter: Status
 
 export const statusColor: Record<ActivityStatus, string> = {
   DRAFT: 'gray',
-  OPEN: 'green',
-  IN_PROGRESS: 'blue',
-  COMPLETED: 'teal',
-  CANCELLED: 'red',
+  OPEN: 'sage',
+  IN_PROGRESS: 'navy',
+  COMPLETED: 'navy',
+  CANCELLED: 'wine',
 }

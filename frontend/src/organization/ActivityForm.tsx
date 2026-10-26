@@ -53,7 +53,7 @@ export function ActivityForm({ initial, submitLabel, openNote, onSubmit, pending
       <Stack>
         <ErrorAlert error={error ?? skills.error ?? certifications.error} shownFields={FORM_FIELDS} />
         {openNote && (
-          <Alert color="yellow">
+          <Alert color="amber">
             This activity is open. Volunteers who applied are not notified of changes.
           </Alert>
         )}
@@ -131,7 +131,7 @@ export function ActivityForm({ initial, submitLabel, openNote, onSubmit, pending
               <NumberInput label="Skills (β)" min={0} max={1} step={0.05} decimalScale={2} {...form.getInputProps('beta')} />
               <NumberInput label="Priority (γ)" min={0} max={1} step={0.05} decimalScale={2} {...form.getInputProps('gamma')} />
             </Group>
-            <Text size="sm" c={Math.abs(sum - 1) < 1e-9 ? 'dimmed' : 'red'} data-testid="weights-sum">
+            <Text size="sm" c={Math.abs(sum - 1) < 1e-9 ? 'dimmed' : 'wine'} data-testid="weights-sum">
               Sum: {sum.toFixed(2)} (must be 1.00)
             </Text>
           </Stack>

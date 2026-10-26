@@ -46,7 +46,7 @@ export function LocationPicker({ value, onChange, radiusKm, error }: Props) {
         <NumberInput label="Longitude" min={-180} max={180} decimalScale={6} value={value?.lon ?? ''} onChange={setLon} />
       </Group>
       {error && (
-        <Text size="sm" c="red">
+        <Text size="sm" c="wine">
           {error}
         </Text>
       )}

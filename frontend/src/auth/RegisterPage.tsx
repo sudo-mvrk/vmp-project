@@ -73,7 +73,7 @@ export function RegisterPage() {
               { value: 'ORGANIZATION', label: 'Organization' },
             ]}
           />
-          {register.error && <Alert color="red">{register.error.message}</Alert>}
+          {register.error && <Alert color="wine">{register.error.message}</Alert>}
           <TextInput label="Username" autoComplete="username" {...form.getInputProps('username')} />
           <TextInput label="Email" type="email" autoComplete="email" {...form.getInputProps('email')} />
           <PasswordInput label="Password" autoComplete="new-password" {...form.getInputProps('password')} />

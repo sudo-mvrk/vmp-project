@@ -34,7 +34,7 @@ export function LoginPage() {
       <form onSubmit={submit}>
         <Stack>
           <Title order={2}>Log in</Title>
-          {login.error && <Alert color="red">{login.error.message}</Alert>}
+          {login.error && <Alert color="wine">{login.error.message}</Alert>}
           <TextInput label="Username or email" autoComplete="username" {...form.getInputProps('username')} />
           <PasswordInput label="Password" autoComplete="current-password" {...form.getInputProps('password')} />
           <Button type="submit" loading={login.isPending}>

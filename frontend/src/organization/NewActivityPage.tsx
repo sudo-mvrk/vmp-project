@@ -31,7 +31,7 @@ export function NewActivityPage() {
           onSubmit={(request, { onError }) =>
             create.mutate(request, {
               onSuccess: (activity) => {
-                notifications.show({ color: 'teal', message: 'Draft saved. Publish it when it is ready.' })
+                notifications.show({ color: 'sage', message: 'Draft saved. Publish it when it is ready.' })
                 navigate(`/organization/activities/${activity.id}`)
               },
               onError,

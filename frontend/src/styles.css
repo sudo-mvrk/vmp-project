@@ -1,0 +1,19 @@
+/* Global touches the theme object cannot express (Q123 … Q130). */
+
+/* Q123: the serif only for page titles; smaller headings keep the body font. */
+h3,
+h4,
+h5,
+h6 {
+  font-family: Manrope, system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+}
+
+body {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Thin, quiet borders on cards and tables instead of Mantine's default grey. */
+:root {
+  --mantine-color-default-border: rgba(17, 31, 61, 0.1);
+}

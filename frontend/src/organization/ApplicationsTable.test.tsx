@@ -71,7 +71,7 @@ describe('ApplicationsTable', () => {
 
     await waitFor(() =>
       expect(notifications.show).toHaveBeenCalledWith(
-        expect.objectContaining({ color: 'red', message: 'The volunteer has no free capacity (1 of 1 in use)' }),
+        expect.objectContaining({ color: 'wine', message: 'The volunteer has no free capacity (1 of 1 in use)' }),
       ),
     )
     expect(fetchMock.mock.calls.some(([url, init]) => String(url) === '/api/v1/applications/31/accept' && init?.method === 'POST')).toBe(true)
