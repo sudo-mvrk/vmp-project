@@ -5,7 +5,7 @@ import type { OwnVolunteerProfile } from '../api/types'
 import { ErrorAlert } from '../common/ErrorAlert'
 import { useSkills } from '../dictionary/queries'
 import { useReplaceSkills } from './queries'
-import { skillOptions } from './skills'
+import { skillOptions } from '../dictionary/skills'
 
 export function SkillsForm({ profile }: { profile: OwnVolunteerProfile }) {
   const skills = useSkills()
