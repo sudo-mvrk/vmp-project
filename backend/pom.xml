@@ -10,10 +10,10 @@
     </parent>
 
     <groupId>com</groupId>
-    <artifactId>VolunNearApp</artifactId>
+    <artifactId>vmp-project</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>VolunNearApp</name>
-    <description>VolunNearApp</description>
+    <name>Volunteering Management Platform project</name>
+    <description>vmp-project</description>
 
     <properties>
         <java.version>21</java.version>

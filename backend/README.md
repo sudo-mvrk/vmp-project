@@ -1,8 +1,8 @@
-# VolunNearApp
+# vmp-project backend
 
 Volunteer management platform with **Smart Distribution**: it recommends and assigns volunteers to activities using a multi-attribute scoring function (distance, skills, priority). The function is specified in `docs/FUNCTION.md`.
 
-This branch (`mvp-reboot`) is the MVP rewrite of the bachelor project. It is API first; there is no frontend.
+This is the API of the MVP rewrite of the bachelor project. The web client is in `../frontend`.
 
 ## Stack
 

@@ -28,7 +28,7 @@ Frontend (started 2026-10-25, decisions Q54 … Q75, slices F0 … F5 in `docs/P
 - Done checks: `cd frontend && npm run lint && npm run build && npm test` (34 tests); `cd backend && ./mvnw clean verify` (353 tests).
 
 Next session, in this order:
-1. The developer's uncommitted rename (`VolunNearApplication` → `VmpProject`, artifact `vmp-project` in `pom.xml`) is still in the working tree, not committed by Claude. `backend/Dockerfile` still copies `target/VolunNearApp-0.0.1-SNAPSHOT.jar`, so the container build breaks with the new artifact id; `VolunNearApplicationTests` and the `pkill` pattern in `docs/LOCAL_NOTES.md` still use the old name. Ask whether to finish the rename in one `ref/` commit.
+1. ~~Finish the rename~~ done 2026-10-26: main class `com.volunnear.VmpProject`, artifact and jar `vmp-project-0.0.1-SNAPSHOT.jar` (Dockerfile updated), test `VmpProjectTests`.
 2. Slice F2 (public activities, recommendations with the score breakdown, apply) per `docs/PLAN.md`; ask its edge cases first.
 3. If the developer wants: draft the thesis chapter from `docs/evaluation/METHOD.md` + `RESULTS.md` (text only; the files stay local).
 
