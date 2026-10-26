@@ -16,3 +16,15 @@ export type VolunteerProfileUpdate = Schemas['VolunteerUpdateProfileRequestDto']
 export type AvailabilitySlot = Schemas['AvailabilitySlotDto']
 export type DayOfWeek = AvailabilitySlot['dayOfWeek']
 export type HeldCertificationRequest = Schemas['HeldCertificationRequestDto']
+
+export type Activity = Schemas['ActivityResponseDto']
+export type ActivityPage = Schemas['ActivityPageResponseDto']
+export type Priority = Activity['priority']
+export type ActivityStatus = Activity['status']
+export type OrganizationProfile = Schemas['OrganizationProfileResponseDto']
+
+export type Score = Schemas['ScoreDto']
+export type RecommendedActivity = Schemas['RecommendedActivityDto']
+
+export type MyApplication = Schemas['MyApplicationResponseDto']
+export type ApplicationStatus = MyApplication['status']
