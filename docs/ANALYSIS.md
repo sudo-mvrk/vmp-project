@@ -544,4 +544,5 @@ Answered on 2026-10-26, before the design pass (D1 … D3; brief of the develope
 - **Q128. Top navigation instead of the sidebar:** logo left, the role's links in the middle, user and log out right; a burger and a drawer on phones.
 - **Q129. Logo:** the monogram VMP in a thin ring with "Volunteering Management Platform" in small spaced capitals (monogram only on small screens); browser title "VMP — Volunteering Management Platform".
 - **Q130. Muted colours** for priorities and statuses in one family (theme colours `navy`, `amber`, `wine`, `sage`, gray); skill tags as thin outlined pills.
+- **Q131. Readability fix after the developer's review (2026-10-26):** Manrope 400 and Mantine's pale grey faded on white (Firefox on Linux). Variant B of a side-by-side sample (Manrope 400 vs 500, IBM Plex Sans, Inter) was chosen: body text weight 500, input labels 600, secondary ("dimmed") text `#4a5568`, set through the `MantineProvider` `cssVariablesResolver` (Mantine writes its colour variables at runtime, after any CSS file).
 

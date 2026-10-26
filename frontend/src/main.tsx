@@ -19,7 +19,7 @@ import { RouterProvider } from 'react-router'
 import { setUnauthorizedHandler } from './api/client'
 import { forgetUserOn401 } from './auth/session'
 import { router } from './router'
-import { theme } from './theme'
+import { cssVariablesResolver, theme } from './theme'
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -31,7 +31,7 @@ setUnauthorizedHandler(forgetUserOn401(queryClient))
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
-    <MantineProvider theme={theme}>
+    <MantineProvider theme={theme} cssVariablesResolver={cssVariablesResolver}>
       <Notifications />
       <QueryClientProvider client={queryClient}>
         <RouterProvider router={router} />

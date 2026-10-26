@@ -1,4 +1,4 @@
-import { createTheme, type MantineColorsTuple } from '@mantine/core'
+import { createTheme, type CSSVariablesResolver, type MantineColorsTuple } from '@mantine/core'
 
 // The one place for the look of the app (Q55): colours, radius, fonts and component defaults.
 // Design decisions Q123 … Q130: navy, restrained, with translucent layers.
@@ -103,6 +103,8 @@ export const theme = createTheme({
     Modal: { defaultProps: { radius: 'lg', centered: true, overlayProps: { backgroundOpacity: 0.45, blur: 3 } } },
     Notification: { defaultProps: { radius: 'lg' } },
     Tooltip: { defaultProps: { radius: 'md' } },
+    // Labels a step heavier than the 500 body text (styles.css).
+    InputWrapper: { styles: { label: { fontWeight: 600 }, description: { color: 'var(--mantine-color-dimmed)' } } },
     // Quiet tables: small spaced capitals in the head, more air in the rows.
     Table: {
       defaultProps: { verticalSpacing: 'sm', horizontalSpacing: 'lg', striped: false, highlightOnHover: true },
@@ -119,4 +121,15 @@ export const theme = createTheme({
       },
     },
   },
+})
+
+// Mantine writes its colour variables at runtime, after styles.css, so they are changed here (D1 review):
+// secondary ("dimmed") text in a dark slate instead of the pale grey that faded on white, and quiet borders.
+export const cssVariablesResolver: CSSVariablesResolver = () => ({
+  variables: {},
+  light: {
+    '--mantine-color-dimmed': '#4a5568',
+    '--mantine-color-default-border': 'rgba(17, 31, 61, 0.1)',
+  },
+  dark: {},
 })
