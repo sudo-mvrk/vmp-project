@@ -13,7 +13,8 @@ import { EditActivityPage } from './organization/EditActivityPage'
 import { ManageActivityPage } from './organization/ManageActivityPage'
 import { NewActivityPage } from './organization/NewActivityPage'
 import { ProfilePage as OrganizationProfilePage } from './organization/ProfilePage'
-import { PlaceholderPage } from './pages/PlaceholderPage'
+import { ApplicationsPage as VolunteerApplicationsPage } from './volunteer/ApplicationsPage'
+import { HistoryPage } from './volunteer/HistoryPage'
 import { ProfilePage as VolunteerProfilePage } from './volunteer/ProfilePage'
 import { RecommendationsPage } from './volunteer/RecommendationsPage'
 
@@ -31,8 +32,8 @@ export const routes: RouteObject[] = [
         element: <RequireRole role="VOLUNTEER" />,
         children: [
           { path: '/volunteer/recommendations', element: <RecommendationsPage /> },
-          { path: '/volunteer/applications', element: <PlaceholderPage title="My applications" slice="F5" /> },
-          { path: '/volunteer/history', element: <PlaceholderPage title="History" slice="F5" /> },
+          { path: '/volunteer/applications', element: <VolunteerApplicationsPage /> },
+          { path: '/volunteer/history', element: <HistoryPage /> },
           { path: '/volunteer/profile', element: <VolunteerProfilePage /> },
         ],
       },

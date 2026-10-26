@@ -1,8 +1,11 @@
-import { AppShell, Burger, Button, Group, NavLink, Text } from '@mantine/core'
+import { AppShell, Badge, Burger, Button, Group, NavLink, Text } from '@mantine/core'
 import { useDisclosure } from '@mantine/hooks'
+import { useState } from 'react'
 import { notifications } from '@mantine/notifications'
 import { Link, NavLink as RouterNavLink, Outlet, useNavigate } from 'react-router'
+import { useMyApplications } from '../activity/queries'
 import { roleOf, useCurrentUser, useLogout, type Role } from '../auth/session'
+import { pendingInvitationCount } from '../volunteer/myApplications'
 
 type MenuItem = { to: string; label: string }
 
@@ -29,7 +32,11 @@ export function AppLayout() {
   const { data: user } = useCurrentUser()
   const logout = useLogout()
   const navigate = useNavigate()
-  const items = menus[user ? (roleOf(user) ?? 'ANONYMOUS') : 'ANONYMOUS']
+  const role = user ? (roleOf(user) ?? 'ANONYMOUS') : 'ANONYMOUS'
+  const items = menus[role]
+  // Q114: email is only a stub, so pending invitations are counted in the menu.
+  const [now] = useState(() => new Date())
+  const invitations = pendingInvitationCount(useMyApplications(role === 'VOLUNTEER').data, now)
 
   const onLogout = () =>
     logout.mutate(undefined, {
@@ -68,7 +75,20 @@ export function AppLayout() {
       </AppShell.Header>
       <AppShell.Navbar p="xs">
         {items.map((item) => (
-          <NavLink key={item.to} component={RouterNavLink} to={item.to} label={item.label} onClick={close} />
+          <NavLink
+            key={item.to}
+            component={RouterNavLink}
+            to={item.to}
+            label={item.label}
+            onClick={close}
+            rightSection={
+              item.to === '/volunteer/applications' && invitations > 0 ? (
+                <Badge size="sm" circle aria-label={`${invitations} pending invitations`}>
+                  {invitations}
+                </Badge>
+              ) : null
+            }
+          />
         ))}
       </AppShell.Navbar>
       <AppShell.Main>

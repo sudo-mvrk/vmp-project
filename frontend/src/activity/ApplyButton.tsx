@@ -20,10 +20,16 @@ export function ApplyButton({ activityId, state }: { activityId: number; state: 
         </Anchor>
       )
     case 'applied':
+      // Q115: the actions on an application live in one place, the volunteer's applications page.
       return (
-        <Badge color={applicationStatusColor[state.status]} variant="light">
-          Application {state.status.toLowerCase()}
-        </Badge>
+        <>
+          <Badge color={applicationStatusColor[state.status]} variant="light">
+            Application {state.status.toLowerCase()}
+          </Badge>
+          <Anchor component={Link} to="/volunteer/applications" size="sm">
+            Manage in My applications
+          </Anchor>
+        </>
       )
     case 'closed':
       return (
