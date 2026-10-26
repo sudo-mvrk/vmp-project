@@ -26,11 +26,13 @@ Frontend (started 2026-10-25, decisions Q54 … Q75, slices F0 … F5 in `docs/P
 - **F0 done**: `frontend/` with React + Vite + TypeScript 5.9, Mantine, React Router, TanStack Query; Vite proxy; `npm run gen:api`; `api()` wrapper with CSRF; register, login, logout, role guards, menu per role, placeholder pages for F2 … F5. Rules and commands in `frontend/CLAUDE.md`. The developer ran it from IntelliJ + `npm run dev` on 2026-10-25 ("все работает").
 - **F1 done** (Q67 … Q75): backend `common.config.OpenApiConfig` (response fields required, `@Schema(nullable = true)` on fields that can be null, nullable `$ref` wrapped in `allOf`, `LocalTime` as a string) with `OpenApiDocumentIntegrationTest`; volunteer profile page `/volunteer/profile` with four tabs (basic + Leaflet map picker with radius circle, skills, certifications, availability), each with its own PUT. Checked through the Vite proxy against the dev backend with curl (all four PUTs, overlap 400, lat without lon 400, radius 600 400; account `f1vol` / `pass1` was left in the dev database). Not clicked through in a browser by Claude.
 - **F2 done** (Q76 … Q86): backend `acceptedCount` in `ActivityResponseDto` (Q77; `ActivityRepository.acceptedCounts` for lists and recommendations). Frontend: public list `/activities` (paged), activity page `/activities/:id` (organization name, free spots, read-only map, apply), `/volunteer/recommendations` with `score/ScoreBreakdown` (reuse it in F4), apply with 409 as a notification. Checked through the Vite proxy against the dev backend with curl: `seed_vol08` gets "Sort food donations" among the recommendations; nothing was written to the dev database (apply was not called there). Not clicked through in a browser by Claude.
-- Done checks: `cd frontend && npm run lint && npm run build && npm test` (58 tests); `cd backend && ./mvnw clean verify` (355 tests).
+- **F3 done** (Q87 … Q97, frontend only): `src/organization/`: profile page (one form with the map picker), own activities table with Active / Finished / All filter, shared `ActivityForm` (one date + two times, skills and certifications, place prefilled from the profile, weight override switch with the running sum), new and edit pages, owner page `/organization/activities/:id` with Edit / Publish / Complete / Cancel by status (`activityStatus.actionsOf`) and a confirmation modal for cancel and complete. `skillOptions` moved to `src/dictionary/skills.ts`. Checked through the Vite proxy against the dev backend with curl: account `f3org` / `pass1` (organization "F3 Test Org", id 4) with one cancelled activity was left in the dev database. Not clicked through in a browser by Claude.
+- Done checks: `cd frontend && npm run lint && npm run build && npm test` (85 tests); `cd backend && ./mvnw clean verify` (355 tests).
 
 Next session, in this order:
-1. Slice F3 (organization profile and activities: create, edit, publish, cancel, complete) per `docs/PLAN.md`; ask its edge cases first (Q87 …).
-2. If the developer wants: draft the thesis chapter from `docs/evaluation/METHOD.md` + `RESULTS.md` (text only; the files stay local).
+1. Slice F4 (applications, recommended volunteers with the breakdown, invitations on the owner's activity page) per `docs/PLAN.md`; ask its edge cases first (Q98 …).
+2. Then F5. After F5: design pass and admin panel (Phase G), each with a plan first.
+3. If the developer wants: draft the thesis chapter from `docs/evaluation/METHOD.md` + `RESULTS.md` (text only; the files stay local).
 
 Local machine (not code), 2026-10-25: the old compose project `volunnearapp` is stopped, `vmp-project` postgres and redis run, the new dev database is migrated and seeded. IntelliJ: `backend/pom.xml` was added as a Maven project with a Spring Boot run configuration (steps in `docs/LOCAL_NOTES.md`); the developer confirmed the app runs. The app does not start without `ADMIN_USERNAME`, `ADMIN_EMAIL`, `ADMIN_PASSWORD_HASH` (Q28).
 
@@ -118,9 +120,13 @@ Hints for the next step:
 - [x] Slice F0: Scaffold, API client with CSRF, auth (register, login, logout), role guards, `frontend/CLAUDE.md` (2026-10-25)
 - [x] Slice F1: Volunteer profile (map picker, skills, certifications, availability), required response fields in the OpenAPI document (Q67 … Q75, 2026-10-25)
 - [x] Slice F2: Activities and recommendations for volunteers (score breakdown, apply), `acceptedCount` in `ActivityResponseDto` (Q76 … Q86, 2026-10-26)
-- [ ] Slice F3: Organization profile and activities
+- [x] Slice F3: Organization profile and activities (create, edit, publish, cancel, complete; Q87 … Q97, 2026-10-26)
 - [ ] Slice F4: Applications, recommended volunteers and invitations for organizations
 - [ ] Slice F5: Volunteer applications, invitations and history
+
+## Phase G: After the MVP steps (developer's plan of 2026-10-26, not planned yet)
+- [ ] Design pass of the frontend (look and layout; `src/theme.ts`)
+- [ ] Admin panel in the frontend. Changes the MVP scope (root `CLAUDE.md` and Q61 list admin screens as out of scope): needs its own plan and decisions before work starts
 
 ## Discovered work
 - [x] Fix `lat == 0` treated as "no location" and lost location on partial update in both mappers (organization Slice 2, volunteer Slice 3)
@@ -158,4 +164,4 @@ Hints for the next step:
 - [x] `cancel` did not lock the activity row; with `complete` added it could lose an update. Both now take the lock (Slice 8)
 
 ## Open questions
-- None open. F3 edge cases are asked at its start.
+- None open. F4 edge cases are asked at its start.

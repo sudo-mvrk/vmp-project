@@ -190,7 +190,7 @@ Acceptance: an anonymous user sees the list and the page; a volunteer sees recom
 Tests: breakdown component (bars in [0,1], weights and total shown as given by the backend, never recomputed); recommendation list renders the order of the response; apply button states.
 
 #### Slice F3: Organization profile and activities
-Work: profile page from `GET/PUT /organizations/me` with the map picker; own activities (`GET /organizations/me/activities`); create and edit form (`POST`, `PUT /activities/{id}`: time window, place, required skills and certifications, priority, spots needed, optional weight override α, β, γ); publish, cancel and complete buttons by status.
+Decisions Q87 … Q97 (frontend only). Work: profile page from `GET/PUT /organizations/me` with the map picker; own activities (`GET /organizations/me/activities`); create and edit form (`POST`, `PUT /activities/{id}`: time window, place, required skills and certifications, priority, spots needed, optional weight override α, β, γ); publish, cancel and complete buttons by status.
 
 Acceptance: an organization creates a draft, edits it, publishes it, and cancels or completes it; the buttons follow the status; the backend's 400 and 409 messages are shown (start in the past, weights not on the simplex, spots below the accepted count).
 

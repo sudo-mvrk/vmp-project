@@ -486,3 +486,17 @@ Answered on 2026-10-26, before Slice F2 (Q77 changed by the developer, the rest 
 - **Q85. Activity page `/activities/:id`:** read-only Leaflet map with the activity's point only, full description, address, required skills and certifications, free spots, apply. A 404 (also a draft of another organization, Q4e) shows the "not found" page.
 - **Q86. Times** are shown as the backend sends them (one configured zone, Q13), without conversion: "Sat 7 Nov 2026, 09:00–12:00".
 
+Answered on 2026-10-26, before Slice F3 (all as recommended):
+
+- **Q87. Organization profile:** one form with one `PUT /organizations/me`: name, description, website, address, city, country code, and the map picker of F1 without a radius circle. The point can be moved, not cleared (Q71). An emptied website is sent as `""` (it passes `@URL`), an empty country code is left out.
+- **Q88. Own activities list:** a table (title, date and time, status, accepted / spots) with a client-side filter Active (DRAFT, OPEN, also started) / Finished (COMPLETED, CANCELLED) / All, default Active, and a "New activity" button.
+- **Q89. Pages:** `/organization/activities/new`, `/organization/activities/:id` (the owner's page: details and status actions; F4 adds applications and recommended volunteers) and `/organization/activities/:id/edit`. Another organization's activity on the owner's page sends to its public page.
+- **Q90. Create saves a draft** and opens the owner's page; publishing is its own button. No "save and publish" (two requests, half of which could fail).
+- **Q91. Time input:** one date and two times, so an activity cannot span days (Q13); local times of the backend zone without conversion (Q86). The client checks only end > start; a start in the past is the backend's 400, shown above the form.
+- **Q92. Weight override:** a switch, off by default (global weights); three inputs 0 … 1 in steps of 0.05 with the running sum; the client refuses a sum other than 1 (the backend's tolerance 1e-9). The hint says the override only ranks volunteers for this activity (Q12).
+- **Q93. Priority** select LOW … URGENT, default MEDIUM, always sent.
+- **Q94. A new activity starts at the organization's place** (point, city, address) when the profile has one; skills grouped by category and certifications in multi-selects.
+- **Q95. Actions by status:** DRAFT: edit, publish, cancel; OPEN before the start: edit, cancel; OPEN after the start: complete, cancel; COMPLETED and CANCELLED: none. "Started" uses the browser's clock only to choose the buttons; the backend decides and its 409 is shown.
+- **Q96. Cancel and complete ask for confirmation** in a modal (they cannot be undone and email volunteers); publish does not.
+- **Q97. Editing an open activity is allowed** (backend rule); the form notes that applicants are not notified of changes. `spotsNeeded` below the accepted count is the backend's 409.
+
