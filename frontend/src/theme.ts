@@ -56,7 +56,10 @@ const sage: MantineColorsTuple = [
 ]
 
 export const BODY_FONT = 'Manrope, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif'
+// Cormorant only on the deep navy pages and the logo; on white its hairlines fade (Q132).
 export const DISPLAY_FONT = '"Cormorant Garamond", Georgia, "Times New Roman", serif'
+// Page titles on the light working pages: a sturdy serif that keeps the noble look (Q132).
+export const TITLE_FONT = '"Source Serif 4", Georgia, "Times New Roman", serif'
 
 // The page behind the light working pages (Q126), and the deep navy of header and hero.
 export const PAGE_BACKGROUND = '#f4f6fa'
@@ -70,13 +73,14 @@ export const theme = createTheme({
   defaultRadius: 'md',
   radius: { xs: '4px', sm: '6px', md: '10px', lg: '16px', xl: '24px' },
   fontFamily: BODY_FONT,
-  // Q123: the serif only for page titles (h1, h2); smaller headings stay in Manrope (styles.css).
+  // Q123, Q132: a serif only for page titles (h1, h2); smaller headings stay in Manrope (styles.css).
+  // The deep navy pages switch h1/h2 back to Cormorant (common/dark.module.css).
   headings: {
-    fontFamily: DISPLAY_FONT,
+    fontFamily: TITLE_FONT,
     fontWeight: '600',
     sizes: {
-      h1: { fontSize: '3rem', lineHeight: '1.1' },
-      h2: { fontSize: '2.25rem', lineHeight: '1.15' },
+      h1: { fontSize: '2.75rem', lineHeight: '1.12' },
+      h2: { fontSize: '2rem', lineHeight: '1.2' },
       h3: { fontSize: '1.25rem', lineHeight: '1.3', fontWeight: '700' },
       h4: { fontSize: '1.05rem', lineHeight: '1.35', fontWeight: '700' },
     },

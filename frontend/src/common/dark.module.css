@@ -42,7 +42,19 @@
   color: var(--mantine-color-navy-1);
 }
 
+/* Q132: on the deep navy pages the titles keep Cormorant, light on dark does not fade. */
+.page :is(h1, h2) {
+  font-family: 'Cormorant Garamond', Georgia, 'Times New Roman', serif;
+  letter-spacing: 0;
+}
+
 /* A light card on a dark page (the login and registration forms) keeps the normal dark text. */
 .lightCard {
   color: var(--mantine-color-black);
+}
+
+/* ... and its title uses the light pages' serif again (Q132). */
+.page .lightCard :is(h1, h2) {
+  font-family: 'Source Serif 4', Georgia, 'Times New Roman', serif;
+  letter-spacing: -0.01em;
 }
