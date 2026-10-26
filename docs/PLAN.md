@@ -210,6 +210,13 @@ Acceptance: a volunteer withdraws an application, accepts or declines an invitat
 
 Tests: actions by status and origin; history list.
 
+#### Slice F6: Admin panel (after the MVP slices)
+Decisions Q117 … Q122 (frontend only; scope change Q117). Work: `/admin/users` with search, role and status filters, paging, ban (with a confirmation that names the consequences) and unban; "Cancel as admin" on the public activity page; admin menu and landing page.
+
+Acceptance: an admin logs in, finds a user by part of the name or email, bans a volunteer (the volunteer's session ends, their applications are withdrawn) and unbans them; cancels another organization's activity; refusals of the backend (banning oneself or an admin, 409) are shown as messages; step 7 of `docs/DEMO.md` can be done with the mouse.
+
+Tests: filters → request query; ban and unban buttons by role and status; confirmation text by role; admin cancel only for admins.
+
 ## 3. Risks
 
 | Risk | Effect | Mitigation |

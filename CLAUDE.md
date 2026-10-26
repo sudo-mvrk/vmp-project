@@ -17,9 +17,9 @@ Monorepo: `backend/` (Spring Boot API; its stack, commands and conventions are i
 - If the function or its edge cases are ambiguous, list the ambiguity and ask. Do not silently choose. Decisions already taken are in `docs/ANALYSIS.md` section 6.
 
 ## MVP scope
-In scope: a web frontend for volunteers and organizations (first version: `docs/ANALYSIS.md` Q61), accounts and roles, volunteer profiles (location, skills, certifications, availability, capacity), organization profiles, activities (with spots needed), applications and invitations, recommendations, email notifications (stub is fine), completion and history.
+In scope: a web frontend for volunteers and organizations (first version: `docs/ANALYSIS.md` Q61) and a small admin panel (users with ban and unban, cancel an activity; Q117), accounts and roles, volunteer profiles (location, skills, certifications, availability, capacity), organization profiles, activities (with spots needed), applications and invitations, recommendations, email notifications (stub is fine), completion and history.
 
-Out of scope for now: chat, ratings, payments, mobile app, analytics dashboards, learning weights from data, social features, admin screens in the frontend (the admin uses the API).
+Out of scope for now: chat, ratings, payments, mobile app, analytics dashboards, learning weights from data, social features, admin screens beyond Q117 (no deletes, no audit log, no admin activity list).
 
 ## Working agreement
 0. At the start of a session read `docs/TODO.md`: its "Next session: start here" section says where the work stands. Rewrite that section at the end of the session.
