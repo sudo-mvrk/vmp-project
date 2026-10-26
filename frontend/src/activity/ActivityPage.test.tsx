@@ -1,11 +1,19 @@
-import { screen } from '@testing-library/react'
-import { afterEach, describe, expect, it, vi } from 'vitest'
+import { screen, waitFor, within } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { activity, json, myApplication, organizationUser, volunteerUser } from '../test/fixtures'
 import { stubFetch } from '../test/fetchRoutes'
 import { renderRoutes } from '../test/render'
 import { ActivityPage } from './ActivityPage'
 
 vi.mock('react-leaflet', () => import('../test/leafletMock'))
+vi.mock('@mantine/notifications', () => ({ notifications: { show: vi.fn() } }))
+
+const adminUser = { id: 9, username: 'admin', email: 'admin@example.org', roles: ['ROLE_ADMIN'] }
+
+beforeEach(() => {
+  document.cookie = 'XSRF-TOKEN=t; path=/'
+})
 
 const routes = [{ path: '/activities/:id', element: <ActivityPage /> }]
 const organization = { id: 3, organizationName: 'Prague Food Bank' }
@@ -56,5 +64,35 @@ describe('ActivityPage', () => {
     renderRoutes(routes, '/activities/7', volunteerUser)
 
     expect(await screen.findByText('Page not found')).toBeInTheDocument()
+  })
+
+  it('lets an admin cancel an open activity after a confirmation', async () => {
+    const fetchMock = stubFetch({
+      'GET /activities/7': () => json(activity()),
+      'GET /organizations/3': () => json(organization),
+      'POST /admin/activities/7/cancel': () => json(activity({ status: 'CANCELLED' })),
+      'GET /activities': () => json({ content: [], page: 0, size: 20, totalElements: 0, totalPages: 0 }),
+    })
+    renderRoutes(routes, '/activities/7', adminUser)
+
+    await userEvent.click(await screen.findByRole('button', { name: 'Cancel as admin' }))
+    await userEvent.click(within(await screen.findByRole('dialog')).getByRole('button', { name: 'Cancel activity' }))
+
+    expect(await screen.findByText('CANCELLED')).toBeInTheDocument()
+    expect(screen.queryByRole('button', { name: 'Cancel as admin' })).toBeNull()
+    await waitFor(() =>
+      expect(fetchMock.mock.calls.some(([url, init]) => String(url) === '/api/v1/admin/activities/7/cancel' && init?.method === 'POST')).toBe(true),
+    )
+  })
+
+  it('shows no admin cancel to other roles', async () => {
+    stubFetch({
+      'GET /activities/7': () => json(activity()),
+      'GET /organizations/3': () => json(organization),
+    })
+    renderRoutes(routes, '/activities/7', organizationUser)
+
+    await screen.findByText('Prague Food Bank')
+    expect(screen.queryByRole('button', { name: 'Cancel as admin' })).toBeNull()
   })
 })

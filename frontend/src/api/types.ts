@@ -37,3 +37,7 @@ export type VolunteerProfile = Schemas['VolunteerProfileResponseDto']
 export type ActivityApplication = Schemas['ActivityApplicationResponseDto']
 export type RecommendedVolunteer = Schemas['RecommendedVolunteerDto']
 export type HistoryItem = Schemas['HistoryItemResponseDto']
+
+export type AdminUser = Schemas['AdminUserResponseDto']
+export type AdminUserPage = Schemas['AdminUserPageResponseDto']
+export type AuthorityRole = AdminUser['roles'][number]

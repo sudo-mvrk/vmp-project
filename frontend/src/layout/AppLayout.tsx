@@ -23,8 +23,11 @@ const menus: Record<Role | 'ANONYMOUS', MenuItem[]> = {
     { to: '/activities', label: 'All activities' },
     { to: '/organization/profile', label: 'Profile' },
   ],
-  // Q61: no admin screens; the admin works through Swagger or the API.
-  ADMIN: [{ to: '/activities', label: 'Activities' }],
+  // Q117, Q118: users and activities; everything else of the admin stays in the API.
+  ADMIN: [
+    { to: '/admin/users', label: 'Users' },
+    { to: '/activities', label: 'Activities' },
+  ],
 }
 
 export function AppLayout() {

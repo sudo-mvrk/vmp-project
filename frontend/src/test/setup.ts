@@ -32,3 +32,6 @@ if (!('fonts' in document)) {
     value: { addEventListener: () => {}, removeEventListener: () => {}, ready: Promise.resolve() },
   })
 }
+
+// jsdom has no scrollIntoView; the Select dropdown calls it for the selected option.
+Element.prototype.scrollIntoView = () => {}

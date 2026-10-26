@@ -1,5 +1,6 @@
 import { Badge, Center, Group, Loader, Paper, SimpleGrid, Stack, Text, Title } from '@mantine/core'
 import { useParams } from 'react-router'
+import { AdminCancelButton } from '../admin/AdminCancelButton'
 import { ApiError } from '../api/client'
 import { roleOf, useCurrentUser } from '../auth/session'
 import { ErrorAlert } from '../common/ErrorAlert'
@@ -59,6 +60,11 @@ export function ActivityPage() {
           {(role !== 'VOLUNTEER' || !myApplications.isPending) && (
             <Group>
               <ApplyButton activityId={data.id} state={applyStateOf(role, data, myApplications.data)} />
+            </Group>
+          )}
+          {role === 'ADMIN' && data.status === 'OPEN' && (
+            <Group>
+              <AdminCancelButton activityId={data.id} />
             </Group>
           )}
         </Stack>

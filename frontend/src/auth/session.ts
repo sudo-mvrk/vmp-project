@@ -87,6 +87,8 @@ export function homePathOf(role: Role | null): string {
       return '/volunteer/recommendations'
     case 'ORGANIZATION':
       return '/organization/activities'
+    case 'ADMIN':
+      return '/admin/users'
     default:
       return '/'
   }

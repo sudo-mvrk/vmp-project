@@ -1,4 +1,5 @@
 import { createBrowserRouter, type RouteObject } from 'react-router'
+import { UsersPage } from './admin/UsersPage'
 import { ActivityListPage } from './activity/ActivityListPage'
 import { ActivityPage } from './activity/ActivityPage'
 import { LoginPage } from './auth/LoginPage'
@@ -46,6 +47,10 @@ export const routes: RouteObject[] = [
           { path: '/organization/activities/:id/edit', element: <EditActivityPage /> },
           { path: '/organization/profile', element: <OrganizationProfilePage /> },
         ],
+      },
+      {
+        element: <RequireRole role="ADMIN" />,
+        children: [{ path: '/admin/users', element: <UsersPage /> }],
       },
       { path: '*', element: <NotFoundPage /> },
     ],
