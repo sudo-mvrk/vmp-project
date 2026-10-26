@@ -204,6 +204,18 @@ class RecommendationIntegrationTest extends AbstractIntegrationTest {
     }
 
     @Test
+    void recommendedActivitiesCarryTheAcceptedCount() throws Exception {
+        long activity = publishedActivity(org, LAT, 2, "");
+        accept(volunteer("taken", LAT, LON, null, 1).session(), activity);
+        Cookie vol = volunteer("vol", LAT, LON, null, 1).session();
+
+        recommendedActivities(vol, "")
+                .andExpect(jsonPath("$[0].activity.id").value(activity))
+                .andExpect(jsonPath("$[0].activity.spotsNeeded").value(2))
+                .andExpect(jsonPath("$[0].activity.acceptedCount").value(1));
+    }
+
+    @Test
     void radiusPrefilterDropsActivitiesOutsideTheRadius() throws Exception {
         long inside = publishedActivity(org, LAT + 0.03, "");   // 3.34 km
         long outside = publishedActivity(org, LAT + 0.06, "");  // 6.67 km

@@ -16,6 +16,7 @@ import com.volunnear.distribution.dto.RecommendedVolunteerDto;
 import com.volunnear.distribution.dto.ScoreDto;
 import com.volunnear.distribution.dto.ScoringWeightsDto;
 import com.volunnear.distribution.model.ActivityProfile;
+import com.volunnear.distribution.ranking.RankedCandidate;
 import com.volunnear.distribution.ranking.Ranker;
 import com.volunnear.distribution.scoring.ScoreBreakdown;
 import com.volunnear.distribution.scoring.ScoringWeights;
@@ -85,10 +86,13 @@ public class RecommendationService {
                         "Volunteer profile of user " + userDetails.getUsername() + " not found"));
         Map<Long, Activity> candidates = byId(candidateActivities(volunteer), Activity::getId);
 
-        return Ranker.rankActivities(profileLoader.volunteerProfile(volunteer),
-                        profileLoader.activityProfiles(candidates.values()), properties.scoring().weights(), limit).stream()
-                .map(ranked -> new RecommendedActivityDto(
-                        activityMapper.toDto(candidates.get(ranked.id())), toDto(ranked.score())))
+        List<RankedCandidate> ranked = Ranker.rankActivities(profileLoader.volunteerProfile(volunteer),
+                profileLoader.activityProfiles(candidates.values()), properties.scoring().weights(), limit);
+        Map<Long, Long> accepted = activityRepository.acceptedCounts(ranked.stream().map(RankedCandidate::id).toList());
+        return ranked.stream()
+                .map(r -> new RecommendedActivityDto(
+                        activityMapper.toDto(candidates.get(r.id()), accepted.getOrDefault(r.id(), 0L)),
+                        toDto(r.score())))
                 .toList();
     }
 

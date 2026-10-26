@@ -9,7 +9,10 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import java.time.LocalDateTime;
 import java.util.List;
 
-/** @param weights the override, or null when the global weights apply */
+/**
+ * @param acceptedCount volunteers accepted so far; free spots = spotsNeeded - acceptedCount (Q77)
+ * @param weights       the override, or null when the global weights apply
+ */
 public record ActivityResponseDto(
         Long id,
         Long organizationId,
@@ -25,6 +28,7 @@ public record ActivityResponseDto(
         LocalDateTime startsAt,
         LocalDateTime endsAt,
         int spotsNeeded,
+        long acceptedCount,
         List<SkillResponseDto> requiredSkills,
         List<CertificationResponseDto> requiredCertifications,
         @Schema(nullable = true) ActivityWeightsDto weights

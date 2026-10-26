@@ -58,10 +58,7 @@ public class ProfileLoader {
         if (activities.isEmpty()) {
             return List.of();
         }
-        Map<Long, Long> accepted = activityRepository
-                .countAcceptedByActivity(activities.stream().map(Activity::getId).toList()).stream()
-                .collect(Collectors.toMap(ActivityRepository.AcceptedCount::getActivityId,
-                        ActivityRepository.AcceptedCount::getAccepted));
+        Map<Long, Long> accepted = activityRepository.acceptedCounts(activities.stream().map(Activity::getId).toList());
         return activities.stream()
                 .map(activity -> ProfileAdapter.toActivityProfile(activity, accepted.getOrDefault(activity.getId(), 0L)))
                 .toList();

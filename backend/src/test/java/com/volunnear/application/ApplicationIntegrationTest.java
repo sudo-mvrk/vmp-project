@@ -15,6 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 
+import static org.hamcrest.Matchers.contains;
 import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.hasSize;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
@@ -207,6 +208,23 @@ class ApplicationIntegrationTest extends AbstractIntegrationTest {
         decide(org, applicationId(otherVol, activity), "accept").andExpect(status().isOk());
         long elsewhere = applicationId(vol, publishedActivity(otherOrg, "14:00", "15:00", 1, ""));
         decide(otherOrg, elsewhere, "accept").andExpect(status().isOk());
+    }
+
+    @Test
+    void activityResponsesCarryTheAcceptedCount() throws Exception {
+        long activity = publishedActivity(org, "09:00", "12:00", 3, "");
+        decide(org, applicationId(vol, activity), "accept").andExpect(status().isOk());
+        applicationId(otherVol, activity); // pending, not counted
+
+        mockMvc.perform(get("/api/v1/activities/{id}", activity))
+                .andExpect(jsonPath("$.spotsNeeded").value(3))
+                .andExpect(jsonPath("$.acceptedCount").value(1));
+        mockMvc.perform(get("/api/v1/activities").param("size", "100"))
+                .andExpect(jsonPath("$.content[?(@.id == %d)].acceptedCount".formatted(activity)).value(contains(1)));
+        mockMvc.perform(get("/api/v1/organizations/me/activities").cookie(org))
+                .andExpect(jsonPath("$[0].acceptedCount").value(1));
+        mockMvc.perform(get("/api/v1/organizations/me/activities").cookie(otherOrg))
+                .andExpect(jsonPath("$", hasSize(0)));
     }
 
     @Test

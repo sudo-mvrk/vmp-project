@@ -51,7 +51,7 @@ public class ActivityService {
         // The new activity belongs to the caller's own organization, so no further ownership check is needed.
         Activity activity = new Activity(organizationService.getMyOrganizationEntity(userDetails));
         apply(request, activity);
-        return activityMapper.toDto(activityRepository.save(activity));
+        return activityMapper.toDto(activityRepository.save(activity), 0);
     }
 
     @Transactional
@@ -66,7 +66,7 @@ public class ActivityService {
                     + " accepted volunteers; spotsNeeded cannot be lower");
         }
         apply(request, activity);
-        return activityMapper.toDto(activity);
+        return activityMapper.toDto(activity, accepted);
     }
 
     @Transactional
@@ -78,7 +78,7 @@ public class ActivityService {
             ActivityWindowRules.requireFutureStart(activity.getStartsAt(), now());
         }
         activity.publish();
-        return activityMapper.toDto(activity);
+        return toDto(activity);
     }
 
     @Transactional
@@ -109,7 +109,7 @@ public class ActivityService {
     private ActivityResponseDto cancelLocked(Activity activity) {
         activity.cancel();
         notifier.activityCancelled(activity);
-        return activityMapper.toDto(activity);
+        return toDto(activity);
     }
 
     /** Q8a, Q8d. Capacity needs no update: it counts only activities that are not completed (Q16). */
@@ -121,7 +121,7 @@ public class ActivityService {
         }
         activity.complete();
         notifier.activityCompleted(activity);
-        return activityMapper.toDto(activity);
+        return toDto(activity);
     }
 
     /** Public read (Q4e). A draft is visible only to its organization; to anyone else it does not exist. */
@@ -133,7 +133,7 @@ public class ActivityService {
                 || !organizationAccess.canManage(userDetailsOrNull.getUser().getId(), activity.getOrganization().getId()))) {
             throw notFound(activityId);
         }
-        return activityMapper.toDto(activity);
+        return toDto(activity);
     }
 
     /** Public list (Q4e): open activities that have not started yet, soonest first. */
@@ -141,15 +141,25 @@ public class ActivityService {
     public ActivityPageResponseDto listOpen(int page, int size) {
         Page<Activity> result = activityRepository.findByStatusAndStartsAtAfter(ActivityStatus.OPEN, now(),
                 PageRequest.of(page, size, Sort.by("startsAt", "id")));
-        return new ActivityPageResponseDto(result.map(activityMapper::toDto).getContent(),
+        return new ActivityPageResponseDto(toDtos(result.getContent()),
                 result.getNumber(), result.getSize(), result.getTotalElements(), result.getTotalPages());
     }
 
     @Transactional(readOnly = true)
     public List<ActivityResponseDto> listMine(CustomUserDetails userDetails) {
         Long organizationId = organizationService.getMyOrganizationEntity(userDetails).getId();
-        return activityRepository.findByOrganization_IdOrderByStartsAtAsc(organizationId).stream()
-                .map(activityMapper::toDto)
+        return toDtos(activityRepository.findByOrganization_IdOrderByStartsAtAsc(organizationId));
+    }
+
+    private ActivityResponseDto toDto(Activity activity) {
+        return activityMapper.toDto(activity, activityRepository.countAccepted(activity.getId()));
+    }
+
+    /** One query for the accepted counts of the whole list. */
+    private List<ActivityResponseDto> toDtos(List<Activity> activities) {
+        Map<Long, Long> accepted = activityRepository.acceptedCounts(activities.stream().map(Activity::getId).toList());
+        return activities.stream()
+                .map(activity -> activityMapper.toDto(activity, accepted.getOrDefault(activity.getId(), 0L)))
                 .toList();
     }
 

@@ -760,6 +760,8 @@ export interface components {
             endsAt: string;
             /** Format: int32 */
             spotsNeeded: number;
+            /** Format: int64 */
+            acceptedCount: number;
             requiredSkills: components["schemas"]["SkillResponseDto"][];
             requiredCertifications: components["schemas"]["CertificationResponseDto"][];
             weights: components["schemas"]["ActivityWeightsDto"] | null;

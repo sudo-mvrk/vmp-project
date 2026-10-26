@@ -19,10 +19,10 @@ public interface ActivityMapper {
     GeometryFactory GEOMETRY_FACTORY = new GeometryFactory(new PrecisionModel(), 4326);
 
     // A JTS point stores x = longitude, y = latitude.
-    @Mapping(target = "organizationId", source = "organization.id")
-    @Mapping(target = "lat", source = "location.y")
-    @Mapping(target = "lon", source = "location.x")
-    ActivityResponseDto toDto(Activity activity);
+    @Mapping(target = "organizationId", source = "activity.organization.id")
+    @Mapping(target = "lat", source = "activity.location.y")
+    @Mapping(target = "lon", source = "activity.location.x")
+    ActivityResponseDto toDto(Activity activity, long acceptedCount);
 
     default List<SkillResponseDto> skillsToDto(Set<Skill> skills) {
         return skills.stream()

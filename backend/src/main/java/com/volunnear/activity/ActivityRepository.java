@@ -11,7 +11,9 @@ import org.springframework.data.repository.query.Param;
 import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 public interface ActivityRepository extends JpaRepository<Activity, Long> {
     // Q4e: the public list shows open activities that have not started yet.
@@ -66,6 +68,15 @@ public interface ActivityRepository extends JpaRepository<Activity, Long> {
             group by a.activity.id
             """)
     List<AcceptedCount> countAcceptedByActivity(@Param("activityIds") Collection<Long> activityIds);
+
+    /** {@link #countAcceptedByActivity} as a map; activities without an accepted volunteer are absent (count 0). */
+    default Map<Long, Long> acceptedCounts(Collection<Long> activityIds) {
+        if (activityIds.isEmpty()) {
+            return Map.of();
+        }
+        return countAcceptedByActivity(activityIds).stream()
+                .collect(Collectors.toMap(AcceptedCount::getActivityId, AcceptedCount::getAccepted));
+    }
 
     interface AcceptedCount {
         Long getActivityId();
