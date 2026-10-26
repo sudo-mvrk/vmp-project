@@ -14,7 +14,7 @@ Read first: `CLAUDE.md` (loaded automatically), this file, then for the slice at
 Where things stand:
 - Done: all MVP backend slices (0, 6a, 6b, 1, 2, 3, 4, 5, 6c, 5b, 7, 8, 8b, 9), the **evaluation** (Q41 … Q53) and frontend Slice **F0**. 6d stays skipped (Q18). `cd backend && ./mvnw clean verify` is green with 355 tests (the evaluation runner is excluded from it).
 - Monorepo since Q40: code in `backend/` (paths `src/main/...` in older `docs/` texts mean `backend/src/main/...`), Maven runs there; `docker compose`, `.env` and `docs/` are at the root. `CLAUDE.md` = root file + `backend/CLAUDE.md`.
-- Git: `main` of `git@github.com:sudo-mvrk/vmp-project.git`, pushed up to `0bf061c` (F1 done, pushed 2026-10-25); anything after that is local until the developer says "push it" (check with `git status -sb`).
+- Git: `main` of `git@github.com:sudo-mvrk/vmp-project.git`, pushed up to `1c6ad80` (F3 done, pushed 2026-10-26); anything after that is local until the developer says "push it" (check with `git status -sb`).
 
 Evaluation (finished 2026-10-25):
 - Files in `docs/evaluation/` (**local only**, in `.gitignore` at the developer's request; never commit them): `METHOD.md` (aim, methods, metric formulas M1 … M10, parameters, threats to validity), `RESULTS.md` (generated tables and facts, plain Markdown for pandoc or for Claude to draft the thesis chapter), `runs.csv` (raw numbers per run).
@@ -27,11 +27,12 @@ Frontend (started 2026-10-25, decisions Q54 … Q75, slices F0 … F5 in `docs/P
 - **F1 done** (Q67 … Q75): backend `common.config.OpenApiConfig` (response fields required, `@Schema(nullable = true)` on fields that can be null, nullable `$ref` wrapped in `allOf`, `LocalTime` as a string) with `OpenApiDocumentIntegrationTest`; volunteer profile page `/volunteer/profile` with four tabs (basic + Leaflet map picker with radius circle, skills, certifications, availability), each with its own PUT. Checked through the Vite proxy against the dev backend with curl (all four PUTs, overlap 400, lat without lon 400, radius 600 400; account `f1vol` / `pass1` was left in the dev database). Not clicked through in a browser by Claude.
 - **F2 done** (Q76 … Q86): backend `acceptedCount` in `ActivityResponseDto` (Q77; `ActivityRepository.acceptedCounts` for lists and recommendations). Frontend: public list `/activities` (paged), activity page `/activities/:id` (organization name, free spots, read-only map, apply), `/volunteer/recommendations` with `score/ScoreBreakdown` (reuse it in F4), apply with 409 as a notification. Checked through the Vite proxy against the dev backend with curl: `seed_vol08` gets "Sort food donations" among the recommendations; nothing was written to the dev database (apply was not called there). Not clicked through in a browser by Claude.
 - **F3 done** (Q87 … Q97, frontend only): `src/organization/`: profile page (one form with the map picker), own activities table with Active / Finished / All filter, shared `ActivityForm` (one date + two times, skills and certifications, place prefilled from the profile, weight override switch with the running sum), new and edit pages, owner page `/organization/activities/:id` with Edit / Publish / Complete / Cancel by status (`activityStatus.actionsOf`) and a confirmation modal for cancel and complete. `skillOptions` moved to `src/dictionary/skills.ts`. Checked through the Vite proxy against the dev backend with curl: account `f3org` / `pass1` (organization "F3 Test Org", id 4) with one cancelled activity was left in the dev database. Not clicked through in a browser by Claude.
-- Done checks: `cd frontend && npm run lint && npm run build && npm test` (85 tests); `cd backend && ./mvnw clean verify` (355 tests).
+- **F4 done** (Q98 … Q107, frontend only): tabs on the owner's page: `ApplicationsTable` (sorted, accept / reject by `applications.rowActionsOf`, reject confirmation, email for accepted rows, `VolunteerProfileModal`) and `RecommendedVolunteers` (`ScoreBreakdown`, invite; no request when the activity is not open or has started). Mutations invalidate `['activity', id]`, which covers the activity, its applications and recommendations. Checked through the Vite proxy with curl: `f3org` invited the top recommendation (it was `f1vol`, id 35), second invite 409, the volunteer left the recommendations, org reject of an invitation 409, `f1vol` applied to a second activity and was accepted (email shown, `acceptedCount` 1). Both test activities (ids 14, 15) were cancelled afterwards; `f1vol` keeps a pending invitation on 14 and an accepted application on 15, both cancelled activities. Not clicked through in a browser by Claude.
+- Done checks: `cd frontend && npm run lint && npm run build && npm test` (98 tests); `cd backend && ./mvnw clean verify` (355 tests).
 
 Next session, in this order:
-1. Slice F4 (applications, recommended volunteers with the breakdown, invitations on the owner's activity page) per `docs/PLAN.md`; ask its edge cases first (Q98 …).
-2. Then F5. After F5: design pass and admin panel (Phase G), each with a plan first.
+1. Slice F5 (volunteer's applications and invitations with withdraw, accept, decline; history) per `docs/PLAN.md`; ask its edge cases first (Q108 …).
+2. After F5: design pass and admin panel (Phase G), each with a plan first.
 3. If the developer wants: draft the thesis chapter from `docs/evaluation/METHOD.md` + `RESULTS.md` (text only; the files stay local).
 
 Local machine (not code), 2026-10-25: the old compose project `volunnearapp` is stopped, `vmp-project` postgres and redis run, the new dev database is migrated and seeded. IntelliJ: `backend/pom.xml` was added as a Maven project with a Spring Boot run configuration (steps in `docs/LOCAL_NOTES.md`); the developer confirmed the app runs. The app does not start without `ADMIN_USERNAME`, `ADMIN_EMAIL`, `ADMIN_PASSWORD_HASH` (Q28).
@@ -121,7 +122,7 @@ Hints for the next step:
 - [x] Slice F1: Volunteer profile (map picker, skills, certifications, availability), required response fields in the OpenAPI document (Q67 … Q75, 2026-10-25)
 - [x] Slice F2: Activities and recommendations for volunteers (score breakdown, apply), `acceptedCount` in `ActivityResponseDto` (Q76 … Q86, 2026-10-26)
 - [x] Slice F3: Organization profile and activities (create, edit, publish, cancel, complete; Q87 … Q97, 2026-10-26)
-- [ ] Slice F4: Applications, recommended volunteers and invitations for organizations
+- [x] Slice F4: Applications, recommended volunteers and invitations for organizations (Q98 … Q107, 2026-10-26)
 - [ ] Slice F5: Volunteer applications, invitations and history
 
 ## Phase G: After the MVP steps (developer's plan of 2026-10-26, not planned yet)
@@ -164,4 +165,4 @@ Hints for the next step:
 - [x] `cancel` did not lock the activity row; with `complete` added it could lose an update. Both now take the lock (Slice 8)
 
 ## Open questions
-- None open. F4 edge cases are asked at its start.
+- None open. F5 edge cases are asked at its start.

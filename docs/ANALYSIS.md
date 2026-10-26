@@ -500,3 +500,16 @@ Answered on 2026-10-26, before Slice F3 (all as recommended):
 - **Q96. Cancel and complete ask for confirmation** in a modal (they cannot be undone and email volunteers); publish does not.
 - **Q97. Editing an open activity is allowed** (backend rule); the form notes that applicants are not notified of changes. `spotsNeeded` below the accepted count is the backend's 409.
 
+Answered on 2026-10-26, before Slice F4 (all as recommended):
+
+- **Q98. Applications and recommended volunteers are two tabs on the owner's page** (`/organization/activities/:id`), "Applications (N)" and "Recommended volunteers"; a draft shows neither.
+- **Q99. Applications table:** volunteer (name, city, the email only for `ACCEPTED`, Q7d), time and origin (application or invitation), status. Order: pending, accepted, then the rest, each group by time of applying.
+- **Q100. Row actions:** a pending `APPLICATION` has Accept and Reject; a pending `INVITATION` shows "Waiting for the volunteer" (Q5i); others none. Reject needs only a pending application (also after the start, backend rule); Accept is disabled with the reason when the activity is not open, has started or has no free spot. Capacity and overlap 409s are shown as messages.
+- **Q101. Reject asks for confirmation** (final by Q5b, emails the volunteer); accept and invite do not.
+- **Q102. Volunteer profile in a modal** from the name: city, bio, skills, certifications with validity, availability. No date of birth.
+- **Q103. Recommended volunteers:** 10 / 25 / 50 (like Q82), each with rank, name, city, skills, `ScoreBreakdown` and Invite; a line says whether the activity's custom weights or the platform's were used (in this direction the override applies, Q12).
+- **Q104. After an invite** the recommendations and applications are read again: the volunteer leaves the recommendations (Q15) and appears as a pending invitation. Named 409s are shown as messages.
+- **Q105. No request for recommendations** when the activity is not open or has started (it would be the 409 of Q6a); a text explains. An empty list of a full activity says that a free spot is needed.
+- **Q106. After accept, reject or invite** the activity, its applications, its recommendations and the own list are read again (all queries under `['activity', id]`), so free spots stay right.
+- **Q107. Availability in the profile modal** is a list per weekday ("Sat 08:00–14:00"); whether it covers the activity is not highlighted, the backend has already checked it for recommendations.
+

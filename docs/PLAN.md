@@ -197,7 +197,7 @@ Acceptance: an organization creates a draft, edits it, publishes it, and cancels
 Tests: activity form (payload shape, weight override on or off, window validation messages); status → available actions.
 
 #### Slice F4: Applications, recommended volunteers and invitations for organizations
-Work: on the organization's activity page: applications (`GET /activities/{id}/applications`) with accept and reject (`POST /applications/{id}/accept|reject`), the volunteer email only for accepted rows (Q7d); recommended volunteers (`GET /activities/{id}/recommended-volunteers`) with the same breakdown component and an invite button (`POST /activities/{id}/invitations`).
+Decisions Q98 … Q107 (frontend only). Work: on the organization's activity page: applications (`GET /activities/{id}/applications`) with accept and reject (`POST /applications/{id}/accept|reject`), the volunteer email only for accepted rows (Q7d); recommended volunteers (`GET /activities/{id}/recommended-volunteers`) with the same breakdown component and an invite button (`POST /activities/{id}/invitations`).
 
 Acceptance: the organization accepts and rejects applications, sees the free spots change, sees recommended volunteers with their breakdown and invites one; named 409s (no spot, capacity, overlap) are shown as messages.
 
