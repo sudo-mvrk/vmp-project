@@ -8,6 +8,11 @@ import { AppLayout } from './layout/AppLayout'
 import { HomePage } from './pages/HomePage'
 import { NoAccessPage } from './pages/NoAccessPage'
 import { NotFoundPage } from './pages/NotFoundPage'
+import { ActivitiesPage as OrganizationActivitiesPage } from './organization/ActivitiesPage'
+import { EditActivityPage } from './organization/EditActivityPage'
+import { ManageActivityPage } from './organization/ManageActivityPage'
+import { NewActivityPage } from './organization/NewActivityPage'
+import { ProfilePage as OrganizationProfilePage } from './organization/ProfilePage'
 import { PlaceholderPage } from './pages/PlaceholderPage'
 import { ProfilePage as VolunteerProfilePage } from './volunteer/ProfilePage'
 import { RecommendationsPage } from './volunteer/RecommendationsPage'
@@ -34,8 +39,11 @@ export const routes: RouteObject[] = [
       {
         element: <RequireRole role="ORGANIZATION" />,
         children: [
-          { path: '/organization/activities', element: <PlaceholderPage title="Our activities" slice="F3" /> },
-          { path: '/organization/profile', element: <PlaceholderPage title="Profile" slice="F3" /> },
+          { path: '/organization/activities', element: <OrganizationActivitiesPage /> },
+          { path: '/organization/activities/new', element: <NewActivityPage /> },
+          { path: '/organization/activities/:id', element: <ManageActivityPage /> },
+          { path: '/organization/activities/:id/edit', element: <EditActivityPage /> },
+          { path: '/organization/profile', element: <OrganizationProfilePage /> },
         ],
       },
       { path: '*', element: <NotFoundPage /> },

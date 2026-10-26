@@ -28,3 +28,7 @@ export type RecommendedActivity = Schemas['RecommendedActivityDto']
 
 export type MyApplication = Schemas['MyApplicationResponseDto']
 export type ApplicationStatus = MyApplication['status']
+
+export type OwnOrganizationProfile = Schemas['OwnOrganizationProfileResponseDto']
+export type OrganizationProfileUpdate = Schemas['OrganizationUpdateProfileRequestDto']
+export type ActivityRequest = Schemas['ActivityRequestDto']
