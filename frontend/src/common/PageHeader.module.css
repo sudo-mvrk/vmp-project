@@ -1,0 +1,13 @@
+.header {
+  padding-bottom: var(--mantine-spacing-md);
+  margin-bottom: var(--mantine-spacing-xs);
+  border-bottom: 1px solid rgba(17, 31, 61, 0.08);
+}
+
+.eyebrow {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--mantine-color-navy-5);
+}

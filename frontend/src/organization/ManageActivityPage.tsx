@@ -1,4 +1,4 @@
-import { Anchor, Badge, Button, Center, Group, Loader, Modal, Paper, Stack, Tabs, Text, Title } from '@mantine/core'
+import { Anchor, Badge, Button, Center, Group, Loader, Modal, Paper, SimpleGrid, Stack, Tabs, Text } from '@mantine/core'
 import { notifications } from '@mantine/notifications'
 import { useState } from 'react'
 import { Link, Navigate, useParams } from 'react-router'
@@ -8,6 +8,7 @@ import { formatWindow, placeText, spotsText } from '../activity/format'
 import { priorityColor } from '../activity/labels'
 import { useActivity } from '../activity/queries'
 import { ErrorAlert } from '../common/ErrorAlert'
+import { PageHeader } from '../common/PageHeader'
 import { NotFoundPage } from '../pages/NotFoundPage'
 import { actionsOf, statusColor } from './activityStatus'
 import { ApplicationsTable } from './ApplicationsTable'
@@ -75,68 +76,74 @@ function ManageActivity({ activity }: { activity: Activity }) {
     })
 
   return (
-    <Stack maw={860}>
-      <Group justify="space-between" align="start">
-        <div>
-          <Group gap="xs">
-            <Title order={2}>{activity.title}</Title>
+    <Stack maw={1080} mx="auto" w="100%" gap="lg">
+      <PageHeader
+        eyebrow="Our activity"
+        title={activity.title}
+        badges={
+          <>
             <Badge color={statusColor[activity.status]}>{activity.status}</Badge>
-            <Badge color={priorityColor[activity.priority]} variant="light">
-              {activity.priority}
-            </Badge>
-          </Group>
-          {activity.status !== 'DRAFT' && (
+            <Badge color={priorityColor[activity.priority]}>{activity.priority}</Badge>
+          </>
+        }
+        description={
+          activity.status !== 'DRAFT' && (
             <Anchor component={Link} to={`/activities/${activity.id}`} size="sm">
               Public page
             </Anchor>
-          )}
-        </div>
-        <Group gap="xs">
-          {actions.includes('edit') && (
-            <Button variant="default" component={Link} to={`/organization/activities/${activity.id}/edit`}>
-              Edit
-            </Button>
-          )}
-          {actions.includes('publish') && (
-            <Button onClick={() => run('publish')} loading={action.isPending && action.variables === 'publish'}>
-              Publish
-            </Button>
-          )}
-          {actions.includes('complete') && (
-            <Button color="sage" onClick={() => setConfirming('complete')}>
-              Complete
-            </Button>
-          )}
-          {actions.includes('cancel') && (
-            <Button color="wine" variant="light" onClick={() => setConfirming('cancel')}>
-              Cancel
-            </Button>
-          )}
-        </Group>
-      </Group>
+          )
+        }
+        actions={
+          <>
+            {actions.includes('edit') && (
+              <Button variant="default" component={Link} to={`/organization/activities/${activity.id}/edit`}>
+                Edit
+              </Button>
+            )}
+            {actions.includes('publish') && (
+              <Button onClick={() => run('publish')} loading={action.isPending && action.variables === 'publish'}>
+                Publish
+              </Button>
+            )}
+            {actions.includes('complete') && (
+              <Button color="sage" onClick={() => setConfirming('complete')}>
+                Complete
+              </Button>
+            )}
+            {actions.includes('cancel') && (
+              <Button color="wine" variant="light" onClick={() => setConfirming('cancel')}>
+                Cancel
+              </Button>
+            )}
+          </>
+        }
+      />
 
       <ErrorAlert error={action.error} />
 
-      <Paper withBorder p="md">
-        <Stack gap="xs">
-          <Text>{formatWindow(activity.startsAt, activity.endsAt)}</Text>
-          {place && <Text size="sm">{place}</Text>}
-          <Text size="sm">
-            {spotsText(activity)} ({activity.acceptedCount} accepted)
-          </Text>
-          <Text size="sm">
-            Required skills: {activity.requiredSkills.map((skill) => skill.skillName).join(', ') || 'none'}
-          </Text>
-          <Text size="sm">
-            Required certifications:{' '}
-            {activity.requiredCertifications.map((certification) => certification.name).join(', ') || 'none'}
-          </Text>
-          <Text size="sm" data-testid="weights">
-            {activity.weights
-              ? `Custom weights: α ${activity.weights.alpha.toFixed(2)} · β ${activity.weights.beta.toFixed(2)} · γ ${activity.weights.gamma.toFixed(2)}`
-              : "Platform's weights"}
-          </Text>
-        </Stack>
+      <Paper withBorder p="xl">
+        <SimpleGrid cols={{ base: 1, sm: 3 }} spacing="xl">
+          <Detail label="When" value={formatWindow(activity.startsAt, activity.endsAt)} />
+          <Detail label="Where" value={place ?? 'No address'} />
+          <Detail label="Spots" value={`${spotsText(activity)} (${activity.acceptedCount} accepted)`} />
+          <Detail
+            label="Required skills"
+            value={activity.requiredSkills.map((skill) => skill.skillName).join(', ') || 'none'}
+          />
+          <Detail
+            label="Required certifications"
+            value={activity.requiredCertifications.map((certification) => certification.name).join(', ') || 'none'}
+          />
+          <Detail
+            label="Ranking weights"
+            testId="weights"
+            value={
+              activity.weights
+                ? `Custom weights: α ${activity.weights.alpha.toFixed(2)} · β ${activity.weights.beta.toFixed(2)} · γ ${activity.weights.gamma.toFixed(2)}`
+                : "Platform's weights"
+            }
+          />
+        </SimpleGrid>
       </Paper>
 
       {(activity.fullDescription || activity.shortDescription) && (
@@ -176,5 +183,18 @@ function ManageActivity({ activity }: { activity: Activity }) {
         )}
       </Modal>
     </Stack>
+  )
+}
+
+function Detail({ label, value, testId }: { label: string; value: string; testId?: string }) {
+  return (
+    <div>
+      <Text size="xs" fw={600} tt="uppercase" lts="0.14em" c="navy.5" mb={4}>
+        {label}
+      </Text>
+      <Text size="sm" c="navy.9" data-testid={testId}>
+        {value}
+      </Text>
+    </div>
   )
 }

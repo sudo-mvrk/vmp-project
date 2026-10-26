@@ -1,6 +1,7 @@
-import { Center, Loader, Pagination, Paper, Stack, Text, Title } from '@mantine/core'
+import { Center, Loader, Pagination, Paper, Stack, Text } from '@mantine/core'
 import { useState } from 'react'
 import { ErrorAlert } from '../common/ErrorAlert'
+import { PageHeader } from '../common/PageHeader'
 import { ActivitySummary } from './ActivitySummary'
 import { useActivities } from './queries'
 
@@ -10,8 +11,12 @@ export function ActivityListPage() {
   const activities = useActivities(page)
 
   return (
-    <Stack maw={860}>
-      <Title order={2}>Activities</Title>
+    <Stack maw={1080} mx="auto" w="100%" gap="lg">
+      <PageHeader
+        eyebrow="Open activities"
+        title="Activities"
+        description="Everything open that has not started yet, soonest first."
+      />
       {activities.isPending && (
         <Center mt="xl">
           <Loader />

@@ -1,0 +1,23 @@
+.panel {
+  padding: 18px 20px;
+  border-radius: var(--mantine-radius-lg);
+  background: linear-gradient(160deg, var(--mantine-color-navy-0) 0%, rgba(238, 242, 248, 0.4) 100%);
+  border: 1px solid rgba(17, 31, 61, 0.06);
+}
+
+.label {
+  color: var(--mantine-color-navy-7);
+}
+
+.weight {
+  color: var(--mantine-color-navy-4);
+}
+
+.total {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-size: 2.1rem;
+  font-weight: 600;
+  line-height: 1;
+  color: var(--mantine-color-navy-9);
+  font-variant-numeric: lining-nums;
+}

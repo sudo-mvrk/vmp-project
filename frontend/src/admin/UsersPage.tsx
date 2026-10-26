@@ -1,10 +1,11 @@
-import { Badge, Button, Center, Group, Loader, Modal, Pagination, Select, Stack, Table, Text, TextInput, Title } from '@mantine/core'
+import { Badge, Button, Center, Group, Loader, Modal, Pagination, Select, Stack, Table, Text, TextInput, Paper } from '@mantine/core'
 import { useDebouncedValue } from '@mantine/hooks'
 import { notifications } from '@mantine/notifications'
 import dayjs from 'dayjs'
 import { useState } from 'react'
 import type { AdminUser } from '../api/types'
 import { ErrorAlert } from '../common/ErrorAlert'
+import { PageHeader } from '../common/PageHeader'
 import { useAdminUsers, useBanAction } from './queries'
 import { banConsequences, initialFilter, roleLabel, roleOfUser, userActionOf, type UserFilter } from './users'
 
@@ -54,8 +55,8 @@ export function UsersPage() {
     )
 
   return (
-    <Stack maw={1060}>
-      <Title order={2}>Users</Title>
+    <Stack maw={1080} mx="auto" w="100%" gap="lg">
+      <PageHeader eyebrow="Administration" title="Users" description="Find accounts, ban and unban them." />
       <Group align="end">
         <TextInput
           label="Search"
@@ -96,54 +97,58 @@ export function UsersPage() {
             {users.data.totalElements} {users.data.totalElements === 1 ? 'user' : 'users'}
           </Text>
           {users.data.content.length > 0 && (
-            <Table striped>
-              <Table.Thead>
-                <Table.Tr>
-                  <Table.Th>Username</Table.Th>
-                  <Table.Th>Email</Table.Th>
-                  <Table.Th>Role</Table.Th>
-                  <Table.Th>Registered</Table.Th>
-                  <Table.Th>Status</Table.Th>
-                  <Table.Th />
-                </Table.Tr>
-              </Table.Thead>
-              <Table.Tbody>
-                {users.data.content.map((user) => {
-                  const role = roleOfUser(user)
-                  const action = userActionOf(user)
-                  return (
-                    <Table.Tr key={user.id} data-testid="user-row">
-                      <Table.Td>{user.username}</Table.Td>
-                      <Table.Td>{user.email}</Table.Td>
-                      <Table.Td>{role ? roleLabel[role] : '?'}</Table.Td>
-                      <Table.Td>{dayjs(user.createdAt).format('D MMM YYYY')}</Table.Td>
-                      <Table.Td>
-                        <Badge color={user.banned ? 'wine' : 'sage'} variant="light">
-                          {user.banned ? 'Banned' : 'Active'}
-                        </Badge>
-                      </Table.Td>
-                      <Table.Td>
-                        {action === 'ban' && (
-                          <Button size="xs" color="wine" variant="light" onClick={() => setBanning(user)}>
-                            Ban
-                          </Button>
-                        )}
-                        {action === 'unban' && (
-                          <Button
-                            size="xs"
-                            variant="default"
-                            loading={banAction.isPending && banAction.variables?.userId === user.id}
-                            onClick={() => run(user, 'unban')}
-                          >
-                            Unban
-                          </Button>
-                        )}
-                      </Table.Td>
+            <Paper withBorder radius="lg" style={{ overflow: 'hidden' }}>
+              <Table.ScrollContainer minWidth={640} type="native">
+                <Table>
+                  <Table.Thead>
+                    <Table.Tr>
+                      <Table.Th>Username</Table.Th>
+                      <Table.Th>Email</Table.Th>
+                      <Table.Th>Role</Table.Th>
+                      <Table.Th>Registered</Table.Th>
+                      <Table.Th>Status</Table.Th>
+                      <Table.Th />
                     </Table.Tr>
-                  )
-                })}
-              </Table.Tbody>
-            </Table>
+                  </Table.Thead>
+                  <Table.Tbody>
+                    {users.data.content.map((user) => {
+                      const role = roleOfUser(user)
+                      const action = userActionOf(user)
+                      return (
+                        <Table.Tr key={user.id} data-testid="user-row">
+                          <Table.Td>{user.username}</Table.Td>
+                          <Table.Td>{user.email}</Table.Td>
+                          <Table.Td>{role ? roleLabel[role] : '?'}</Table.Td>
+                          <Table.Td>{dayjs(user.createdAt).format('D MMM YYYY')}</Table.Td>
+                          <Table.Td>
+                            <Badge color={user.banned ? 'wine' : 'sage'} variant="light">
+                              {user.banned ? 'Banned' : 'Active'}
+                            </Badge>
+                          </Table.Td>
+                          <Table.Td>
+                            {action === 'ban' && (
+                              <Button size="xs" color="wine" variant="light" onClick={() => setBanning(user)}>
+                                Ban
+                              </Button>
+                            )}
+                            {action === 'unban' && (
+                              <Button
+                                size="xs"
+                                variant="default"
+                                loading={banAction.isPending && banAction.variables?.userId === user.id}
+                                onClick={() => run(user, 'unban')}
+                              >
+                                Unban
+                              </Button>
+                            )}
+                          </Table.Td>
+                        </Table.Tr>
+                      )
+                    })}
+                  </Table.Tbody>
+                </Table>
+              </Table.ScrollContainer>
+            </Paper>
           )}
           {users.data.totalPages > 1 && (
             // Mantine counts pages from 1, the backend from 0.

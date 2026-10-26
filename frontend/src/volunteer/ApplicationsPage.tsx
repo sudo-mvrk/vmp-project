@@ -1,4 +1,4 @@
-import { Anchor, Badge, Button, Center, Group, Loader, Modal, SegmentedControl, Stack, Table, Text, Title, Tooltip } from '@mantine/core'
+import { Anchor, Badge, Button, Center, Group, Loader, Modal, Paper, SegmentedControl, Stack, Text, Title, Tooltip } from '@mantine/core'
 import { notifications } from '@mantine/notifications'
 import { useState } from 'react'
 import { Link } from 'react-router'
@@ -7,6 +7,7 @@ import { formatWindow } from '../activity/format'
 import { applicationStatusColor } from '../activity/labels'
 import { useMyApplications } from '../activity/queries'
 import { ErrorAlert } from '../common/ErrorAlert'
+import { PageHeader } from '../common/PageHeader'
 import { isCurrent, ownActionsOf } from './myApplications'
 import { useOwnApplicationAction, type OwnAction } from './queries'
 
@@ -58,26 +59,30 @@ export function ApplicationsPage() {
   const invitations = shown.filter((application) => application.origin === 'INVITATION')
   const own = shown.filter((application) => application.origin === 'APPLICATION')
 
+  // A list, not a table: on a phone the status and the buttons wrap under the title (D3).
   const table = (rows: MyApplication[], testId: string) => (
-    <Table striped data-testid={testId}>
-      <Table.Tbody>
-        {rows.map((application) => (
-          <Row
-            key={application.id}
-            application={application}
-            now={now}
-            pending={act.isPending && act.variables?.application.id === application.id}
-            onAccept={() => run(application, 'accept')}
-            onConfirm={(action) => setConfirming({ application, action })}
-          />
-        ))}
-      </Table.Tbody>
-    </Table>
+    <Paper withBorder radius="lg" data-testid={testId}>
+      {rows.map((application, index) => (
+        <Row
+          key={application.id}
+          application={application}
+          now={now}
+          first={index === 0}
+          pending={act.isPending && act.variables?.application.id === application.id}
+          onAccept={() => run(application, 'accept')}
+          onConfirm={(action) => setConfirming({ application, action })}
+        />
+      ))}
+    </Paper>
   )
 
   return (
-    <Stack maw={960}>
-      <Title order={2}>My applications</Title>
+    <Stack maw={1080} mx="auto" w="100%" gap="lg">
+      <PageHeader
+        eyebrow="Volunteer"
+        title="My applications"
+        description="Invitations wait for your answer; applications wait for the organization."
+      />
       <SegmentedControl
         w="fit-content"
         value={filter}
@@ -133,24 +138,33 @@ export function ApplicationsPage() {
 type RowProps = {
   application: MyApplication
   now: Date
+  first: boolean
   pending: boolean
   onAccept: () => void
   onConfirm: (action: 'withdraw' | 'decline') => void
 }
 
-function Row({ application, now, pending, onAccept, onConfirm }: RowProps) {
+function Row({ application, now, first, pending, onAccept, onConfirm }: RowProps) {
   const actions = ownActionsOf(application, now)
   return (
-    <Table.Tr data-testid="own-application">
-      <Table.Td>
+    <Group
+      data-testid="own-application"
+      justify="space-between"
+      wrap="wrap"
+      gap="sm"
+      px="lg"
+      py="md"
+      style={first ? undefined : { borderTop: '1px solid var(--mantine-color-default-border)' }}
+    >
+      <div style={{ flex: '1 1 260px' }}>
         <Anchor component={Link} to={`/activities/${application.activityId}`}>
           {application.activityTitle}
         </Anchor>
         <Text size="xs" c="dimmed">
           {formatWindow(application.activityStartsAt, application.activityEndsAt)}
         </Text>
-      </Table.Td>
-      <Table.Td>
+      </div>
+      <Group gap="md" wrap="wrap" justify="flex-end">
         <Group gap={4}>
           <Badge color={applicationStatusColor[application.status]} variant="light">
             {application.status}
@@ -161,8 +175,6 @@ function Row({ application, now, pending, onAccept, onConfirm }: RowProps) {
             </Badge>
           )}
         </Group>
-      </Table.Td>
-      <Table.Td>
         <Group gap="xs" justify="flex-end" wrap="nowrap">
           {actions.kind === 'invitation' && (
             <>
@@ -190,7 +202,7 @@ function Row({ application, now, pending, onAccept, onConfirm }: RowProps) {
             </Text>
           )}
         </Group>
-      </Table.Td>
-    </Table.Tr>
+      </Group>
+    </Group>
   )
 }

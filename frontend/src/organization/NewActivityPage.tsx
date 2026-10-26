@@ -1,6 +1,7 @@
-import { Center, Loader, Paper, Stack, Title } from '@mantine/core'
+import { Center, Loader, Paper, Stack } from '@mantine/core'
 import { notifications } from '@mantine/notifications'
 import { useNavigate } from 'react-router'
+import { PageHeader } from '../common/PageHeader'
 import { ActivityForm } from './ActivityForm'
 import { newValues } from './activityForm'
 import { useCreateActivity, useOwnOrganization } from './queries'
@@ -20,9 +21,9 @@ export function NewActivityPage() {
     )
   }
   return (
-    <Stack maw={860}>
-      <Title order={2}>New activity</Title>
-      <Paper withBorder p="md">
+    <Stack maw={880} mx="auto" w="100%" gap="lg">
+      <PageHeader eyebrow="Organization" title="New activity" description="It is saved as a draft; publish it from its page when it is ready." />
+      <Paper withBorder p="xl">
         <ActivityForm
           initial={newValues(organization.data)}
           submitLabel="Save draft"

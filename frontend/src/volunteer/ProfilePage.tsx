@@ -1,5 +1,6 @@
-import { Center, Loader, Paper, Stack, Tabs, Text, Title } from '@mantine/core'
+import { Center, Loader, Paper, Stack, Tabs } from '@mantine/core'
 import { ErrorAlert } from '../common/ErrorAlert'
+import { PageHeader } from '../common/PageHeader'
 import { AvailabilityForm } from './AvailabilityForm'
 import { BasicProfileForm } from './BasicProfileForm'
 import { CertificationsForm } from './CertificationsForm'
@@ -23,13 +24,12 @@ export function ProfilePage() {
 
   const data = profile.data
   return (
-    <Stack maw={860}>
-      <div>
-        <Title order={2}>
-          {data.firstName} {data.lastName}
-        </Title>
-        <Text c="dimmed">{data.username}</Text>
-      </div>
+    <Stack maw={880} mx="auto" w="100%" gap="lg">
+      <PageHeader
+        eyebrow="Volunteer profile"
+        title={`${data.firstName} ${data.lastName}`}
+        description={`${data.username} · what you set here decides which activities are recommended to you`}
+      />
       <Tabs defaultValue="basic" keepMounted={false}>
         <Tabs.List>
           <Tabs.Tab value="basic">Profile and location</Tabs.Tab>

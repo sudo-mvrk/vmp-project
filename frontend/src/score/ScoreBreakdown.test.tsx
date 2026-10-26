@@ -16,12 +16,12 @@ describe('ScoreBreakdown', () => {
   it('shows each component as a bar in [0, 1] with its weight', () => {
     renderWithProviders(<ScoreBreakdown score={score()} />)
 
-    expect(row('geo').getByText('Distance (α 0.40)')).toBeInTheDocument()
+    expect(row('geo').getByText(/Distance/)).toHaveTextContent('Distance (α 0.40)')
     expect(row('geo').getByText('0.79')).toBeInTheDocument()
     expect(barValue('geo')).toBeCloseTo(79.356)
-    expect(row('skill').getByText('Skills (β 0.40)')).toBeInTheDocument()
+    expect(row('skill').getByText(/Skills/)).toHaveTextContent('Skills (β 0.40)')
     expect(barValue('skill')).toBe(100)
-    expect(row('priority').getByText('Priority (γ 0.20)')).toBeInTheDocument()
+    expect(row('priority').getByText(/Priority/)).toHaveTextContent('Priority (γ 0.20)')
     expect(barValue('priority')).toBe(0)
   })
 
@@ -37,7 +37,7 @@ describe('ScoreBreakdown', () => {
       <ScoreBreakdown score={score({ weights: { alpha: 0, beta: 1, gamma: 0, halfDistanceKm: 5 } })} />,
     )
 
-    expect(row('geo').getByText('Distance (α 0.00)')).toBeInTheDocument()
-    expect(row('skill').getByText('Skills (β 1.00)')).toBeInTheDocument()
+    expect(row('geo').getByText(/Distance/)).toHaveTextContent('Distance (α 0.00)')
+    expect(row('skill').getByText(/Skills/)).toHaveTextContent('Skills (β 1.00)')
   })
 })

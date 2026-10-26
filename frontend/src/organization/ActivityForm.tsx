@@ -75,8 +75,11 @@ export function ActivityForm({ initial, submitLabel, openNote, onSubmit, pending
             {...form.getInputProps('date')}
           />
           <TimeInput label="Start" withAsterisk {...form.getInputProps('startTime')} />
-          <TimeInput label="End" withAsterisk description="Same day, latest 23:59" {...form.getInputProps('endTime')} />
+          <TimeInput label="End" withAsterisk {...form.getInputProps('endTime')} />
         </Group>
+        <Text size="xs" c="dimmed" mt={-8}>
+          An activity starts and ends on the same day; the latest end is 23:59.
+        </Text>
 
         <Group grow align="flex-start">
           <Select label="Priority" data={PRIORITIES} allowDeselect={false} {...form.getInputProps('priority')} />

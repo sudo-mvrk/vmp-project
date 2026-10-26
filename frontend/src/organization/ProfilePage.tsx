@@ -1,10 +1,11 @@
-import { Button, Center, Group, Loader, Paper, Stack, Text, Textarea, TextInput, Title } from '@mantine/core'
+import { Button, Center, Group, Loader, Paper, Stack, Textarea, TextInput } from '@mantine/core'
 import { useForm } from '@mantine/form'
 import { notifications } from '@mantine/notifications'
 import { ApiError } from '../api/client'
 import type { OwnOrganizationProfile } from '../api/types'
 import { ErrorAlert } from '../common/ErrorAlert'
 import { LocationPicker } from '../map/LocationPicker'
+import { PageHeader } from '../common/PageHeader'
 import { initialValues, toUpdateRequest, type Values } from './organizationProfile'
 import { useOwnOrganization, useUpdateOrganization } from './queries'
 
@@ -24,12 +25,9 @@ export function ProfilePage() {
     return <ErrorAlert error={profile.error} />
   }
   return (
-    <Stack maw={860}>
-      <div>
-        <Title order={2}>{profile.data.organizationName}</Title>
-        <Text c="dimmed">{profile.data.username}</Text>
-      </div>
-      <Paper withBorder p="md">
+    <Stack maw={880} mx="auto" w="100%" gap="lg">
+      <PageHeader eyebrow="Organization profile" title={profile.data.organizationName} description={profile.data.username} />
+      <Paper withBorder p="xl">
         <OrganizationProfileForm profile={profile.data} />
       </Paper>
     </Stack>

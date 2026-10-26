@@ -1,10 +1,11 @@
-import { Alert, Anchor, Center, Grid, Group, List, Loader, Paper, Select, Stack, Text, Title } from '@mantine/core'
+import { Alert, Anchor, Center, Grid, Group, List, Loader, Paper, Select, Stack, Text } from '@mantine/core'
 import { useState } from 'react'
 import { Link } from 'react-router'
 import { ActivitySummary } from '../activity/ActivitySummary'
 import { ApplyButton } from '../activity/ApplyButton'
 import { useRecommendedActivities } from '../activity/queries'
 import { ErrorAlert } from '../common/ErrorAlert'
+import { PageHeader } from '../common/PageHeader'
 import { ScoreBreakdown } from '../score/ScoreBreakdown'
 import { useOwnVolunteerProfile } from './queries'
 
@@ -19,11 +20,15 @@ export function RecommendationsPage() {
   const noLocation = profile.data !== undefined && profile.data.lat === null
 
   return (
-    <Stack maw={960}>
-      <Group justify="space-between" align="end">
-        <Title order={2}>Recommended for me</Title>
-        <Select label="Show" data={LIMITS} value={limit} onChange={(v) => v && setLimit(v)} w={90} allowDeselect={false} />
-      </Group>
+    <Stack maw={1080} mx="auto" w="100%" gap="lg">
+      <PageHeader
+        eyebrow="Smart Distribution"
+        title="Recommended for me"
+        description="Open activities that fit your time, certifications and capacity, ranked by distance, skills and priority."
+        actions={
+          <Select label="Show" data={LIMITS} value={limit} onChange={(v) => v && setLimit(v)} w={90} allowDeselect={false} />
+        }
+      />
       {noLocation && (
         // Q81: without a point every activity gets distance score 0.
         <Alert color="amber">

@@ -103,5 +103,20 @@ export const theme = createTheme({
     Modal: { defaultProps: { radius: 'lg', centered: true, overlayProps: { backgroundOpacity: 0.45, blur: 3 } } },
     Notification: { defaultProps: { radius: 'lg' } },
     Tooltip: { defaultProps: { radius: 'md' } },
+    // Quiet tables: small spaced capitals in the head, more air in the rows.
+    Table: {
+      defaultProps: { verticalSpacing: 'sm', horizontalSpacing: 'lg', striped: false, highlightOnHover: true },
+      styles: {
+        table: { background: '#fff' },
+        th: {
+          fontSize: 11,
+          fontWeight: 600,
+          letterSpacing: '0.12em',
+          textTransform: 'uppercase',
+          color: 'var(--mantine-color-navy-5)',
+          background: 'var(--mantine-color-navy-0)',
+        },
+      },
+    },
   },
 })

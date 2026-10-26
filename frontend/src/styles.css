@@ -1,10 +1,15 @@
 /* Global touches the theme object cannot express (Q123 … Q130). */
 
-/* Q123: the serif only for page titles; smaller headings keep the body font. */
+/* Q123: the serif only for page titles; smaller headings keep the body font.
+   The data-order selectors outweigh Mantine's own Title class. */
 h3,
 h4,
 h5,
-h6 {
+h6,
+.mantine-Title-root[data-order='3'],
+.mantine-Title-root[data-order='4'],
+.mantine-Title-root[data-order='5'],
+.mantine-Title-root[data-order='6'] {
   font-family: Manrope, system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
 }
 
@@ -16,4 +21,10 @@ body {
 /* Thin, quiet borders on cards and tables instead of Mantine's default grey. */
 :root {
   --mantine-color-default-border: rgba(17, 31, 61, 0.1);
+}
+
+/* Cormorant's default old-style figures read "0" as "o" in titles; numbers stay lining everywhere. */
+h1,
+h2 {
+  font-variant-numeric: lining-nums;
 }

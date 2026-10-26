@@ -1,4 +1,4 @@
-import { Anchor, Badge, Button, Center, Group, Loader, Modal, Stack, Table, Text, Tooltip } from '@mantine/core'
+import { Anchor, Badge, Button, Center, Group, Loader, Modal, Stack, Table, Text, Tooltip, Paper } from '@mantine/core'
 import { notifications } from '@mantine/notifications'
 import dayjs from 'dayjs'
 import { useState } from 'react'
@@ -50,75 +50,79 @@ export function ApplicationsTable({ activity, now }: { activity: Activity; now: 
 
   return (
     <>
-      <Table striped>
-        <Table.Thead>
-          <Table.Tr>
-            <Table.Th>Volunteer</Table.Th>
-            <Table.Th>Since</Table.Th>
-            <Table.Th>Status</Table.Th>
-            <Table.Th />
-          </Table.Tr>
-        </Table.Thead>
-        <Table.Tbody>
-          {sortApplications(applications.data).map((application) => {
-            const actions = rowActionsOf(application, activity, now)
-            return (
-              <Table.Tr key={application.id} data-testid="application-row">
-                <Table.Td>
-                  <Anchor component="button" type="button" onClick={() => setShown(application.volunteer)}>
-                    {fullName(application.volunteer)}
-                  </Anchor>
-                  {application.volunteer.city && (
-                    <Text size="xs" c="dimmed">
-                      {application.volunteer.city}
-                    </Text>
-                  )}
-                  {/* Q7d: the contact comes with the acceptance. */}
-                  {application.volunteerEmail && <Text size="xs">{application.volunteerEmail}</Text>}
-                </Table.Td>
-                <Table.Td>
-                  <Text size="sm">{dayjs(application.appliedAt).format('D MMM, HH:mm')}</Text>
-                  <Text size="xs" c="dimmed">
-                    {application.origin === 'INVITATION' ? 'Invitation' : 'Application'}
-                  </Text>
-                </Table.Td>
-                <Table.Td>
-                  <Badge color={applicationStatusColor[application.status]} variant="light">
-                    {application.status}
-                  </Badge>
-                </Table.Td>
-                <Table.Td>
-                  {actions.kind === 'waiting' && (
-                    <Text size="xs" c="dimmed">
-                      Waiting for the volunteer
-                    </Text>
-                  )}
-                  {actions.kind === 'decide' && (
-                    <Group gap="xs" wrap="nowrap">
-                      <Tooltip label={actions.acceptBlocked} disabled={!actions.acceptBlocked}>
-                        {/* A disabled button gets no mouse events; the wrapper keeps the tooltip working. */}
-                        <span>
-                          <Button
-                            size="xs"
-                            disabled={actions.acceptBlocked !== null}
-                            loading={decide.isPending && decide.variables?.applicationId === application.id}
-                            onClick={() => run(application, 'accept')}
-                          >
-                            Accept
-                          </Button>
-                        </span>
-                      </Tooltip>
-                      <Button size="xs" color="wine" variant="light" onClick={() => setRejecting(application)}>
-                        Reject
-                      </Button>
-                    </Group>
-                  )}
-                </Table.Td>
+      <Paper withBorder radius="lg" style={{ overflow: 'hidden' }}>
+        <Table.ScrollContainer minWidth={640} type="native">
+          <Table>
+            <Table.Thead>
+              <Table.Tr>
+                <Table.Th>Volunteer</Table.Th>
+                <Table.Th>Since</Table.Th>
+                <Table.Th>Status</Table.Th>
+                <Table.Th />
               </Table.Tr>
-            )
-          })}
-        </Table.Tbody>
-      </Table>
+            </Table.Thead>
+            <Table.Tbody>
+              {sortApplications(applications.data).map((application) => {
+                const actions = rowActionsOf(application, activity, now)
+                return (
+                  <Table.Tr key={application.id} data-testid="application-row">
+                    <Table.Td>
+                      <Anchor component="button" type="button" onClick={() => setShown(application.volunteer)}>
+                        {fullName(application.volunteer)}
+                      </Anchor>
+                      {application.volunteer.city && (
+                        <Text size="xs" c="dimmed">
+                          {application.volunteer.city}
+                        </Text>
+                      )}
+                      {/* Q7d: the contact comes with the acceptance. */}
+                      {application.volunteerEmail && <Text size="xs">{application.volunteerEmail}</Text>}
+                    </Table.Td>
+                    <Table.Td>
+                      <Text size="sm">{dayjs(application.appliedAt).format('D MMM, HH:mm')}</Text>
+                      <Text size="xs" c="dimmed">
+                        {application.origin === 'INVITATION' ? 'Invitation' : 'Application'}
+                      </Text>
+                    </Table.Td>
+                    <Table.Td>
+                      <Badge color={applicationStatusColor[application.status]} variant="light">
+                        {application.status}
+                      </Badge>
+                    </Table.Td>
+                    <Table.Td>
+                      {actions.kind === 'waiting' && (
+                        <Text size="xs" c="dimmed">
+                          Waiting for the volunteer
+                        </Text>
+                      )}
+                      {actions.kind === 'decide' && (
+                        <Group gap="xs" wrap="nowrap">
+                          <Tooltip label={actions.acceptBlocked} disabled={!actions.acceptBlocked}>
+                            {/* A disabled button gets no mouse events; the wrapper keeps the tooltip working. */}
+                            <span>
+                              <Button
+                                size="xs"
+                                disabled={actions.acceptBlocked !== null}
+                                loading={decide.isPending && decide.variables?.applicationId === application.id}
+                                onClick={() => run(application, 'accept')}
+                              >
+                                Accept
+                              </Button>
+                            </span>
+                          </Tooltip>
+                          <Button size="xs" color="wine" variant="light" onClick={() => setRejecting(application)}>
+                            Reject
+                          </Button>
+                        </Group>
+                      )}
+                    </Table.Td>
+                  </Table.Tr>
+                )
+              })}
+            </Table.Tbody>
+          </Table>
+        </Table.ScrollContainer>
+      </Paper>
 
       <VolunteerProfileModal volunteer={shown} onClose={() => setShown(null)} />
 

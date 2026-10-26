@@ -1,9 +1,10 @@
-import { Center, Loader, Paper, Stack, Text, Title } from '@mantine/core'
+import { Center, Loader, Paper, Stack, Text } from '@mantine/core'
 import { useState } from 'react'
 import { notifications } from '@mantine/notifications'
 import { useNavigate, useParams } from 'react-router'
 import { useActivity } from '../activity/queries'
 import { ErrorAlert } from '../common/ErrorAlert'
+import { PageHeader } from '../common/PageHeader'
 import { ActivityForm } from './ActivityForm'
 import { valuesOf } from './activityForm'
 import { actionsOf } from './activityStatus'
@@ -28,8 +29,8 @@ export function EditActivityPage() {
   }
   const data = activity.data
   return (
-    <Stack maw={860}>
-      <Title order={2}>Edit: {data.title}</Title>
+    <Stack maw={880} mx="auto" w="100%" gap="lg">
+      <PageHeader eyebrow="Edit activity" title={data.title} />
       {actionsOf(data, now).includes('edit') ? (
         <Paper withBorder p="md">
           <ActivityForm
